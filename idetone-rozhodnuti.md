@@ -1,14 +1,16 @@
 # ideTone – stav projektu a rozhodnutí
 
 Poslední aktualizace: 1. 10. 2026
-Fáze: ladění zadání (superprompt zatím nevznikl). Hrubý nástřel směru a sitemapy schválen jako základ (artifact „ideTone – směr webu“, verze 0.1); doladí se podle inspiračních webů.
+Fáze: zadání hotové – SUPERPROMPT.md 1.0 a CLAUDE.md uloženy v kořeni složky idetone, čeká se na založení repozitáře a spuštění Claude Code. Hrubý nástřel směru a sitemapy schválen jako základ (artifact „ideTone – směr webu“, verze 0.1); doladí se podle inspiračních webů.
 
 Tento soubor je jediný zdroj pravdy o stavu projektu. Kopie je v Claude projektu „WEB - ideTone“ (claude/idetone-rozhodnuti.md) a ve složce webu na PC. Při změně aktualizovat obě.
 
 ## Platforma a provoz
 - Statický web: Astro, texty v Markdownu / content collections
 - Hosting: GitHub Pages, doména idetone.cz zůstává (CNAME v DNS), deploy přes GitHub Actions
-- Repozitář: zakládá Lukáš ručně, Claude Code pracuje v existujícím repozitáři
+- Repozitář: zakládá Lukáš ručně, Claude Code pracuje v existujícím repozitáři; old-web/ se přesune do podklady/old-web/ (v repu, mimo build)
+- Písma self-hosted (@fontsource) kvůli GDPR, mapy bez iframe
+- Přesměrování starých URL /index.php/… na nové
 - Lokální složka: C:\Users\lukas\Documents\PRACOVNÍ\Weby\idetone (podklady starého webu v old-web/)
 - Pozor: nadřazená složka Weby je sama git repozitář – rozhodnout, zda idetone bude samostatný repo (submodul / vyřadit z nadřazeného .gitignore)
 - Formuláře: Formspree (GitHub Pages nemá server), honeypot + souhlas GDPR
@@ -65,9 +67,13 @@ Tento soubor je jediný zdroj pravdy o stavu projektu. Kopie je v Claude projekt
 - Inspirační weby (klient)
 - Fotky a grafika, logo (klient)
 - Vlastní text Revy (teď skoro stejný jako Sara)
+- Typ Revy: na starém webu „sloupová“, ale výška 440 mm a samostatné stojany → spíš kompaktní na stojan
+- Formspree účet a ID formulářů (Lukáš)
+- Graf impedance Revy, dostupnost / dodací lhůta
 - Sara: středobas 6,5" ve specifikaci vs. „sedmipalcový“ v textu
 - Firemní údaje: název, IČO, DIČ, telefon
 - Obchodní podmínky, zásady ochrany osobních údajů
 
 ## Historie rozhodnutí
 - 1. 10. 2026: platforma Astro + GitHub Pages, nová identita (severské řemeslo), formulářový prodej, CZ + příprava EN, přesné ceny, logo ze stávající hlavičky, deník zatím skrytý, repozitář zakládá Lukáš
+- 1. 10. 2026: SUPERPROMPT.md 1.0 + CLAUDE.md, old-web jde do repozitáře, jen světlý režim, reference a EN za feature flagy
