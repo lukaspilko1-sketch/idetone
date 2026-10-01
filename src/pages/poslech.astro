@@ -4,16 +4,23 @@ import Section from '../components/Section.astro';
 import PageHeader from '../components/PageHeader.astro';
 import TextBlock from '../components/TextBlock.astro';
 import ImageSlot from '../components/ImageSlot.astro';
-import FormPlaceholder from '../components/FormPlaceholder.astro';
-import { getPage, getSettings } from '../utils/content';
+import ContactForm from '../components/ContactForm.astro';
+import { getPage, getProducts, getSettings } from '../utils/content';
 import { typo } from '../utils/format';
+import { localBusiness } from '../utils/seo';
 
 const { data } = await getPage('poslech');
 const settings = await getSettings();
 const { studio } = settings;
+const models = (await getProducts()).map((p) => ({ id: p.id, name: p.data.name }));
 ---
 
-<BaseLayout title={`${data.seoTitle ?? data.title} | ideTone`} description={data.description}>
+<BaseLayout
+  title={`${data.seoTitle ?? data.title} | ideTone`}
+  description={data.description}
+  crumbs={[{ name: 'Poslech', href: '/poslech/' }]}
+  jsonLd={[localBusiness(settings, Astro.site)]}
+>
   <PageHeader eyebrow={data.eyebrow} title={data.title} lead={data.lead} />
 
   <Section tone="uhel" space="m" labelledby="studio-title">
@@ -63,11 +70,12 @@ const { studio } = settings;
 
   <Section divider>
     <div class="form-wrap">
-      <FormPlaceholder
+      <ContactForm
+        type="listening"
         id="formular"
         title="Domluvit poslech"
         email={settings.contact.email}
-        subject="ideTone – poslech"
+        models={models}
       />
     </div>
   </Section>

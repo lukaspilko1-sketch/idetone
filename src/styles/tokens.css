@@ -20,6 +20,8 @@
   --c-on-dark-muted: #b8b2a8; /* sekundární text na tmavé ploše */
   --c-line-dark: #45413c; /* linky na tmavé ploše */
   --c-chart: #ffffff; /* podklad grafů měření (mají bílé pozadí) */
+  --c-field: #fdfcf9; /* pozadí polí formuláře na papíru */
+  --c-error: #9e3b2b; /* chyby ve formuláři (cihlová, AA na papíru) */
 
   /* Typová škála 13 / 16 / 20 / 26 / 35 / 50 (H1 max. 56) */
   --fs-xs: 0.8125rem;

@@ -14,6 +14,7 @@ import { features } from '../config/site';
 import { getHomeSections, getSettings } from '../utils/content';
 import { formatPrice, typo } from '../utils/format';
 import { url } from '../utils/url';
+import { localBusiness } from '../utils/seo';
 
 // NÁVRH: ke schválení (meta popis úvodní stránky níže)
 const sections = await getHomeSections();
@@ -36,6 +37,7 @@ const resolved = await Promise.all(
 <BaseLayout
   title="ideTone – reprosoustavy s citem pro hudbu"
   description="Ručně laděné dvoupásmové reprosoustavy Sara a Reva od Petra Kocourka z Brna. Poslech ve studiu v Brně, objednávka a zakázkové projekty."
+  jsonLd={[localBusiness(settings, Astro.site)]}
 >
   {resolved.map((item) => {
     const s = item.section;

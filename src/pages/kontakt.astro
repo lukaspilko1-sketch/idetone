@@ -2,12 +2,14 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/Section.astro';
 import PageHeader from '../components/PageHeader.astro';
-import FormPlaceholder from '../components/FormPlaceholder.astro';
-import { getPage, getSettings } from '../utils/content';
+import ContactForm from '../components/ContactForm.astro';
+import { getPage, getProducts, getSettings } from '../utils/content';
 import { typo } from '../utils/format';
+import { localBusiness } from '../utils/seo';
 
 const { data } = await getPage('kontakt');
-const { contact, company, studio, social } = await getSettings();
+const settings = await getSettings();
+const { contact, company, studio, social } = settings;
 
 // Firemní údaje – řádky se zobrazí, až budou vyplněné v settings.yaml
 const companyRows = [
@@ -16,9 +18,15 @@ const companyRows = [
   ['DIČ', company.dic],
   ['Sídlo', company.address],
 ].filter(([, value]) => value);
+const models = (await getProducts()).map((p) => ({ id: p.id, name: p.data.name }));
 ---
 
-<BaseLayout title={`${data.seoTitle ?? data.title} | ideTone`} description={data.description}>
+<BaseLayout
+  title={`${data.seoTitle ?? data.title} | ideTone`}
+  description={data.description}
+  crumbs={[{ name: 'Kontakt', href: '/kontakt/' }]}
+  jsonLd={[localBusiness(settings, Astro.site)]}
+>
   <PageHeader eyebrow={data.eyebrow} title={data.title} lead={data.lead} />
 
   <Section divider space="m" labelledby="kontakt-udaje">
@@ -88,11 +96,12 @@ const companyRows = [
 
   <Section divider>
     <div class="form-wrap">
-      <FormPlaceholder
+      <ContactForm
+        type="order"
         id="objednavka"
         title="Objednávka"
         email={contact.email}
-        subject="ideTone – objednávka"
+        models={models}
       />
     </div>
   </Section>

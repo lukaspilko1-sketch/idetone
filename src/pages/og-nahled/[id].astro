@@ -1,0 +1,164 @@
+---
+/**
+ * Předloha OG obrázků 1200×630 (jen v dev režimu). Obrázky do public/og/ vyfotí `npm run og`.
+ */
+import { Font, Picture } from 'astro:assets';
+import '../../styles/tokens.css';
+import '../../styles/base.css';
+import Logo from '../../components/Logo.astro';
+import { getProducts, shortSpec, specLabels, type Product } from '../../utils/content';
+import { formatPrice, typo } from '../../utils/format';
+import { site } from '../../config/site';
+import sara from '../../assets/products/sara/DSC_0800i-1.png';
+
+export async function getStaticPaths() {
+  if (!import.meta.env.DEV) return [];
+  const products = await getProducts();
+  return [
+    { params: { id: 'default' }, props: { product: undefined } },
+    ...products.map((product) => ({ params: { id: product.id }, props: { product } })),
+  ];
+}
+
+interface Props {
+  product?: Product;
+}
+
+const { product } = Astro.props;
+const image = product ? product.data.image : { src: sara, alt: '' };
+---
+
+<!doctype html>
+<html lang="cs">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>OG {product?.data.name ?? 'default'}</title>
+    <Font cssVariable="--font-text" />
+    <Font cssVariable="--font-heading" />
+    <Font cssVariable="--font-mono" />
+  </head>
+  <body>
+    <div class="og">
+      <div class="og__text">
+        <Logo height="30px" />
+        <div>
+          <span class="eyebrow og__eyebrow">{product ? product.data.type : site.claim}</span>
+          <p class="og__title">
+            {product ? product.data.name : 'Ručně laděné reprosoustavy z Brna'}
+          </p>
+          {product && (
+            <ul class="og__specs mono">
+              {product.data.highlights.map((key) => (
+                <li>
+                  <span>{specLabels[key]}</span> {typo(shortSpec(product, key))}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+        <p class="og__price mono">
+          {product ? `${formatPrice(product.data.price)} / pár` : 'Sara · Reva'}
+        </p>
+      </div>
+      <div class="og__panel">
+        {image ? (
+          <Picture
+            src={image.src}
+            alt=""
+            formats={['webp']}
+            fallbackFormat="webp"
+            widths={[800]}
+            sizes="460px"
+            loading="eager"
+            class="og__img"
+          />
+        ) : (
+          <p class="og__noimg mono">ideTone {product?.data.name}</p>
+        )}
+      </div>
+    </div>
+  </body>
+</html>
+
+<style>
+  body {
+    margin: 0;
+    width: 1200px;
+    height: 630px;
+    overflow: hidden;
+  }
+
+  .og {
+    display: grid;
+    grid-template-columns: 1fr 470px;
+    width: 1200px;
+    height: 630px;
+    background: var(--c-len);
+  }
+
+  .og__text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 64px 72px;
+  }
+
+  .og__eyebrow {
+    font-size: 18px;
+  }
+
+  .og__title {
+    margin-top: 16px;
+    max-width: 12ch;
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: 84px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .og__specs {
+    display: grid;
+    gap: 6px;
+    margin: 28px 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 20px;
+  }
+
+  .og__specs span {
+    display: inline-block;
+    min-width: 210px;
+    color: var(--c-muted);
+  }
+
+  .og__price {
+    font-size: 26px;
+    font-weight: 500;
+  }
+
+  .og__panel {
+    position: relative;
+    display: grid;
+    place-items: end center;
+    background: var(--c-uhel);
+    overflow: hidden;
+  }
+
+  .og__panel :global(.og__img) {
+    width: 330px;
+    height: auto;
+    margin-bottom: -40px;
+    filter: drop-shadow(0 24px 30px rgb(0 0 0 / 0.3));
+  }
+
+  .og__noimg {
+    place-self: center;
+    font-size: 32px;
+    letter-spacing: var(--tracking-logo);
+    color: var(--c-on-dark);
+  }
+</style>

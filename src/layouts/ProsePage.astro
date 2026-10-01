@@ -15,7 +15,11 @@ const { data } = page;
 const { Content } = await render(page);
 ---
 
-<BaseLayout title={`${data.seoTitle ?? data.title} | ideTone`} description={data.description}>
+<BaseLayout
+  title={`${data.seoTitle ?? data.title} | ideTone`}
+  description={data.description}
+  crumbs={[{ name: data.title, href: `/${Astro.props.id}/` }]}
+>
   <PageHeader eyebrow={data.eyebrow} title={data.title} lead={data.lead} />
   <Section divider space="m" width="narrow">
     <div class="prose">

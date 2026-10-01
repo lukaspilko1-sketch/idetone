@@ -15,7 +15,11 @@ const { data } = page;
 const advice = data.sections.find((s) => s.id === 'ktery-model');
 ---
 
-<BaseLayout title={`${data.seoTitle ?? data.title} | ideTone`} description={data.description}>
+<BaseLayout
+  title={`${data.seoTitle ?? data.title} | ideTone`}
+  description={data.description}
+  crumbs={[{ name: 'Reprosoustavy', href: '/reprosoustavy/' }]}
+>
   <PageHeader eyebrow={data.eyebrow} title={data.title} lead={data.lead} />
 
   <Section space="s" reveal={false}>

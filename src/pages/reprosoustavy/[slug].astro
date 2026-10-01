@@ -12,6 +12,7 @@ import ImageSlot from '../../components/ImageSlot.astro';
 import { getProducts, type Product } from '../../utils/content';
 import { formatPrice, headedBlocks, typo } from '../../utils/format';
 import { url } from '../../utils/url';
+import { product as productSchema } from '../../utils/seo';
 
 export async function getStaticPaths() {
   const products = await getProducts();
@@ -34,9 +35,36 @@ const chartFull = data.impedanceChart
   ? await getImage({ src: data.impedanceChart.src, format: 'webp' })
   : undefined;
 const title = `${data.seo.title ?? `${data.name} – ${data.type}`} | ideTone`;
+const schemaImage = data.image
+  ? new URL((await getImage({ src: data.image.src, width: 1200, format: 'webp' })).src, Astro.site)
+      .href
+  : undefined;
+const description = data.seo.description ?? data.tagline;
 ---
 
-<BaseLayout title={title} description={data.seo.description}>
+<BaseLayout
+  title={title}
+  description={description}
+  image={`/og/${product.id}.png`}
+  imageAlt={`ideTone ${data.name}`}
+  ogType="product"
+  crumbs={[
+    { name: 'Reprosoustavy', href: '/reprosoustavy/' },
+    { name: data.name, href: `/reprosoustavy/${product.id}/` },
+  ]}
+  jsonLd={[
+    productSchema(
+      {
+        id: product.id,
+        name: data.name,
+        description: data.intro,
+        price: data.price,
+        image: schemaImage,
+      },
+      Astro.site,
+    ),
+  ]}
+>
   <div class="container product">
     <div class="product__gallery">
       <Gallery

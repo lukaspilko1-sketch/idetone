@@ -13,7 +13,11 @@ import { typo } from '../utils/format';
 const { data } = await getPage('technologie');
 ---
 
-<BaseLayout title={`${data.seoTitle ?? data.title} | ideTone`} description={data.description}>
+<BaseLayout
+  title={`${data.seoTitle ?? data.title} | ideTone`}
+  description={data.description}
+  crumbs={[{ name: 'Technologie', href: '/technologie/' }]}
+>
   <PageHeader eyebrow={data.eyebrow} title={data.title} lead={data.lead}>
     <nav class="toc" aria-label="Obsah stránky">
       <ul role="list">

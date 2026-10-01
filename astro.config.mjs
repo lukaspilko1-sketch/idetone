@@ -7,6 +7,8 @@ import sitemap from '@astrojs/sitemap';
 // Ostrý provoz:     SITE_URL=https://idetone.cz, BASE_PATH=/
 const site = process.env.SITE_URL || 'http://localhost:4321';
 const base = process.env.BASE_PATH || '/';
+// Cíl přesměrování s podsložkou (Astro ji k cíli redirectu sám nepřidá)
+const withBase = (/** @type {string} */ path) => `${base.replace(/\/$/, '')}${path}`;
 
 // Písma: soubory z balíčků @fontsource, servírované z vlastní domény (GDPR).
 // Jen použité řezy a subsety latin + latin-ext (čeština). Astro k nim vygeneruje
@@ -45,7 +47,18 @@ export default defineConfig({
   output: 'static',
   trailingSlash: 'always',
   devToolbar: { enabled: false },
-  integrations: [sitemap()],
+  // Mimo sitemapu: děkovací stránka po odeslání formuláře
+  integrations: [sitemap({ filter: (page) => !page.includes('/dekujeme/') })],
+  // Staré URL z WordPressu → nové (GitHub Pages nemá serverové redirecty, Astro vygeneruje
+  // stránky s meta refresh + canonical)
+  redirects: {
+    '/index.php/sara/': withBase('/reprosoustavy/sara/'),
+    '/index.php/reva/': withBase('/reprosoustavy/reva/'),
+    '/index.php/o-idetone/': withBase('/o-idetone/'),
+    '/index.php/technologie/': withBase('/technologie/'),
+    '/index.php/kontakty/': withBase('/kontakt/'),
+    '/index.php/objednat/': withBase('/kontakt/#objednavka'),
+  },
   i18n: {
     defaultLocale: 'cs',
     locales: ['cs', 'en'],

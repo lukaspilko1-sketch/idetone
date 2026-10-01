@@ -69,3 +69,55 @@ test('podmenu @ 1440', async ({ page }) => {
   await page.waitForTimeout(250);
   await page.screenshot({ path: 'screenshots/podmenu-1440.png' });
 });
+
+// Stavy formuláře (objednávka) ke schválení
+test.describe('formular stavy', () => {
+  const endpoint = 'https://formspree.io/f/testovaci';
+  const shot = (page: Page, name: string) =>
+    page.locator('#objednavka').screenshot({ path: `screenshots/formular-${name}.png` });
+
+  async function prepare(page: Page, fill = true) {
+    await page.setViewportSize({ width: 1280, height: 1200 });
+    await page.goto('/kontakt/?model=reva');
+    await ready(page);
+    await page
+      .locator('#objednavka form')
+      .evaluate((f, url) => ((f as HTMLFormElement).dataset.endpoint = url), endpoint);
+    if (!fill) return;
+    const form = page.locator('#objednavka');
+    await form.getByLabel('Jméno a příjmení').fill('Jan Novák');
+    await form.getByLabel('E-mail').fill('jan@example.com');
+    await form.getByLabel('Telefon').fill('+420 777 123 456');
+    await form.getByRole('checkbox').check();
+  }
+
+  test('vychozi a chyby validace', async ({ page }) => {
+    await prepare(page, false);
+    await shot(page, 'vychozi');
+    await page.locator('#objednavka [data-submit]').click();
+    await shot(page, 'validace');
+  });
+
+  test('odesilam', async ({ page }) => {
+    await page.route(endpoint, () => new Promise(() => {}));
+    await prepare(page);
+    await page.locator('#objednavka [data-submit]').click();
+    await shot(page, 'odesilam');
+  });
+
+  test('uspech', async ({ page }) => {
+    await page.route(endpoint, (r) => r.fulfill({ status: 200, json: { ok: true } }));
+    await prepare(page);
+    await page.locator('#objednavka [data-submit]').click();
+    await page.locator('#objednavka [data-success]').waitFor();
+    await shot(page, 'uspech');
+  });
+
+  test('chyba', async ({ page }) => {
+    await page.route(endpoint, (r) => r.fulfill({ status: 500, json: {} }));
+    await prepare(page);
+    await page.locator('#objednavka [data-submit]').click();
+    await page.locator('#objednavka [data-status]:not([hidden])').waitFor();
+    await shot(page, 'chyba');
+  });
+});

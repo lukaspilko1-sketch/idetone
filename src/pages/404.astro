@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
+import { getProducts, getSettings } from '../utils/content';
+import { url } from '../utils/url';
+
+// NÁVRH: ke schválení (texty stránky 404)
+const products = await getProducts();
+const { contact } = await getSettings();
+---
+
+<BaseLayout
+  title="Stránka nenalezena | ideTone"
+  description="Hledaná stránka neexistuje. Pokračujte na modely reprosoustav nebo kontakt."
+  noindex
+>
+  <PageHeader
+    eyebrow="Chyba 404"
+    title="Tahle stránka tu není"
+    lead="Možná se změnila adresa po přechodu na nový web. Zkuste některý z odkazů níže."
+  />
+  <Section divider space="m">
+    <ul role="list" class="links">
+      {products.map((p) => (
+        <li>
+          <a href={url(`/reprosoustavy/${p.id}/`)}>
+            <span class="eyebrow">{p.data.type}</span>
+            <span class="links__title">
+              {p.data.name} <span aria-hidden="true">→</span>
+            </span>
+          </a>
+        </li>
+      ))}
+      <li>
+        <a href={url('/reprosoustavy/')}>
+          <span class="eyebrow">Přehled a srovnání</span>
+          <span class="links__title">
+            Reprosoustavy <span aria-hidden="true">→</span>
+          </span>
+        </a>
+      </li>
+      <li>
+        <a href={url('/kontakt/')}>
+          <span class="eyebrow">{contact.email}</span>
+          <span class="links__title">
+            Kontakt <span aria-hidden="true">→</span>
+          </span>
+        </a>
+      </li>
+    </ul>
+  </Section>
+</BaseLayout>
+
+<style>
+  .links {
+    display: grid;
+    gap: var(--grid-gap);
+  }
+
+  .links li {
+    max-width: none;
+  }
+
+  .links a {
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-5) 0;
+    border-top: 1px solid var(--c-grafit);
+    color: var(--c-grafit);
+    text-decoration: none;
+  }
+
+  .links__title {
+    font-family: var(--font-heading);
+    font-size: var(--fs-l);
+  }
+
+  .links__title span {
+    display: inline-block;
+    transition: transform var(--dur-fast) var(--ease);
+  }
+
+  .links a:hover .links__title span {
+    transform: translateX(4px);
+  }
+
+  @media (min-width: 48rem) {
+    .links {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

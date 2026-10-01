@@ -4,19 +4,58 @@ import '../styles/tokens.css';
 import '../styles/base.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { indexing } from '../config/site';
+import { features, indexing } from '../config/site';
 import { cs } from '../i18n/cs';
 import { url } from '../utils/url';
+import { getSettings } from '../utils/content';
+import { breadcrumbs, organization, type Crumb } from '../utils/seo';
 
 interface Props {
   title: string;
-  description?: string;
-  /** vynutí noindex i při zapnuté indexaci (např. styleguide, admin) */
+  description: string;
+  /** vynutí noindex i při zapnuté indexaci (např. styleguide, děkovací stránka) */
   noindex?: boolean;
+  /** OG obrázek – cesta bez base, např. „/og/sara.png“ (generuje npm run og) */
+  image?: string;
+  imageAlt?: string;
+  ogType?: 'website' | 'product' | 'article';
+  /** drobečková navigace pro JSON-LD (bez Úvodu) */
+  crumbs?: Crumb[];
+  /** další JSON-LD objekty (Product, LocalBusiness…) */
+  jsonLd?: object[];
 }
 
-const { title, description, noindex = false } = Astro.props;
+const {
+  title,
+  description,
+  noindex = false,
+  image = '/og/default.png',
+  imageAlt = 'ideTone – reprosoustavy s citem pro hudbu',
+  ogType = 'website',
+  crumbs,
+  jsonLd = [],
+} = Astro.props;
+
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(url(image), Astro.site);
+const robots = !indexing || noindex;
+const settings = await getSettings();
+
+const schema = [
+  organization(settings, Astro.site),
+  ...(crumbs?.length ? [breadcrumbs(crumbs, Astro.site)] : []),
+  ...jsonLd,
+];
+
+// hreflang – aktivní až se zapnutou angličtinou (features.english)
+const path = Astro.url.pathname.slice(import.meta.env.BASE_URL.replace(/\/$/, '').length) || '/';
+const csPath = path.replace(/^\/en\//, '/');
+const alternates = features.english
+  ? [
+      { lang: 'cs', href: new URL(url(csPath), Astro.site) },
+      { lang: 'en', href: new URL(url(`/en${csPath}`), Astro.site) },
+    ]
+  : [];
 ---
 
 <!doctype html>
@@ -28,9 +67,33 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       document.documentElement.classList.add('js');
     </script>
     <title>{title}</title>
-    {description && <meta name="description" content={description} />}
+    <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    {(!indexing || noindex) && <meta name="robots" content="noindex, nofollow" />}
+    {robots && <meta name="robots" content="noindex, nofollow" />}
+    {alternates.map((a) => (
+      <link rel="alternate" hreflang={a.lang} href={a.href} />
+    ))}
+    {alternates.length > 0 && (
+      <link rel="alternate" hreflang="x-default" href={alternates[0].href} />
+    )}
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="ideTone" />
+    <meta property="og:locale" content="cs_CZ" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    {!noindex && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
     <meta name="theme-color" content="#E9E6DF" />
 
     <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />

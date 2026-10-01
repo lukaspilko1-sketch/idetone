@@ -11,7 +11,11 @@ const { data } = page;
 const { Content } = await render(page);
 ---
 
-<BaseLayout title={`${data.seoTitle ?? data.title} | ideTone`} description={data.description}>
+<BaseLayout
+  title={`${data.seoTitle ?? data.title} | ideTone`}
+  description={data.description}
+  crumbs={[{ name: 'O ideTone', href: '/o-idetone/' }]}
+>
   <div class="container about">
     <div class="about__text">
       <span class="eyebrow">{data.eyebrow}</span>

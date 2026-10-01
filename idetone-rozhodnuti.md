@@ -1,7 +1,7 @@
 # ideTone – stav projektu a rozhodnutí
 
 Poslední aktualizace: 1. 10. 2026
-Fáze: **F2 – Obsah a stránky hotová, čeká na schválení** (content collections, texty ze starého webu, všechny stránky ze sitemapy, galerie, SpecTable, CompareTable, SVG schéma zvukovodu). F0 a F1 schváleny a pushnuty. Další: F3 – Formuláře, SEO, redirecty. Zadání: SUPERPROMPT.md 1.1.
+Fáze: **F3 – Formuláře, SEO, redirecty hotová, čeká na schválení** (ContactForm ve 3 typech se všemi stavy, děkovací stránka, JSON-LD, OG obrázky, sitemap, přesměrování starých URL, 404). F0–F2 schváleny a pushnuty. Další: F4 – QA a nasazení. Zadání: SUPERPROMPT.md 1.1.
 
 Tento soubor je jediný zdroj pravdy o stavu projektu. Kopie je v Claude projektu „WEB - ideTone“ (claude/idetone-rozhodnuti.md) a ve složce webu na PC. Při změně aktualizovat obě.
 
@@ -69,7 +69,8 @@ Tento soubor je jediný zdroj pravdy o stavu projektu. Kopie je v Claude projekt
 - Fotky a grafika, logo (klient)
 - Vlastní text Revy (teď skoro stejný jako Sara)
 - Typ Revy: na starém webu „sloupová“, ale výška 440 mm a samostatné stojany → spíš kompaktní na stojan
-- Formspree účet a ID formulářů (Lukáš)
+- Formspree účet a ID tří formulářů (Lukáš) → `formspree` v src/config/site.ts. Bez placeného tarifu Formspree nefunguje vlastní děkovací stránka u odeslání bez JS (`_next`), návštěvník bez JS skončí na stránce Formspree; s JS vše funguje na free tarifu
+- Dostupnost / dodací lhůta → schema.org Offer má zatím `PreOrder` (na objednávku)
 - Graf impedance Revy, dostupnost / dodací lhůta
 - Sara: středobas 6,5" ve specifikaci vs. „sedmipalcový“ v textu
 - Firemní údaje: název, IČO, DIČ, telefon
@@ -90,3 +91,4 @@ Tento soubor je jediný zdroj pravdy o stavu projektu. Kopie je v Claude projekt
 - 1. 10. 2026 (F1): písma přes Astro Fonts API ze souborů @fontsource (jen použité řezy, latin + latin-ext, automatické záložní metriky, preload Figtree 400); Ω (U+03A9) v IBM Plex Mono není, vykreslí se záložním písmem; doplňkové tokeny --c-dub-light #C99560 (akcent na jedli), --c-on-dark #EDEAE3, --c-on-dark-muted, --c-line-dark, --c-jedle-hover; mobilní menu bez JS = odkaz na navigaci v patičce; favicon „T“ (geometrický, bez závislosti na písmu); Kontakt je v menu i s tlačítkem Objednat; dev toolbar Astro vypnutý
 - 1. 10. 2026 (F2): obsah klienta v datech – home.yaml (sekce + visible + pořadí), settings.yaml (kontakty, studio, firma, sociální sítě), products/*.md, pages/*.md; site.ts jen technika (flagy, navigace, Formspree); texty Konstrukce u produktů jako ### bloky v těle Markdownu; Reva v datech jako „kompaktní reprosoustava na stojan“ (podle zadání, TODO ověřit) a z úvodní věty vypuštěno „sloupová“; redakční úpravy textů (překlepy řešením/řetězci, „ve většině poslechových podmínek“, „pečlivou prací“, „směrovým charakteristikám“, jednotky s mezerou a nezlomitelnou mezerou, česká desetinná čárka, −); obrázky přes Picture AVIF+WebP s WebP fallbackem (build 27 MB → 7,6 MB); formuláře zatím jako FormPlaceholder s e-mailem (F3); stránka 404 a EN až v F3 / po zapnutí flagu; deník: šablony hotové, při journal=false se negenerují, ukázkový článek draft
 - 1. 10. 2026: tmavá barva Jedle #24342D nahrazena barvou Uhel #262422 (teplý antracit) – Lukášovi zelená neseděla; porovnány Uhel / Břidlice #2B3035 / Tabák #2E2621, Břidlice zavrhnuta (táhne do modra, zadání vylučuje modré), Tabák splývá s dubem; token přejmenován na --c-uhel, odvozené: hover #34312D, linky #45413C, sekundární text #B8B2A8; patička dostala horní linku (odděluje se od tmavého pruhu Poslech); design tokeny verze 0.3
+- 1. 10. 2026 (F3): jeden ContactForm pro 3 typy; odeslání fetch + JSON na Formspree, chyby u polí, souhrn v aria-live, stavy odesílám/úspěch/chyba (síť vs. služba, vždy s e-mailem jako zálohou); bez Formspree ID hláška „odesílání není aktivní“ (v dev navíc upozornění v rámečku); názvy polí česky (čitelné v e-mailu Petrovi), e-mail jako `email` (Formspree ho použije pro odpověď); povinný telefon jen u objednávky; nové tokeny --c-field #FDFCF9 a --c-error #9E3B2B; OG obrázky generované screenshotem z dev předlohy (stejná písma a barvy jako web), Reva bez fotky má v OG jen text; JSON-LD bez otevírací doby (neznáme); redirect cíle s base cestou; /dekujeme/ a 404 noindex a mimo sitemapu

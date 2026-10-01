@@ -1,0 +1,658 @@
+---
+/**
+ * Formulář přes Formspree – jedna komponenta pro tři typy:
+ * order (objednávka), listening (poslech), custom (zakázka).
+ * S JS: validace s českými hláškami, odeslání přes fetch (JSON), stavy odesílám / úspěch / chyba.
+ * Bez JS: klasický POST na Formspree (+ _next na /dekujeme/, funguje jen v placeném tarifu Formspree).
+ */
+import { formspree } from '../config/site';
+import { cs } from '../i18n/cs';
+import { url } from '../utils/url';
+
+type FormType = 'order' | 'listening' | 'custom';
+
+interface Props {
+  type: FormType;
+  /** kotva sekce (#objednavka, #formular, #poptavka) */
+  id: string;
+  title: string;
+  email: string;
+  models?: { id: string; name: string }[];
+}
+
+const { type, id, title, email, models = [] } = Astro.props;
+const t = cs.form;
+const f = t.fields;
+
+const formId = formspree[type];
+const endpoint = formId ? `https://formspree.io/f/${formId}` : '';
+const thanks = new URL(url('/dekujeme/'), Astro.site).href;
+const p = (name: string) => `${type}-${name}`; // unikátní id polí
+
+const messages = {
+  ...t.errors,
+  success: t.success,
+  sending: t.sending,
+  subject: t.subject[type],
+};
+---
+
+<section class="cf" id={id} aria-labelledby={`${id}-title`}>
+  <h2 id={`${id}-title`} class="cf__title">
+    {title}
+  </h2>
+  <slot />
+
+  {import.meta.env.DEV && !formId && <p class="cf__dev mono">{t.devInactive}</p>}
+
+  <form
+    class="cf__form"
+    action={endpoint || undefined}
+    method="POST"
+    data-cf
+    data-type={type}
+    data-endpoint={endpoint}
+    data-email={email}
+    data-messages={JSON.stringify(messages)}
+  >
+    <input type="hidden" name="_subject" value={t.subject[type]} data-subject />
+    <input type="hidden" name="_next" value={thanks} />
+    <!-- Antispam: pole, které člověk nevidí a nevyplní -->
+    <div class="cf__trap" aria-hidden="true">
+      <label for={p('gotcha')}>Nevyplňujte</label>
+      <input type="text" id={p('gotcha')} name="_gotcha" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <p class="cf__legend small muted">
+      <span aria-hidden="true">*</span> {t.required}
+    </p>
+
+    {type === 'order' && (
+      <>
+        <div class="cf__field" data-field>
+          <label for={p('model')}>
+            {f.model} <span aria-hidden="true">*</span>
+          </label>
+          <select id={p('model')} name="Model" required data-model>
+            {models.map((m) => (
+              <option value={m.name} data-id={m.id}>
+                {m.name}
+              </option>
+            ))}
+          </select>
+          <p class="cf__error" id={`${p('model')}-error`} hidden />
+        </div>
+
+        <fieldset class="cf__field cf__choice" data-stands>
+          <legend>{f.stands}</legend>
+          <p class="cf__hint small muted">{f.standsNote}</p>
+          <label>
+            <input type="radio" name="Stojany" value="ano" /> {f.standsYes}
+          </label>
+          <label>
+            <input type="radio" name="Stojany" value="ne" checked /> {f.standsNo}
+          </label>
+        </fieldset>
+
+        <div class="cf__field" data-field>
+          {/* TODO(klient): nabídka povrchů / dýh, až budou varianty (pak select místo textu) */}
+          <label for={p('finish')}>
+            {f.finish} <span class="muted small">({t.optional})</span>
+          </label>
+          <input
+            type="text"
+            id={p('finish')}
+            name="Povrch"
+            aria-describedby={`${p('finish')}-hint`}
+          />
+          <p class="cf__hint small muted" id={`${p('finish')}-hint`}>
+            {f.finishHint}
+          </p>
+        </div>
+      </>
+    )}
+
+    {type === 'listening' && (
+      <>
+        <div class="cf__field" data-field>
+          <label for={p('model')}>{f.model}</label>
+          <select id={p('model')} name="Model" data-model>
+            <option value={f.modelBoth}>{f.modelBoth}</option>
+            {models.map((m) => (
+              <option value={m.name} data-id={m.id}>
+                {m.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <fieldset class="cf__field cf__choice">
+          <legend>{f.where}</legend>
+          <label>
+            <input type="radio" name="Kde" value={f.whereStudio} checked /> {f.whereStudio}
+          </label>
+          <label>
+            <input type="radio" name="Kde" value={f.whereHome} /> {f.whereHome}
+          </label>
+        </fieldset>
+
+        <div class="cf__field" data-field>
+          <label for={p('date')}>
+            {f.date} <span class="muted small">({t.optional})</span>
+          </label>
+          <input type="text" id={p('date')} name="Termín" aria-describedby={`${p('date')}-hint`} />
+          <p class="cf__hint small muted" id={`${p('date')}-hint`}>
+            {f.dateHint}
+          </p>
+        </div>
+      </>
+    )}
+
+    {type === 'custom' && (
+      <>
+        <div class="cf__field" data-field>
+          <label for={p('room')}>{f.room}</label>
+          <textarea
+            id={p('room')}
+            name="Místnost"
+            rows="3"
+            aria-describedby={`${p('room')}-hint`}
+          />
+          <p class="cf__hint small muted" id={`${p('room')}-hint`}>
+            {f.roomHint}
+          </p>
+        </div>
+        <div class="cf__field" data-field>
+          <label for={p('system')}>{f.system}</label>
+          <textarea
+            id={p('system')}
+            name="Sestava"
+            rows="3"
+            aria-describedby={`${p('system')}-hint`}
+          />
+          <p class="cf__hint small muted" id={`${p('system')}-hint`}>
+            {f.systemHint}
+          </p>
+        </div>
+        <div class="cf__field" data-field>
+          <label for={p('budget')}>{f.budget}</label>
+          <textarea id={p('budget')} name="Představa a rozpočet" rows="3" />
+        </div>
+      </>
+    )}
+
+    <div class="cf__row">
+      <div class="cf__field" data-field>
+        <label for={p('name')}>
+          {f.name} <span aria-hidden="true">*</span>
+        </label>
+        <input
+          type="text"
+          id={p('name')}
+          name="Jméno a příjmení"
+          autocomplete="name"
+          required
+          data-label={f.name}
+        />
+        <p class="cf__error" id={`${p('name')}-error`} hidden></p>
+      </div>
+      <div class="cf__field" data-field>
+        <label for={p('email')}>
+          {f.email} <span aria-hidden="true">*</span>
+        </label>
+        <input
+          type="email"
+          id={p('email')}
+          name="email"
+          autocomplete="email"
+          required
+          data-label={f.email}
+        />
+        <p class="cf__error" id={`${p('email')}-error`} hidden></p>
+      </div>
+      <div class="cf__field" data-field>
+        <label for={p('phone')}>
+          {f.phone}{' '}
+          {type === 'order' ? (
+            <span aria-hidden="true">*</span>
+          ) : (
+            <span class="muted small">({t.optional})</span>
+          )}
+        </label>
+        <input
+          type="tel"
+          id={p('phone')}
+          name="Telefon"
+          autocomplete="tel"
+          inputmode="tel"
+          pattern="[+]?[0-9 ]{9,17}"
+          required={type === 'order'}
+          data-label={f.phone}
+        />
+        <p class="cf__error" id={`${p('phone')}-error`} hidden></p>
+      </div>
+    </div>
+
+    <div class="cf__field" data-field>
+      <label for={p('message')}>
+        {type === 'order' ? f.note : f.message} <span class="muted small">({t.optional})</span>
+      </label>
+      <textarea
+        id={p('message')}
+        name={type === 'order' ? 'Poznámka' : 'Zpráva'}
+        rows="4"
+      ></textarea>
+    </div>
+
+    <div class="cf__field cf__consent" data-field>
+      <label>
+        <input
+          type="checkbox"
+          id={p('consent')}
+          name="Souhlas se zpracováním údajů"
+          value="ano"
+          required
+          data-consent
+        />
+        <span>
+          {f.consent} <a href={url('/ochrana-osobnich-udaju/')}>{f.consentLink}</a>{' '}
+          <span aria-hidden="true">*</span>
+        </span>
+      </label>
+      <p class="cf__error" id={`${p('consent')}-error`} hidden></p>
+    </div>
+
+    <div class="cf__status" role="alert" aria-live="assertive" data-status hidden></div>
+
+    <button type="submit" class="cf__submit" data-submit>
+      <span data-submit-label>{t.submit[type]}</span>
+      <span class="cf__arrow" aria-hidden="true">
+        →
+      </span>
+    </button>
+  </form>
+
+  <div class="cf__success" role="status" tabindex="-1" data-success hidden>
+    <p class="cf__success-text">{t.success}</p>
+  </div>
+</section>
+
+<script>
+  type Messages = Record<string, string>;
+
+  const fill = (text: string, vars: Record<string, string>) =>
+    text.replace(/\{(\w+)\}/g, (_, key) => vars[key] ?? '');
+
+  document.querySelectorAll<HTMLFormElement>('[data-cf]').forEach((form) => {
+    const msg: Messages = JSON.parse(form.dataset.messages ?? '{}');
+    const email = form.dataset.email ?? '';
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+    const submit = form.querySelector<HTMLButtonElement>('[data-submit]')!;
+    const submitLabel = form.querySelector<HTMLElement>('[data-submit-label]')!;
+    const defaultLabel = submitLabel.textContent ?? '';
+    const success = form.parentElement?.querySelector<HTMLElement>('[data-success]');
+    const model = form.querySelector<HTMLSelectElement>('[data-model]');
+    const stands = form.querySelector<HTMLFieldSetElement>('[data-stands]');
+    const subject = form.querySelector<HTMLInputElement>('[data-subject]');
+    let attempted = false;
+
+    // Vlastní validace (bez JS platí validace prohlížeče)
+    form.noValidate = true;
+
+    // Předvyplnění modelu z URL (?model=sara)
+    const wanted = new URLSearchParams(location.search).get('model');
+    if (model && wanted) {
+      const option = [...model.options].find((o) => o.dataset.id === wanted);
+      if (option) model.value = option.value;
+    }
+
+    // Stojany jen u Revy, předmět e-mailu podle modelu
+    const syncModel = () => {
+      const id = model?.selectedOptions[0]?.dataset.id;
+      if (stands) {
+        const isReva = id === 'reva';
+        stands.hidden = !isReva;
+        stands.disabled = !isReva;
+      }
+      if (subject && form.dataset.type === 'order' && model) {
+        subject.value = `${msg.subject} ${model.value}`;
+      }
+    };
+    model?.addEventListener('change', syncModel);
+    syncModel();
+
+    const fieldError = (input: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement) => {
+      const v = input.validity;
+      if (v.valid) return '';
+      if (input.type === 'checkbox') return msg.consent;
+      if (v.valueMissing) return fill(msg.required, { label: input.dataset.label ?? '' });
+      if (input.type === 'email') return msg.email;
+      if (input.type === 'tel') return msg.phone;
+      return fill(msg.required, { label: input.dataset.label ?? '' });
+    };
+
+    const showError = (
+      input: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement,
+      text: string,
+    ) => {
+      const box = form.querySelector<HTMLElement>(`#${CSS.escape(input.id)}-error`);
+      if (!box) return;
+      box.textContent = text;
+      box.hidden = !text;
+      if (text) {
+        input.setAttribute('aria-invalid', 'true');
+        input.setAttribute('aria-describedby', box.id);
+      } else {
+        input.removeAttribute('aria-invalid');
+        input.removeAttribute('aria-describedby');
+      }
+    };
+
+    const validate = () => {
+      const inputs = [
+        ...form.querySelectorAll<HTMLInputElement>('input[required], select[required]'),
+        ...form.querySelectorAll<HTMLInputElement>('input[type="email"], input[type="tel"]'),
+      ];
+      let first: HTMLElement | null = null;
+      for (const input of new Set(inputs)) {
+        const text = fieldError(input);
+        showError(input, text);
+        if (text && !first) first = input;
+      }
+      return first;
+    };
+
+    form.addEventListener('input', () => {
+      if (attempted) validate();
+    });
+
+    const setStatus = (text: string) => {
+      status.textContent = text;
+      status.hidden = !text;
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      attempted = true;
+      setStatus('');
+
+      const invalid = validate();
+      if (invalid) {
+        setStatus(msg.summary);
+        invalid.focus();
+        return;
+      }
+
+      const endpoint = form.dataset.endpoint;
+      if (!endpoint) {
+        setStatus(fill(msg.inactive, { email }));
+        return;
+      }
+
+      const data = Object.fromEntries(new FormData(form));
+      delete data._next;
+
+      submit.disabled = true;
+      submitLabel.textContent = msg.sending;
+      form.setAttribute('aria-busy', 'true');
+
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        if (res.ok) {
+          form.hidden = true;
+          if (success) {
+            success.hidden = false;
+            success.focus();
+          }
+          return;
+        }
+        // Chyby u konkrétních polí z Formspree (např. neplatný e-mail)
+        const body = await res.json().catch(() => ({}));
+        const errors: { field?: string; message?: string }[] = body.errors ?? [];
+        let marked = false;
+        for (const err of errors) {
+          const input = err.field
+            ? form.querySelector<HTMLInputElement>(`[name="${CSS.escape(err.field)}"]`)
+            : null;
+          if (input?.id) {
+            showError(input, input.type === 'email' ? msg.email : (err.message ?? ''));
+            marked = true;
+          }
+        }
+        setStatus(marked ? msg.summary : fill(msg.server, { email }));
+      } catch {
+        setStatus(fill(msg.network, { email }));
+      } finally {
+        submit.disabled = false;
+        submitLabel.textContent = defaultLabel;
+        form.removeAttribute('aria-busy');
+      }
+    });
+  });
+</script>
+
+<style>
+  .cf {
+    padding: clamp(var(--space-5), 4vw, var(--space-7));
+    background: var(--c-papir);
+    border: var(--border);
+    border-radius: var(--radius);
+  }
+
+  .cf__title {
+    font-size: var(--fs-l);
+  }
+
+  .cf__dev {
+    margin-top: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    border: 1px dashed var(--c-dub);
+    font-size: var(--fs-xs);
+    color: var(--c-dub-text);
+  }
+
+  .cf__form {
+    display: grid;
+    gap: var(--space-5);
+    margin-top: var(--space-5);
+  }
+
+  .cf__form[hidden],
+  .cf__status[hidden],
+  .cf__success[hidden] {
+    display: none;
+  }
+
+  .cf__legend {
+    margin-bottom: calc(-1 * var(--space-2));
+  }
+
+  .cf__row {
+    display: grid;
+    gap: var(--space-5) var(--space-4);
+  }
+
+  @media (min-width: 40rem) {
+    .cf__row {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .cf__row > :first-child {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .cf__field {
+    display: grid;
+    gap: var(--space-2);
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .cf__field[hidden] {
+    display: none;
+  }
+
+  label,
+  legend {
+    font-weight: 500;
+  }
+
+  legend {
+    padding: 0;
+    margin-bottom: var(--space-2);
+  }
+
+  input[type='text'],
+  input[type='email'],
+  input[type='tel'],
+  select,
+  textarea {
+    width: 100%;
+    min-height: 2.875rem;
+    padding: var(--space-3) var(--space-4);
+    background: var(--c-field);
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius);
+    font-size: var(--fs-s);
+    line-height: 1.4;
+    transition: border-color var(--dur-fast) var(--ease);
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  input:hover,
+  select:hover,
+  textarea:hover {
+    border-color: var(--c-muted);
+  }
+
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: var(--focus);
+    outline-offset: 0;
+    border-color: var(--c-dub);
+  }
+
+  [aria-invalid='true'] {
+    border-color: var(--c-error);
+  }
+
+  .cf__choice label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-weight: 400;
+    min-height: 2rem;
+  }
+
+  input[type='radio'],
+  input[type='checkbox'] {
+    width: 1.125rem;
+    height: 1.125rem;
+    margin: 0;
+    flex: none;
+    accent-color: var(--c-uhel);
+  }
+
+  .cf__consent label {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    font-weight: 400;
+    font-size: var(--fs-xs);
+    line-height: 1.5;
+  }
+
+  .cf__consent input {
+    margin-top: 0.1rem;
+  }
+
+  .cf__hint {
+    margin: 0;
+  }
+
+  .cf__error {
+    margin: 0;
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    color: var(--c-error);
+  }
+
+  .cf__status {
+    padding: var(--space-3) var(--space-4);
+    border-left: 2px solid var(--c-error);
+    background: var(--c-len);
+    font-size: var(--fs-xs);
+    color: var(--c-grafit);
+  }
+
+  .cf__submit {
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-height: 2.875rem;
+    padding: var(--space-3) var(--space-6);
+    background: var(--c-uhel);
+    border: 0;
+    border-radius: var(--radius);
+    color: var(--c-on-dark);
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color var(--dur-fast) var(--ease);
+  }
+
+  .cf__submit:hover {
+    background: var(--c-uhel-hover);
+  }
+
+  .cf__submit:hover .cf__arrow {
+    transform: translateX(4px);
+  }
+
+  .cf__arrow {
+    font-family: var(--font-mono);
+    transition: transform var(--dur-fast) var(--ease);
+  }
+
+  .cf__submit:disabled {
+    opacity: 0.6;
+    cursor: progress;
+  }
+
+  .cf__trap {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .cf__success {
+    margin-top: var(--space-5);
+    padding: var(--space-6);
+    background: var(--c-uhel);
+    color: var(--c-on-dark);
+    border-radius: var(--radius);
+  }
+
+  .cf__success:focus {
+    outline: var(--focus);
+    outline-offset: 3px;
+  }
+
+  .cf__success-text {
+    font-family: var(--font-heading);
+    font-size: var(--fs-l);
+  }
+</style>

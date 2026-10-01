@@ -36,8 +36,12 @@ Web českého výrobce high-end reprosoustav ideTone (Petr Kocourek, Brno). Spra
 
 ## Komponenty (`src/components/`)
 - `Logo`, `Button` (`variant` primary/secondary, `tone` light/dark, `arrow`), `Section` (`tone` len/papir/uhel, `divider`, `space`, `width`), `ImageSlot` (`ratio` 4/5, 16/9, 1/1, 3/2, `label`, volitelně `src` + `alt`), `Header` (sticky, zmenšení po scrollu, mobilní menu přes celou obrazovku, bez JS vede „Menu“ do patičky), `Footer`
-- Obsahové: `ProductFeature` (blok modelu, `variant` tall/compact – záměrně ne dvě stejné karty), `SpecTable`, `CompareTable` (generovaná z kolekce products, sticky první sloupec), `Gallery` (šipky, miniatury, swipe, lightbox `<dialog>`, bez JS odkazy na velké fotky; bez fotek ImageSlot), `Quote`, `WaveguideFigure` (SVG schéma zvukovodu), `PageHeader`, `TextBlock` (odstavce/seznam/podsekce z frontmatteru), `FormPlaceholder` (dočasně, nahradí `ContactForm` v F3)
-- `BaseLayout` (`title`, `description`, `noindex`), `ProsePage` (právní stránky z Markdownu)
+- Obsahové: `ProductFeature` (blok modelu, `variant` tall/compact – záměrně ne dvě stejné karty), `SpecTable`, `CompareTable` (generovaná z kolekce products, sticky první sloupec), `Gallery` (šipky, miniatury, swipe, lightbox `<dialog>`, bez JS odkazy na velké fotky; bez fotek ImageSlot), `Quote`, `WaveguideFigure` (SVG schéma zvukovodu), `PageHeader`, `TextBlock` (odstavce/seznam/podsekce z frontmatteru), `ContactForm` (`type` order/listening/custom; Formspree přes fetch + JSON, české validační hlášky, stavy odesílám/úspěch/chyba, honeypot `_gotcha`, souhlas GDPR, `?model=` předvyplní model, stojany jen u Revy; bez JS klasický POST)
+- `BaseLayout` (`title`, `description` povinný, `noindex`, `image` OG, `ogType`, `crumbs` pro BreadcrumbList, `jsonLd`), `ProsePage` (právní stránky z Markdownu)
+- SEO: canonical, OG + Twitter, JSON-LD (Organization na všech stránkách, LocalBusiness na úvodu/Poslech/Kontakt, Product + Offer u modelů, BreadcrumbList) v `src/utils/seo.ts`; hreflang se vypíše až s `features.english`
+- OG obrázky 1200×630: `public/og/<id>.png`, předloha `/og-nahled/<id>/` (jen dev), generuje `npm run og` (po změně ceny, názvu nebo fotky modelu spustit znovu; nový model doplnit do `tests/og.gen.ts`)
+- Přesměrování starých URL `/index.php/…`: `redirects` v `astro.config.mjs` (cíl přes `withBase()`, Astro k cíli podsložku nepřidá)
+- Stránky mimo sitemapu / noindex: `/dekujeme/`, `/404`
 - Přehled všech komponent: `/_styleguide/` (jen `npm run dev`, v produkčním buildu se negeneruje)
 
 ## Kde co je
@@ -58,6 +62,7 @@ Web českého výrobce high-end reprosoustav ideTone (Petr Kocourek, Brno). Spra
 - **Nahradit ImageSlot fotkou**: u stránek pole `imageSlot` vyměnit za `image: { src, alt }`; u produktu bez fotek doplnit `image` a `gallery`
 - **Přidat model**: zkopírovat `sara.md` pod novým názvem (= URL), upravit data, přidat do `products` v `home.yaml` a do `nav` v `site.ts`
 - **Skrýt sekci úvodu**: `visible: false` v `home.yaml`
+- **Zapnout formuláře**: Formspree ID do `formspree` v `src/config/site.ts` (jen ID, ne celá URL)
 
 ## Příkazy
 - `npm run dev`: vývojový server
@@ -67,6 +72,7 @@ Web českého výrobce high-end reprosoustav ideTone (Petr Kocourek, Brno). Spra
 - `npx playwright test`: všechny testy (proti dev serveru na portu 4321, spustí ho sám)
 - `npm run screenshots`: screenshoty 390 / 768 / 1440 px do `screenshots/` (mimo git)
 - `npm run favicons`: PNG favicony z `public/favicon.svg`
+- `npm run og`: OG obrázky do `public/og/`
 
 Pozor v Git Bashi: proměnné začínající `/` (např. `BASE_PATH=/idetone`) přepisuje na Windows cesty, spouštěj s `MSYS_NO_PATHCONV=1`.
 

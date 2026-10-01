@@ -16,7 +16,8 @@
     "format": "prettier --write .",
     "todo": "node scripts/todo.mjs",
     "favicons": "node scripts/favicons.mjs",
-    "screenshots": "playwright test tests/screenshots.spec.ts"
+    "screenshots": "playwright test tests/screenshots.spec.ts",
+    "og": "playwright test --config playwright.og.config.ts"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
