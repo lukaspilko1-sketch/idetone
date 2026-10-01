@@ -1,0 +1,29 @@
+# build
+dist/
+.astro/
+
+# závislosti
+node_modules/
+
+# logy a prostředí
+npm-debug.log*
+.env
+.env.*
+!.env.example
+
+# Playwright
+test-results/
+playwright-report/
+playwright/.cache/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+*.lnk
+!podklady/**/*.lnk
+.vscode/*
+!.vscode/extensions.json
+
+# Claude Code (lokální)
+.claude/

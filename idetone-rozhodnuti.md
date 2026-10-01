@@ -1,18 +1,19 @@
 # ideTone – stav projektu a rozhodnutí
 
 Poslední aktualizace: 1. 10. 2026
-Fáze: zadání hotové – SUPERPROMPT.md 1.0 a CLAUDE.md uloženy v kořeni složky idetone, čeká se na založení repozitáře a spuštění Claude Code. Hrubý nástřel směru a sitemapy schválen jako základ (artifact „ideTone – směr webu“, verze 0.1); doladí se podle inspiračních webů.
+Fáze: **F0 – Příprava hotová, čeká na schválení** (Astro 7 projekt, struktura, Prettier, GitHub Actions bez nasazení, old-web přesunut do podklady/old-web/). Další: F1 – Design system. Zadání: SUPERPROMPT.md 1.1.
 
 Tento soubor je jediný zdroj pravdy o stavu projektu. Kopie je v Claude projektu „WEB - ideTone“ (claude/idetone-rozhodnuti.md) a ve složce webu na PC. Při změně aktualizovat obě.
 
 ## Platforma a provoz
 - Statický web: Astro, texty v Markdownu / content collections
-- Hosting: GitHub Pages, doména idetone.cz zůstává (CNAME v DNS), deploy přes GitHub Actions
-- Repozitář: zakládá Lukáš ručně, Claude Code pracuje v existujícím repozitáři; old-web/ se přesune do podklady/old-web/ (v repu, mimo build)
+- Hosting: GitHub Pages, deploy přes GitHub Actions. Teď testovací provoz na https://lukaspilko1-sketch.github.io/idetone/ (noindex); doména idetone.cz + public/CNAME až při přepnutí (změna proměnných repozitáře SITE_URL, BASE_PATH, PUBLIC_INDEXING + jeden soubor)
+- Repozitář: github.com/lukaspilko1-sketch/idetone (veřejný); old-web/ přesunut do podklady/old-web/ (v repu, mimo build)
+- Astro 7.3, Node 24 LTS
 - Písma self-hosted (@fontsource) kvůli GDPR, mapy bez iframe
 - Přesměrování starých URL /index.php/… na nové
-- Lokální složka: C:\Users\lukas\Documents\PRACOVNÍ\Weby\idetone (podklady starého webu v old-web/)
-- Pozor: nadřazená složka Weby je sama git repozitář – rozhodnout, zda idetone bude samostatný repo (submodul / vyřadit z nadřazeného .gitignore)
+- Lokální složka: C:\Users\lukas\Documents\PRACOVNÍ\Weby\idetone (podklady starého webu v podklady/old-web/)
+- Pozor: nadřazená složka Weby je sama git repozitář a nemá .gitignore; idetone/ se v ní ukazuje jako nesledovaná složka → Lukáš doplní `idetone/` do Weby/.gitignore
 - Formuláře: Formspree (GitHub Pages nemá server), honeypot + souhlas GDPR
 - Jazyky: CZ při spuštění, struktura připravená na EN (/en/), zatím skrytá
 - Postup: zadání a texty ladíme v Cowork, web staví Claude Code. V repozitáři bude CLAUDE.md vygenerovaný z tohoto souboru.
@@ -73,7 +74,10 @@ Tento soubor je jediný zdroj pravdy o stavu projektu. Kopie je v Claude projekt
 - Sara: středobas 6,5" ve specifikaci vs. „sedmipalcový“ v textu
 - Firemní údaje: název, IČO, DIČ, telefon
 - Obchodní podmínky, zásady ochrany osobních údajů
+- Weby/.gitignore: doplnit `idetone/` (Lukáš)
+- GitHub: zapnout Pages (Source: GitHub Actions) a nastavit proměnnou PAGES_DEPLOY=true až ve fázi F4 (Lukáš)
 
 ## Historie rozhodnutí
 - 1. 10. 2026: platforma Astro + GitHub Pages, nová identita (severské řemeslo), formulářový prodej, CZ + příprava EN, přesné ceny, logo ze stávající hlavičky, deník zatím skrytý, repozitář zakládá Lukáš
 - 1. 10. 2026: SUPERPROMPT.md 1.0 + CLAUDE.md, old-web jde do repozitáře, jen světlý režim, reference a EN za feature flagy
+- 1. 10. 2026 (F0): Astro 7 + Node 24 LTS; site/base/indexace z proměnných prostředí; testovací URL lukaspilko1-sketch.github.io/idetone/; CNAME se nevytváří (rozpor v SUPERPROMPT kap. 12 vs. kap. 2 – platí kap. 2); workflow dělá build + check při každém push, nasazení jen s proměnnou PAGES_DEPLOY=true; robots.txt generovaný podle PUBLIC_INDEXING; Markdown se Prettierem neformátuje

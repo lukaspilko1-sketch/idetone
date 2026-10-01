@@ -1,0 +1,35 @@
+---
+import '../styles/tokens.css';
+import '../styles/base.css';
+import { indexing } from '../config/site';
+import { cs } from '../i18n/cs';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="cs">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    <link rel="canonical" href={canonical} />
+    {!indexing && <meta name="robots" content="noindex, nofollow" />}
+    <!-- Místo pro budoucí analytiku bez cookies (Plausible / Umami) -->
+  </head>
+  <body>
+    <a class="skip-link" href="#obsah">
+      {cs.skipLink}
+    </a>
+    <main id="obsah">
+      <slot />
+    </main>
+  </body>
+</html>

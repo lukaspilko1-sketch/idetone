@@ -19,7 +19,12 @@ Web českého výrobce high-end reprosoustav ideTone (Petr Kocourek, Brno). Spra
 - Content Collections: `products`, `pages`, `references` (skryté), `journal` (skryté)
 - Písma self-hosted přes @fontsource: Familjen Grotesk (nadpisy), Figtree (text), IBM Plex Mono (data, logo)
 - Formuláře: Formspree (ID v `src/config/site.ts`)
-- Hosting: GitHub Pages přes GitHub Actions, doména idetone.cz (`public/CNAME`)
+- Hosting: GitHub Pages přes GitHub Actions (`.github/workflows/deploy.yml`). Teď testovací provoz na `https://lukaspilko1-sketch.github.io/idetone/` s `noindex`; `public/CNAME` (idetone.cz) se přidá až při přepnutí domény
+- Astro 7, Node 24 LTS (`.nvmrc`)
+- `site` / `base` / indexace z proměnných prostředí `SITE_URL`, `BASE_PATH`, `PUBLIC_INDEXING` (viz `.env.example`); v Actions z proměnných repozitáře
+- Všechny interní odkazy a cesty přes `url()` z `src/utils/url.ts` (kvůli podsložce `/idetone/`), nikdy natvrdo `/…`
+- `robots.txt` generuje `src/pages/robots.txt.ts` podle `PUBLIC_INDEXING`
+- Nasazení na Pages se zapne proměnnou repozitáře `PAGES_DEPLOY=true` (fáze F4)
 
 ## Design tokeny (verze 0.2, mění se jen v `src/styles/tokens.css`)
 - Len `#E9E6DF` (pozadí) · Papír `#F5F3EE` (karty) · Jedle `#24342D` (těžké plochy, CTA, patička)
@@ -36,8 +41,8 @@ Web českého výrobce high-end reprosoustav ideTone (Petr Kocourek, Brno). Spra
 ## Příkazy
 - `npm run dev`: vývojový server
 - `npm run build` / `npm run preview`: produkční build a náhled
-- `npm run check`: astro check + Prettier
-- `npm run todo`: výpis všech `TODO(klient)` a `NÁVRH`
-- `npx playwright test`: testy a screenshoty
+- `npm run check`: astro check + Prettier (kontrola), `npm run format`: Prettier přepíše soubory
+- `npm run todo`: výpis všech `TODO(klient)`, `TODO(lukas)` a `NÁVRH` v `src/`
+- `npx playwright test`: testy a screenshoty (Playwright se doinstaluje ve fázi F1)
 
-(Příkazy doplní Claude Code ve fázi F0 podle skutečného `package.json`.)
+Markdown (`*.md`) a `podklady/` Prettier neformátuje (kvůli typografii a nedotknutelným podkladům).

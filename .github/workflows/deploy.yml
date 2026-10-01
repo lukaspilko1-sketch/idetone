@@ -1,0 +1,52 @@
+# Build při každém push/PR. Nasazení na GitHub Pages proběhne jen tehdy,
+# když je v repozitáři proměnná PAGES_DEPLOY=true (Settings → Secrets and variables → Actions → Variables).
+# Do fáze F4 zůstává nasazení vypnuté.
+name: Build a nasazení
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  SITE_URL: ${{ vars.SITE_URL || 'https://lukaspilko1-sketch.github.io' }}
+  BASE_PATH: ${{ vars.BASE_PATH || '/idetone' }}
+  PUBLIC_INDEXING: ${{ vars.PUBLIC_INDEXING || 'false' }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v3
+        if: github.ref == 'refs/heads/main' && vars.PAGES_DEPLOY == 'true'
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main' && vars.PAGES_DEPLOY == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
