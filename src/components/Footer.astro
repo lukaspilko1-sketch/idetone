@@ -1,5 +1,6 @@
 ---
 import Logo from './Logo.astro';
+import GlassBackdrop from './GlassBackdrop.astro';
 import { site, nav, legalNav } from '../config/site';
 import { cs } from '../i18n/cs';
 import { url } from '../utils/url';
@@ -12,6 +13,7 @@ const pages = nav.flatMap((item) => [item, ...(item.children ?? [])]);
 ---
 
 <footer class="footer">
+  <GlassBackdrop position="20% 80%" />
   <div class="container">
     <div class="footer__grid">
       <div class="footer__brand">
@@ -81,9 +83,10 @@ const pages = nav.flatMap((item) => [item, ...(item.children ?? [])]);
 
 <style>
   .footer {
+    position: relative;
+    isolation: isolate;
     padding-block: var(--space-9) var(--space-6);
     background: var(--c-uhel);
-    border-top: 1px solid var(--c-line-dark); /* oddělí patičku od tmavého pruhu nad ní */
     color: var(--c-on-dark);
   }
 

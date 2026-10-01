@@ -421,8 +421,10 @@ const description = data.seo.description ?? data.tagline;
     justify-content: space-between;
     gap: var(--space-4);
     padding: var(--space-3) var(--gutter);
-    background: var(--c-len);
+    background: var(--glass-light);
     border-top: var(--border);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
   }
 
   .buybar__price {

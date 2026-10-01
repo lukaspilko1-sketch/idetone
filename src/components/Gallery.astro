@@ -294,7 +294,7 @@ const items = await Promise.all(
     max-height: none;
     margin: 0;
     padding: var(--space-5);
-    background: var(--c-uhel);
+    background: var(--glass-overlay);
     border: 0;
     color: var(--c-on-dark);
   }
@@ -306,7 +306,9 @@ const items = await Promise.all(
   }
 
   .lightbox::backdrop {
-    background: rgb(38 36 34 / 0.9);
+    background: transparent;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
   }
 
   .lightbox__img {

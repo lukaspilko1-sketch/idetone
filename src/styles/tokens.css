@@ -23,6 +23,15 @@
   --c-field: #fdfcf9; /* pozadí polí formuláře na papíru */
   --c-error: #9e3b2b; /* chyby ve formuláři (cihlová, AA na papíru) */
 
+  /* Sklo (glass) – tmavé plochy jako matné sklo nad rozostřenou fotkou dřeva */
+  --glass-tint: rgb(38 36 34 / 0.6); /* Uhel přes rozostřenou fotku */
+  --glass-glow-opacity: 0.55; /* síla barevného prosvítání fotky */
+  --glass-card: rgb(255 255 255 / 0.06); /* skleněná karta na tmavé ploše */
+  --glass-edge: rgb(255 255 255 / 0.12); /* hrana skla */
+  --glass-blur: 18px;
+  --glass-light: rgb(233 230 223 / 0.78); /* světlé sklo (hlavička, lišta s cenou) */
+  --glass-overlay: rgb(38 36 34 / 0.82); /* mobilní menu, lightbox – sklo přes stránku */
+
   /* Typová škála 13 / 16 / 20 / 26 / 35 / 50 (H1 max. 56) */
   --fs-xs: 0.8125rem;
   --fs-s: 1rem;
@@ -67,4 +76,12 @@
   --ease: cubic-bezier(0.2, 0.6, 0.2, 1);
   --dur-fast: 180ms;
   --dur-reveal: 400ms;
+}
+
+/* Prohlížeče bez backdrop-filter: sklo nahradí plná barva (kvůli čitelnosti) */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root {
+    --glass-light: var(--c-len);
+    --glass-overlay: var(--c-uhel);
+  }
 }

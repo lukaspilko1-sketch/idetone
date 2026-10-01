@@ -2,7 +2,10 @@
 /**
  * Otevřená sekce stránky. Sekce se oddělují linkou a mezerou, ne kartami.
  * tone: len (výchozí), papir, uhel. divider = linka nahoře. space = rytmus mezer.
+ * Tón uhel má skleněné pozadí (GlassBackdrop), glass = výřez fotky, která prosvítá.
  */
+import GlassBackdrop from './GlassBackdrop.astro';
+
 interface Props {
   as?: 'section' | 'div' | 'aside' | 'article';
   id?: string;
@@ -13,6 +16,8 @@ interface Props {
   width?: 'container' | 'narrow' | 'full';
   reveal?: boolean;
   labelledby?: string;
+  /** výřez prosvítající fotky u tónu uhel (CSS background-position) */
+  glass?: string;
   class?: string;
 }
 
@@ -25,6 +30,7 @@ const {
   width = 'container',
   reveal = true,
   labelledby,
+  glass,
   class: className,
 } = Astro.props;
 ---
@@ -40,6 +46,7 @@ const {
   ]}
   aria-labelledby={labelledby}
 >
+  {tone === 'uhel' && <GlassBackdrop position={glass} />}
   {width === 'full' ? (
     <slot />
   ) : (
@@ -62,6 +69,8 @@ const {
   }
 
   .section--uhel {
+    position: relative;
+    isolation: isolate;
     background: var(--c-uhel);
     color: var(--c-on-dark);
   }

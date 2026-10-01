@@ -10,6 +10,7 @@ import Button from '../components/Button.astro';
 import ImageSlot from '../components/ImageSlot.astro';
 import ProductFeature from '../components/ProductFeature.astro';
 import Quote from '../components/Quote.astro';
+import GlassBackdrop from '../components/GlassBackdrop.astro';
 import { features } from '../config/site';
 import { getHomeSections, getSettings } from '../utils/content';
 import { formatPrice, typo } from '../utils/format';
@@ -46,7 +47,9 @@ const resolved = await Promise.all(
       const p = item.product;
       return (
         <section class="hero" aria-labelledby="hero-title">
-          <div class="hero__panel" aria-hidden="true" />
+          <div class="hero__panel" aria-hidden="true">
+            <GlassBackdrop image={s.image.src} position="50% 35%" />
+          </div>
           <div class="container hero__grid">
             <div class="hero__text">
               <span class="eyebrow">{s.eyebrow}</span>
@@ -62,6 +65,9 @@ const resolved = await Promise.all(
               </div>
             </div>
             <figure class="hero__visual">
+              <div class="hero__glass" aria-hidden="true">
+                <GlassBackdrop image={s.image.src} position="50% 35%" />
+              </div>
               <figcaption class="hero__caption mono">
                 <a href={url(`/reprosoustavy/${p.id}/`)}>{p.data.name}</a>
                 <span>{formatPrice(p.data.price)} / pár</span>
@@ -159,7 +165,7 @@ const resolved = await Promise.all(
 
     if (s.type === 'listening') {
       return (
-        <Section tone="uhel" labelledby="poslech-title" space="m">
+        <Section tone="uhel" labelledby="poslech-title" space="m" glass="30% 60%">
           <div class="listen">
             <div>
               {s.eyebrow && <span class="eyebrow">{s.eyebrow}</span>}
@@ -243,18 +249,24 @@ const resolved = await Promise.all(
     isolation: isolate;
   }
 
-  .hero__visual::before {
-    content: '';
+  .hero__glass {
     position: absolute;
     inset: 0 0 var(--space-8);
     z-index: -1;
-    background: var(--c-uhel);
+    isolation: isolate;
   }
 
+  /* Skleněný štítek s modelem a cenou */
   .hero__caption {
     display: flex;
     justify-content: space-between;
     gap: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    background: var(--glass-card);
+    border: 1px solid var(--glass-edge);
+    border-radius: var(--radius);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
     font-size: var(--fs-xs);
     color: var(--c-on-dark-muted);
   }
@@ -286,7 +298,8 @@ const resolved = await Promise.all(
       position: absolute;
       inset: 0 0 0 58%;
       z-index: -1;
-      background: var(--c-uhel);
+      isolation: isolate;
+      overflow: hidden;
     }
 
     .hero__text {
@@ -302,7 +315,7 @@ const resolved = await Promise.all(
       align-self: end;
     }
 
-    .hero__visual::before {
+    .hero__glass {
       display: none;
     }
 
@@ -420,10 +433,17 @@ const resolved = await Promise.all(
     color: var(--c-on-dark-muted);
   }
 
+  /* Skleněná karta s adresou */
   .listen__side {
     display: grid;
     gap: var(--space-4);
     justify-items: start;
+    padding: var(--space-6);
+    background: var(--glass-card);
+    border: 1px solid var(--glass-edge);
+    border-radius: var(--radius);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
   }
 
   .listen__side address {

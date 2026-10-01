@@ -1,0 +1,53 @@
+---
+/**
+ * Pozadí tmavé plochy jako matné sklo: rozostřená fotka dřeva prosvítá přes průsvitný Uhel.
+ * Rodič musí mít position: relative a isolation: isolate (Section, Footer a hero to mají).
+ */
+import type { ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
+import defaultImage from '../assets/products/sara/DSC_0789.png';
+
+interface Props {
+  image?: ImageMetadata;
+  /** výřez fotky (CSS background-position) – kde má dřevo nejvíc prosvítat */
+  position?: string;
+}
+
+const { image = defaultImage, position = '50% 50%' } = Astro.props;
+// Fotka je rozostřená, stačí malé rozlišení (pár kB)
+const small = await getImage({ src: image, width: 360, format: 'webp', quality: 60 });
+---
+
+<div
+  class="glass-bg"
+  aria-hidden="true"
+  style={`--glass-img: url('${small.src}'); --glass-pos: ${position}`}
+></div>
+
+<style>
+  .glass-bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    background: var(--c-uhel);
+    pointer-events: none;
+  }
+
+  .glass-bg::before {
+    content: '';
+    position: absolute;
+    inset: -25%;
+    background: var(--glass-img) var(--glass-pos) / cover no-repeat;
+    filter: blur(64px) saturate(1.35);
+    opacity: var(--glass-glow-opacity);
+  }
+
+  .glass-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--glass-tint);
+    border-top: 1px solid var(--glass-edge);
+  }
+</style>

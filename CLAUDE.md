@@ -26,10 +26,11 @@ Web českého výrobce high-end reprosoustav ideTone (Petr Kocourek, Brno). Spra
 - `robots.txt` generuje `src/pages/robots.txt.ts` podle `PUBLIC_INDEXING`
 - Nasazení na Pages se zapne proměnnou repozitáře `PAGES_DEPLOY=true` (fáze F4)
 
-## Design tokeny (verze 0.3, mění se jen v `src/styles/tokens.css`)
+## Design tokeny (verze 0.4, mění se jen v `src/styles/tokens.css`)
 - Len `#E9E6DF` (pozadí) · Papír `#F5F3EE` (karty) · Uhel `#262422` (teplý antracit; těžké plochy, CTA, patička; token `--c-uhel`, `Section tone="uhel"`)
 - Dub `#A8743F` (akcent, „Tone“ v logu; text v odkazech `#8A5C2E`) · Grafit `#1F2421` (text) · Šalvěj `#8E9B88`
 - Zaoblení 0–2 px, bez gradientů, bez emoji, bez stínů všude, jen světlý režim
+- Sklo (glass, od 1. 10. 2026 na přání Lukáše, ruší zákaz glassmorphismu ze zadání): tmavé plochy (hero panel, `Section tone="uhel"`, patička) = `GlassBackdrop` (rozostřená fotka dřeva pod průsvitným Uhlem); skleněné karty `--glass-card` + `--glass-edge` + `backdrop-filter`; mobilní menu a lightbox `--glass-overlay`; hlavička po scrollu a lišta s cenou `--glass-light`. Tokeny `--glass-*` v `tokens.css`, bez podpory backdrop-filter plné barvy
 - Logo: „ideTone“ strojopisem, prostrkané, „ide“ grafit + „Tone“ dub; komponenta `Logo.astro` (inline SVG, varianty `dark` / `light`). Výměna loga = přepsat jen `Logo.astro`
 - Favicon: `public/favicon.svg` (T dubem na tmavé ploše), PNG verze generuje `npm run favicons`
 - Pohyb jen dvakrát: odkrytí sekcí (`data-reveal`, řeší `Section`) a posun šipky v `Button`; vše vypnuté při `prefers-reduced-motion`
@@ -73,6 +74,8 @@ Web českého výrobce high-end reprosoustav ideTone (Petr Kocourek, Brno). Spra
 - `npm run screenshots`: screenshoty 390 / 768 / 1440 px do `screenshots/` (mimo git)
 - `npm run favicons`: PNG favicony z `public/favicon.svg`
 - `npm run og`: OG obrázky do `public/og/`
+
+Pozor: dev server na Windows (cesta s „Í“) občas nezachytí změnu CSS v komponentě – když styl nesedí se zdrojem, restartuj `npm run dev`.
 
 Pozor v Git Bashi: proměnné začínající `/` (např. `BASE_PATH=/idetone`) přepisuje na Windows cesty, spouštěj s `MSYS_NO_PATHCONV=1`.
 
