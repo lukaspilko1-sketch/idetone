@@ -1,7 +1,7 @@
 # ideTone – stav projektu a rozhodnutí
 
 Poslední aktualizace: 1. 10. 2026
-Fáze: **F3 – Formuláře, SEO, redirecty hotová, čeká na schválení** (ContactForm ve 3 typech se všemi stavy, děkovací stránka, JSON-LD, OG obrázky, sitemap, přesměrování starých URL, 404). F0–F2 schváleny a pushnuty. Další: F4 – QA a nasazení. Zadání: SUPERPROMPT.md 1.1.
+Fáze: **F4 – QA a nasazení: připraveno, čeká na zapnutí GitHub Pages Lukášem** (Lighthouse mobil 98–100 / 100 / 100 / 100 na všech stránkách, axe bez nálezů, 142 testů, kontrola odkazů, docs/SPRAVA.md, CI s testy). F0–F3 schváleny. Další: po nasazení kontrola na testovací URL, pak F5 – Admin panel. Zadání: SUPERPROMPT.md 1.1.
 
 Tento soubor je jediný zdroj pravdy o stavu projektu. Kopie je v Claude projektu „WEB - ideTone“ (claude/idetone-rozhodnuti.md) a ve složce webu na PC. Při změně aktualizovat obě.
 
@@ -83,7 +83,7 @@ Tento soubor je jediný zdroj pravdy o stavu projektu. Kopie je v Claude projekt
 - Formspree: ověřit podmínky a přenos dat do USA pro text GDPR (Lukáš)
 - Weby/.gitignore: doplnit `idetone/` (Lukáš)
 - Repozitář je soukromý (stránka Actions zvenku 404) → před F4 zveřejnit kvůli GitHub Pages (Lukáš)
-- GitHub: zapnout Pages (Source: GitHub Actions) a nastavit proměnnou PAGES_DEPLOY=true až ve fázi F4 (Lukáš)
+- GitHub: repozitář Public, Settings → Pages → Source: GitHub Actions, proměnná PAGES_DEPLOY=true, pak Run workflow (Lukáš, návod v docs/SPRAVA.md)
 
 ## Historie rozhodnutí
 - 1. 10. 2026: platforma Astro + GitHub Pages, nová identita (severské řemeslo), formulářový prodej, CZ + příprava EN, přesné ceny, logo ze stávající hlavičky, deník zatím skrytý, repozitář zakládá Lukáš
@@ -94,3 +94,4 @@ Tento soubor je jediný zdroj pravdy o stavu projektu. Kopie je v Claude projekt
 - 1. 10. 2026: tmavá barva Jedle #24342D nahrazena barvou Uhel #262422 (teplý antracit) – Lukášovi zelená neseděla; porovnány Uhel / Břidlice #2B3035 / Tabák #2E2621, Břidlice zavrhnuta (táhne do modra, zadání vylučuje modré), Tabák splývá s dubem; token přejmenován na --c-uhel, odvozené: hover #34312D, linky #45413C, sekundární text #B8B2A8; patička dostala horní linku (odděluje se od tmavého pruhu Poslech); design tokeny verze 0.3
 - 1. 10. 2026 (F3): jeden ContactForm pro 3 typy; odeslání fetch + JSON na Formspree, chyby u polí, souhrn v aria-live, stavy odesílám/úspěch/chyba (síť vs. služba, vždy s e-mailem jako zálohou); bez Formspree ID hláška „odesílání není aktivní“ (v dev navíc upozornění v rámečku); názvy polí česky (čitelné v e-mailu Petrovi), e-mail jako `email` (Formspree ho použije pro odpověď); povinný telefon jen u objednávky; nové tokeny --c-field #FDFCF9 a --c-error #9E3B2B; OG obrázky generované screenshotem z dev předlohy (stejná písma a barvy jako web), Reva bez fotky má v OG jen text; JSON-LD bez otevírací doby (neznáme); redirect cíle s base cestou; /dekujeme/ a 404 noindex a mimo sitemapu
 - 1. 10. 2026: glass efekt na tmavých plochách (přání Lukáše – vzdušnější, modernější); vědomě ruší bod „žádný glassmorphism“ ze SUPERPROMPT kap. 10. Řešení: za Uhlem prosvítá silně rozostřená fotka dřeva (360 px WebP, pár kB), skleněné karty (štítek modelu v hero, karta s adresou v pruhu Poslech), mobilní menu a lightbox jako tmavé sklo přes stránku, hlavička po scrollu a lišta s cenou jako světlé sklo; bez podpory backdrop-filter plné barvy; design tokeny verze 0.4
+- 1. 10. 2026 (F4): axe – čísla kroků Zakázkových projektů na mobilu v --c-dub-text (dub neměl kontrast); kontrast textu na skle změřen z pixelů pozadí → --glass-tint 0,66 a --c-on-dark-muted #C8C2B8 (nejhorší místo 4,7 : 1), malý text na skleněných kartách v plné barvě; Lighthouse přes Chromium z Playwrightu (chrome-launcher na Windows nespustí prohlížeč); CI: actions v7/v5, samostatný job s testy, deploy až po buildu i testech; Formspree free tarif (Lukáš: stačí)

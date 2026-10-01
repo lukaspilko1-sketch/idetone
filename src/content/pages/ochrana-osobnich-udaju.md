@@ -31,4 +31,4 @@ Web nepoužívá cookies ani nástroje pro sledování návštěvníků.
 
 ## Vaše práva
 
-Máte právo na přístup ke svým údajům, jejich opravu nebo výmaz, omezení zpracování, přenositelnost a právo vznést námitku. Stačí napsat na pkocourek@idetone.cz. Pokud se domníváte, že s údaji nezacházím správně, můžete podat stížnost u Úřadu pro ochranu osobních údajů (www.uoou.gov.cz).
+Máte právo na přístup ke svým údajům, jejich opravu nebo výmaz, omezení zpracování, přenositelnost a právo vznést námitku. Stačí napsat na pkocourek@idetone.cz. Pokud se domníváte, že s údaji nezacházím správně, můžete podat stížnost u Úřadu pro ochranu osobních údajů ([uoou.gov.cz](https://uoou.gov.cz)).

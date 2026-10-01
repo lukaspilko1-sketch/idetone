@@ -17,7 +17,9 @@
     "todo": "node scripts/todo.mjs",
     "favicons": "node scripts/favicons.mjs",
     "screenshots": "playwright test tests/screenshots.spec.ts",
-    "og": "playwright test --config playwright.og.config.ts"
+    "og": "playwright test --config playwright.og.config.ts",
+    "links": "node scripts/check-links.mjs",
+    "lighthouse": "node scripts/lighthouse.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
@@ -28,7 +30,9 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@axe-core/playwright": "^4.13.0",
     "@playwright/test": "^1.63.0",
+    "lighthouse": "^13.5.0",
     "prettier": "^3.9.9",
     "prettier-plugin-astro": "^1.1.0",
     "sharp": "^0.35.5",

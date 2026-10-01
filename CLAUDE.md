@@ -24,7 +24,7 @@ Web českého výrobce high-end reprosoustav ideTone (Petr Kocourek, Brno). Spra
 - `site` / `base` / indexace z proměnných prostředí `SITE_URL`, `BASE_PATH`, `PUBLIC_INDEXING` (viz `.env.example`); v Actions z proměnných repozitáře
 - Všechny interní odkazy a cesty přes `url()` z `src/utils/url.ts` (kvůli podsložce `/idetone/`), nikdy natvrdo `/…`
 - `robots.txt` generuje `src/pages/robots.txt.ts` podle `PUBLIC_INDEXING`
-- Nasazení na Pages se zapne proměnnou repozitáře `PAGES_DEPLOY=true` (fáze F4)
+- Nasazení na Pages se zapne proměnnou repozitáře `PAGES_DEPLOY=true`; workflow: build + `check` + `links` a testy, deploy jen z `main` po úspěchu obou
 
 ## Design tokeny (verze 0.4, mění se jen v `src/styles/tokens.css`)
 - Len `#E9E6DF` (pozadí) · Papír `#F5F3EE` (karty) · Uhel `#262422` (teplý antracit; těžké plochy, CTA, patička; token `--c-uhel`, `Section tone="uhel"`)
@@ -74,6 +74,10 @@ Web českého výrobce high-end reprosoustav ideTone (Petr Kocourek, Brno). Spra
 - `npm run screenshots`: screenshoty 390 / 768 / 1440 px do `screenshots/` (mimo git)
 - `npm run favicons`: PNG favicony z `public/favicon.svg`
 - `npm run og`: OG obrázky do `public/og/`
+- `npm run links`: kontrola interních odkazů a kotev v `dist/` (po buildu)
+- `npm run lighthouse`: Lighthouse (mobil) nad `dist/` přes `astro preview`, reporty do `lighthouse/` (pro SEO 100 buildit s `PUBLIC_INDEXING=true`)
+- Testy: `tests/layout.spec.ts` (layout, menu, galerie), `forms.spec.ts` (formuláře, přesměrování, 404, meta), `a11y.spec.ts` (axe WCAG 2.2 AA, klávesnice, odkazy v navigaci), `screenshots.spec.ts`; CI spouští všechny kromě screenshotů
+- Návod pro správu a nasazení: `docs/SPRAVA.md`
 
 Pozor: dev server na Windows (cesta s „Í“) občas nezachytí změnu CSS v komponentě – když styl nesedí se zdrojem, restartuj `npm run dev`.
 

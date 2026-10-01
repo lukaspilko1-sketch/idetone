@@ -17,14 +17,14 @@
   --c-line: #cfcac0; /* linky, rámečky */
   --c-muted: #5c635e; /* sekundární text */
   --c-on-dark: #edeae3; /* text na tmavé ploše */
-  --c-on-dark-muted: #b8b2a8; /* sekundární text na tmavé ploše */
+  --c-on-dark-muted: #c8c2b8; /* sekundární text na tmavé ploše */
   --c-line-dark: #45413c; /* linky na tmavé ploše */
   --c-chart: #ffffff; /* podklad grafů měření (mají bílé pozadí) */
   --c-field: #fdfcf9; /* pozadí polí formuláře na papíru */
   --c-error: #9e3b2b; /* chyby ve formuláři (cihlová, AA na papíru) */
 
   /* Sklo (glass) – tmavé plochy jako matné sklo nad rozostřenou fotkou dřeva */
-  --glass-tint: rgb(38 36 34 / 0.6); /* Uhel přes rozostřenou fotku */
+  --glass-tint: rgb(38 36 34 / 0.66); /* Uhel přes rozostřenou fotku */
   --glass-glow-opacity: 0.55; /* síla barevného prosvítání fotky */
   --glass-card: rgb(255 255 255 / 0.06); /* skleněná karta na tmavé ploše */
   --glass-edge: rgb(255 255 255 / 0.12); /* hrana skla */

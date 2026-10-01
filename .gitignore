@@ -30,3 +30,6 @@ desktop.ini
 
 # Screenshoty ke schválení fází
 screenshots/
+
+# Lighthouse reporty
+lighthouse/

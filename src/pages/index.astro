@@ -268,7 +268,7 @@ const resolved = await Promise.all(
     backdrop-filter: blur(var(--glass-blur));
     -webkit-backdrop-filter: blur(var(--glass-blur));
     font-size: var(--fs-xs);
-    color: var(--c-on-dark-muted);
+    color: var(--c-on-dark); /* na skleněné kartě plná barva kvůli kontrastu */
   }
 
   .hero__caption a {
@@ -444,6 +444,11 @@ const resolved = await Promise.all(
     border-radius: var(--radius);
     backdrop-filter: blur(var(--glass-blur));
     -webkit-backdrop-filter: blur(var(--glass-blur));
+  }
+
+  /* Na skleněné kartě je pozadí světlejší – i doplňkový text v plné barvě (kontrast AA) */
+  .listen__side :global(.muted) {
+    color: var(--c-on-dark);
   }
 
   .listen__side address {

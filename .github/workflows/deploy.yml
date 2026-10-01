@@ -1,6 +1,6 @@
-# Build při každém push/PR. Nasazení na GitHub Pages proběhne jen tehdy,
-# když je v repozitáři proměnná PAGES_DEPLOY=true (Settings → Secrets and variables → Actions → Variables).
-# Do fáze F4 zůstává nasazení vypnuté.
+# Kontrola, testy a build při každém push/PR. Nasazení na GitHub Pages proběhne jen z main
+# a jen když je v repozitáři proměnná PAGES_DEPLOY=true
+# (Settings → Secrets and variables → Actions → Variables). Návod: docs/SPRAVA.md.
 name: Build a nasazení
 
 on:
@@ -15,7 +15,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: false
 
 env:
@@ -27,21 +27,40 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
       - run: npm run check
       - run: npm run build
-      - uses: actions/upload-pages-artifact@v3
+      - name: Kontrola odkazů a kotev
+        run: npm run links
+      - uses: actions/upload-pages-artifact@v5
         if: github.ref == 'refs/heads/main' && vars.PAGES_DEPLOY == 'true'
         with:
           path: dist
 
+  test:
+    runs-on: ubuntu-latest
+    env:
+      # Testy běží proti dev serveru v kořeni
+      BASE_PATH: /
+      SITE_URL: http://localhost:4321
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Testy (navigace, formuláře, přesměrování, přístupnost, layout)
+        run: npx playwright test tests/layout.spec.ts tests/forms.spec.ts tests/a11y.spec.ts
+
   deploy:
-    needs: build
+    needs: [build, test]
     if: github.ref == 'refs/heads/main' && vars.PAGES_DEPLOY == 'true'
     runs-on: ubuntu-latest
     environment:
@@ -49,4 +68,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
