@@ -27,3 +27,6 @@ desktop.ini
 
 # Claude Code (lokální)
 .claude/
+
+# Screenshoty ke schválení fází
+screenshots/

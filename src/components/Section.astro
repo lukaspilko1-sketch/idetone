@@ -1,0 +1,113 @@
+---
+/**
+ * Otevřená sekce stránky. Sekce se oddělují linkou a mezerou, ne kartami.
+ * tone: len (výchozí), papir, jedle. divider = linka nahoře. space = rytmus mezer.
+ */
+interface Props {
+  as?: 'section' | 'div' | 'aside' | 'article';
+  id?: string;
+  tone?: 'len' | 'papir' | 'jedle';
+  divider?: boolean;
+  space?: 'none' | 's' | 'm' | 'l';
+  /** šířka obsahu: container = 1200 px, narrow = šířka odstavce, full = bez kontejneru */
+  width?: 'container' | 'narrow' | 'full';
+  reveal?: boolean;
+  labelledby?: string;
+  class?: string;
+}
+
+const {
+  as: Tag = 'section',
+  id,
+  tone = 'len',
+  divider = false,
+  space = 'l',
+  width = 'container',
+  reveal = true,
+  labelledby,
+  class: className,
+} = Astro.props;
+---
+
+<Tag
+  id={id}
+  class:list={[
+    'section',
+    `section--${tone}`,
+    `section--space-${space}`,
+    { 'section--divider': divider },
+    className,
+  ]}
+  aria-labelledby={labelledby}
+>
+  {width === 'full' ? (
+    <slot />
+  ) : (
+    <div
+      class:list={['container', { section__narrow: width === 'narrow' }]}
+      data-reveal={reveal ? '' : undefined}
+    >
+      <slot />
+    </div>
+  )}
+</Tag>
+
+<style>
+  .section--len {
+    background: var(--c-len);
+  }
+
+  .section--papir {
+    background: var(--c-papir);
+  }
+
+  .section--jedle {
+    background: var(--c-jedle);
+    color: var(--c-on-dark);
+  }
+
+  .section--jedle :global(.eyebrow),
+  .section--jedle :global(.muted) {
+    color: var(--c-on-dark-muted);
+  }
+
+  .section--jedle :global(a:not(.btn)) {
+    color: var(--c-on-dark);
+  }
+
+  .section--space-s {
+    padding-block: var(--space-7);
+  }
+
+  .section--space-m {
+    padding-block: clamp(var(--space-7), 4vw + 1rem, var(--space-9));
+  }
+
+  .section--space-l {
+    padding-block: var(--section-space);
+  }
+
+  .section--space-none {
+    padding-block: 0;
+  }
+
+  /* Linka nahoře: oddělí sekci od předchozí na stejném pozadí */
+  .section--divider {
+    padding-top: 0;
+  }
+
+  .section--divider > .container::before {
+    content: '';
+    display: block;
+    margin-bottom: var(--section-space);
+    border-top: var(--border);
+  }
+
+  .section--jedle.section--divider > .container::before {
+    border-top-color: var(--c-line-dark);
+  }
+
+  .section__narrow > :global(*) {
+    max-width: var(--measure);
+  }
+</style>

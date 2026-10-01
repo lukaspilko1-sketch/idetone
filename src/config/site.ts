@@ -19,6 +19,7 @@ export const site = {
     phone: '', // TODO(klient): telefon
   },
   studio: {
+    label: 'Poslechové studio',
     street: 'Filipínského 59',
     city: 'Brno',
     parking: 'parkování v areálu Kaláb nebo na ulici',
@@ -33,3 +34,33 @@ export const formspree = {
   listening: '', // TODO(lukas): Formspree ID
   custom: '', // TODO(lukas): Formspree ID
 };
+
+export interface NavItem {
+  label: string;
+  href: string;
+  children?: NavItem[];
+}
+
+/** Hlavní navigace. Cesty bez base – převádí je funkce url(). */
+export const nav: NavItem[] = [
+  {
+    label: 'Reprosoustavy',
+    href: '/reprosoustavy/',
+    children: [
+      { label: 'Sara', href: '/reprosoustavy/sara/' },
+      { label: 'Reva', href: '/reprosoustavy/reva/' },
+      { label: 'Zakázkové projekty', href: '/zakazkove-projekty/' },
+    ],
+  },
+  { label: 'Technologie', href: '/technologie/' },
+  { label: 'Poslech', href: '/poslech/' },
+  { label: 'O ideTone', href: '/o-idetone/' },
+  { label: 'Kontakt', href: '/kontakt/' },
+];
+
+export const orderLink = '/kontakt/#objednavka';
+
+export const legalNav: NavItem[] = [
+  { label: 'Obchodní podmínky', href: '/obchodni-podminky/' },
+  { label: 'Ochrana osobních údajů', href: '/ochrana-osobnich-udaju/' },
+];

@@ -1,12 +1,248 @@
-/* Základní styly. Doplní se ve fázi F1. */
-:root {
-  color-scheme: light;
+/* Základní styly ideTone. Hodnoty jen z tokens.css. */
+
+/* Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-body {
+:root {
+  color-scheme: light;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--header-h) + var(--space-4));
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd,
+ul,
+ol {
   margin: 0;
+}
+
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+  padding: 0;
+}
+
+img,
+svg,
+picture {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+/* Základ */
+body {
+  min-height: 100vh;
   background: var(--c-len);
   color: var(--c-grafit);
-  font-family: system-ui, sans-serif;
-  line-height: 1.6;
+  font-family: var(--font-text);
+  font-size: var(--fs-s);
+  line-height: var(--lh-text);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading);
+  font-weight: 500;
+  line-height: var(--lh-heading);
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+h1,
+.h1 {
+  font-size: var(--fs-xxl);
+  letter-spacing: -0.02em;
+}
+
+h2,
+.h2 {
+  font-size: var(--fs-xl);
+}
+
+h3,
+.h3 {
+  font-size: var(--fs-l);
+}
+
+h4,
+.h4 {
+  font-size: var(--fs-m);
+}
+
+p,
+li {
+  max-width: var(--measure);
+  text-wrap: pretty;
+}
+
+.lead {
+  font-size: var(--fs-m);
+  line-height: 1.5;
+}
+
+small,
+.small {
+  font-size: var(--fs-xs);
+}
+
+strong {
+  font-weight: 500;
+}
+
+/* Odkazy v textu */
+a {
+  color: var(--c-dub-text);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: color var(--dur-fast) var(--ease);
+}
+
+a:hover {
+  color: var(--c-grafit);
+}
+
+/* Viditelný focus */
+:focus-visible {
+  outline: var(--focus);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--c-dub);
+  color: var(--c-papir);
+}
+
+/* Skip-link */
+.skip-link {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: 100;
+  padding: var(--space-2) var(--space-4);
+  background: var(--c-jedle);
+  color: var(--c-on-dark);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+/* Strojopisné prvky */
+.eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-eyebrow);
+  color: var(--c-muted);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-feature-settings: 'zero' 0;
+}
+
+.price {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--c-grafit);
+}
+
+.muted {
+  color: var(--c-muted);
+}
+
+/* Layout */
+.container {
+  width: 100%;
+  max-width: calc(var(--container) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--grid-gap);
+}
+
+.flow > * + * {
+  margin-top: var(--flow-space, 1em);
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+hr {
+  border: 0;
+  border-top: var(--border);
+  margin: 0;
+}
+
+/* Odkrytí při scrollu – jen s JS a bez omezení pohybu; bez JS je obsah vidět vždy */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal] {
+    transition:
+      opacity var(--dur-reveal) var(--ease),
+      transform var(--dur-reveal) var(--ease);
+  }
+
+  .js [data-reveal]:not(.is-revealed) {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

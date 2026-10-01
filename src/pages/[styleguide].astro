@@ -1,0 +1,420 @@
+---
+/**
+ * Styleguide – přehled design systému. Generuje se jen ve vývojovém režimu (/_styleguide/).
+ */
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import Logo from '../components/Logo.astro';
+import Button from '../components/Button.astro';
+import ImageSlot from '../components/ImageSlot.astro';
+import sara from '../assets/products/sara/DSC_0800i-1.png';
+import { url } from '../utils/url';
+
+export function getStaticPaths() {
+  return import.meta.env.DEV ? [{ params: { styleguide: '_styleguide' } }] : [];
+}
+
+const colors = [
+  ['--c-len', '#E9E6DF', 'Len', 'pozadí stránek'],
+  ['--c-papir', '#F5F3EE', 'Papír', 'karty, formuláře, tabulky'],
+  ['--c-jedle', '#24342D', 'Jedle', 'těžké plochy, CTA, patička'],
+  ['--c-dub', '#A8743F', 'Dub', 'akcent, velký text, dekorace'],
+  ['--c-dub-text', '#8A5C2E', 'Dub – text', 'odkazy v textu (AA)'],
+  ['--c-grafit', '#1F2421', 'Grafit', 'text'],
+  ['--c-salvej', '#8E9B88', 'Šalvěj', 'štítky, linky grafů'],
+  ['--c-line', '#CFCAC0', 'Linka', 'linky, rámečky'],
+  ['--c-muted', '#5C635E', 'Tlumená', 'sekundární text'],
+];
+
+const scale = [
+  ['--fs-xxl', '50 → 56 px', 'H1'],
+  ['--fs-xl', '35 px', 'H2'],
+  ['--fs-l', '26 px', 'H3'],
+  ['--fs-m', '20 px', 'H4, perex'],
+  ['--fs-s', '16 px', 'text'],
+  ['--fs-xs', '13 px', 'štítky, poznámky'],
+];
+
+// Ukázka zápisu jednotek – hodnoty Sary z podkladů (SUPERPROMPT kap. 5.4)
+const specSample = [
+  ['Spodní kmitočet', 'F−3 dB 41 Hz, F−6 dB 36 Hz'],
+  ['Citlivost', '87 dB/2,83 V/1 m'],
+  ['Impedance', 'nominální 4 Ω'],
+  ['Rozměry', 'š 240 × v 1000 × h 383 mm'],
+  ['Hmotnost', '26 kg'],
+];
+
+const price = new Intl.NumberFormat('cs-CZ', {
+  style: 'currency',
+  currency: 'CZK',
+  maximumFractionDigits: 0,
+}).format(227000);
+---
+
+<BaseLayout title="Styleguide | ideTone" noindex>
+  <Section space="m">
+    <span class="eyebrow">Design system · verze 0.2</span>
+    <h1 class="sg-title">Styleguide</h1>
+    <p class="lead muted">
+      Pracovní přehled tokenů a komponent. Stránka existuje jen ve vývojovém režimu.
+    </p>
+  </Section>
+
+  <Section divider space="m" labelledby="sg-barvy">
+    <h2 id="sg-barvy" class="sg-h">
+      Barvy
+    </h2>
+    <ul role="list" class="sg-colors">
+      {colors.map(([token, hex, name, use]) => (
+        <li class="sg-color">
+          <span class="sg-color__swatch" style={`background: var(${token})`} />
+          <span class="sg-color__name">{name}</span>
+          <span class="mono small">
+            {hex} · {token}
+          </span>
+          <span class="small muted">{use}</span>
+        </li>
+      ))}
+    </ul>
+  </Section>
+
+  <Section divider space="m" labelledby="sg-typo">
+    <h2 id="sg-typo" class="sg-h">
+      Typografie
+    </h2>
+    <div class="sg-fonts">
+      <p>
+        <span class="eyebrow">Nadpisy</span>
+        <span class="sg-font sg-font--heading">Familjen Grotesk 500</span>
+      </p>
+      <p>
+        <span class="eyebrow">Text</span>
+        <span class="sg-font">Figtree 400 / 500</span>
+      </p>
+      <p>
+        <span class="eyebrow">Data</span>
+        <span class="sg-font mono">IBM Plex Mono 400 / 500</span>
+      </p>
+    </div>
+
+    <ul role="list" class="sg-scale">
+      {scale.map(([token, px, role]) => (
+        <li>
+          <span class="mono small muted">
+            {token} · {px} · {role}
+          </span>
+          <span class="sg-scale__sample" style={`font-size: var(${token})`}>
+            Reprosoustavy s citem pro hudbu
+          </span>
+        </li>
+      ))}
+    </ul>
+
+    <div class="sg-text flow">
+      <span class="eyebrow">Reprosoustavy s citem pro hudbu</span>
+      <h1 class="h1">Nadpis první úrovně</h1>
+      <h2>Nadpis druhé úrovně</h2>
+      <h3>Nadpis třetí úrovně</h3>
+      <p class="lead">
+        Perex: delší úvodní věta odstavce v řezu Figtree, velikost 20 px, řádkování 1,5.
+      </p>
+      <p>
+        Ukázkový odstavec pro kontrolu typografie. Šířka odstavce je omezená na zhruba 65 znaků, aby
+        se dlouhý text dobře četl. Česká diakritika: příliš žluťoučký kůň úpěl ďábelské ódy.
+        <a href={url('/')}>Odkaz v textu</a> má dubovou barvu a jemné podtržení.
+      </p>
+    </div>
+  </Section>
+
+  <Section divider space="m" labelledby="sg-data">
+    <h2 id="sg-data" class="sg-h">
+      Data a jednotky
+    </h2>
+    <div class="sg-data">
+      <dl class="sg-spec">
+        {specSample.map(([label, value]) => (
+          <div>
+            <dt>{label}</dt>
+            <dd>{value}</dd>
+          </div>
+        ))}
+      </dl>
+      <div class="flow">
+        <span class="eyebrow">Cena za pár</span>
+        <p class="price sg-price">{price}</p>
+        <p class="small muted">
+          Formát přes Intl.NumberFormat('cs-CZ'). Plná tabulka specifikací (SpecTable) vznikne ve
+          fázi F2.
+        </p>
+      </div>
+    </div>
+  </Section>
+
+  <Section divider space="m" labelledby="sg-logo">
+    <h2 id="sg-logo" class="sg-h">
+      Logo a favicon
+    </h2>
+    <div class="sg-logos">
+      <div class="sg-logo sg-logo--light">
+        <Logo height="1.5rem" />
+      </div>
+      <div class="sg-logo sg-logo--dark">
+        <Logo variant="light" height="1.5rem" />
+      </div>
+      <div class="sg-favicons">
+        <img src={url('/favicon.svg')} width="64" height="64" alt="Favicon SVG" />
+        <img src={url('/apple-touch-icon.png')} width="64" height="64" alt="Favicon PNG 180 px" />
+        <img src={url('/favicon-32.png')} width="32" height="32" alt="Favicon PNG 32 px" />
+      </div>
+    </div>
+    <p class="small muted sg-note">
+      Provizorní wordmark ze staré hlavičky, finální logo dodá grafik (výměna = soubor Logo.astro).
+    </p>
+  </Section>
+
+  <Section divider space="m" labelledby="sg-buttons">
+    <h2 id="sg-buttons" class="sg-h">
+      Tlačítka
+    </h2>
+    <div class="sg-buttons">
+      <Button href="/reprosoustavy/">Prohlédnout modely</Button>
+      <Button href="/poslech/" variant="secondary">
+        Domluvit poslech
+      </Button>
+      <Button variant="secondary" arrow={false}>
+        Bez šipky
+      </Button>
+    </div>
+  </Section>
+
+  <Section tone="jedle" space="m" labelledby="sg-dark">
+    <span class="eyebrow">Plocha Jedle</span>
+    <h2 id="sg-dark" class="sg-h">
+      Než se rozhodnete, poslechněte si je
+    </h2>
+    <div class="sg-dark">
+      <div class="sg-buttons">
+        <Button href="/poslech/" tone="dark">
+          Domluvit poslech
+        </Button>
+        <Button href="/kontakt/" tone="dark" variant="secondary">
+          Kontakt
+        </Button>
+      </div>
+      <figure class="sg-product">
+        <Image
+          src={sara}
+          alt="Reprosoustava Sara, vyříznutá fotografie"
+          widths={[320, 640]}
+          sizes="320px"
+        />
+        <figcaption class="mono small">Sara · {price} / pár</figcaption>
+      </figure>
+    </div>
+  </Section>
+
+  <Section space="m" labelledby="sg-slots">
+    <h2 id="sg-slots" class="sg-h">
+      ImageSlot
+    </h2>
+    <div class="sg-slots">
+      <ImageSlot ratio="4/5" label="Foto: portrét Petra Kocourka" />
+      <ImageSlot ratio="1/1" label="Foto: detail dýhy" />
+      <ImageSlot ratio="3/2" label="Foto: dílna" />
+      <ImageSlot ratio="16/9" label="Foto: Sara v obývacím pokoji" class="sg-slots__wide" />
+    </div>
+  </Section>
+
+  <Section tone="papir" divider space="m" labelledby="sg-section">
+    <h2 id="sg-section" class="sg-h">
+      Section
+    </h2>
+    <p>
+      Sekce mají tóny <span class="mono">len</span>, <span class="mono">papir</span>,
+      <span class="mono">jedle</span>, volitelnou linku nahoře a tři rytmy mezer. Při scrollu se
+      jednou jemně odkryjí (vypnuto při prefers-reduced-motion).
+    </p>
+  </Section>
+</BaseLayout>
+
+<style>
+  .sg-title {
+    margin-top: var(--space-3);
+  }
+
+  .sg-h {
+    margin-bottom: var(--space-6);
+  }
+
+  .sg-colors {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr));
+    gap: var(--space-5) var(--grid-gap);
+  }
+
+  .sg-color {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .sg-color__swatch {
+    aspect-ratio: 3 / 2;
+    border: var(--border);
+    border-radius: var(--radius);
+    margin-bottom: var(--space-2);
+  }
+
+  .sg-color__name {
+    font-weight: 500;
+  }
+
+  .sg-fonts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: var(--space-5);
+    margin-bottom: var(--space-7);
+  }
+
+  .sg-font {
+    display: block;
+    margin-top: var(--space-2);
+    font-size: var(--fs-l);
+  }
+
+  .sg-font--heading {
+    font-family: var(--font-heading);
+    font-weight: 500;
+  }
+
+  .sg-scale {
+    display: grid;
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+  }
+
+  .sg-scale li {
+    display: grid;
+    gap: var(--space-1);
+    max-width: none;
+    padding-bottom: var(--space-4);
+    border-bottom: var(--border);
+  }
+
+  .sg-scale__sample {
+    font-family: var(--font-heading);
+    line-height: var(--lh-heading);
+  }
+
+  .sg-data {
+    display: grid;
+    gap: var(--space-7) var(--grid-gap);
+  }
+
+  .sg-spec {
+    background: var(--c-papir);
+    border: var(--border);
+    border-radius: var(--radius);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+  }
+
+  .sg-spec div {
+    display: grid;
+    grid-template-columns: minmax(8rem, 1fr) 2fr;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .sg-spec div + div {
+    border-top: var(--border);
+  }
+
+  .sg-spec dt {
+    color: var(--c-muted);
+  }
+
+  .sg-price {
+    font-size: var(--fs-xl);
+    color: var(--c-dub);
+  }
+
+  .sg-logos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: var(--grid-gap);
+    align-items: stretch;
+  }
+
+  .sg-logo {
+    display: grid;
+    place-items: center;
+    padding: var(--space-8) var(--space-5);
+    border-radius: var(--radius);
+  }
+
+  .sg-logo--light {
+    background: var(--c-papir);
+    border: var(--border);
+  }
+
+  .sg-logo--dark {
+    background: var(--c-jedle);
+  }
+
+  .sg-favicons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-5);
+  }
+
+  .sg-note {
+    margin-top: var(--space-4);
+  }
+
+  .sg-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+  }
+
+  .sg-dark {
+    display: grid;
+    gap: var(--space-7);
+    align-items: end;
+  }
+
+  .sg-product {
+    justify-self: center;
+    width: min(16rem, 70%);
+  }
+
+  .sg-product img {
+    filter: var(--product-shadow);
+  }
+
+  .sg-product figcaption {
+    margin-top: var(--space-3);
+    color: var(--c-on-dark-muted);
+    text-align: center;
+  }
+
+  .sg-slots {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: var(--grid-gap);
+    align-items: start;
+  }
+
+  .sg-slots :global(.sg-slots__wide) {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 48rem) {
+    .sg-data,
+    .sg-dark {
+      grid-template-columns: 1.4fr 1fr;
+    }
+  }
+</style>

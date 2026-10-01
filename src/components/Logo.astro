@@ -1,0 +1,60 @@
+---
+/**
+ * Wordmark ideTone – převzatý ze staré hlavičky: strojopis, prostrkaný, „ide“ grafit + „Tone“ dub.
+ * Provizorní verze do dodání loga od grafika. Výměna loga = přepsání tohoto souboru.
+ */
+interface Props {
+  /** dark = na lnu/papíru, light = na jedli */
+  variant?: 'dark' | 'light';
+  /** výška wordmarku (CSS délka) */
+  height?: string;
+  class?: string;
+}
+
+const { variant = 'dark', height = '1.125rem', class: className } = Astro.props;
+---
+
+<svg
+  class:list={['logo', `logo--${variant}`, className]}
+  style={`--logo-h: ${height}`}
+  viewBox="0 0 135 20"
+  role="img"
+  aria-label="ideTone"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <text x="0" y="15" textLength="134.4" lengthAdjust="spacing" class="logo__text">
+    <tspan class="logo__ide">ide</tspan>
+    <tspan class="logo__tone">Tone</tspan>
+  </text>
+</svg>
+
+<style>
+  .logo {
+    height: var(--logo-h);
+    width: auto;
+    aspect-ratio: 135 / 20;
+    overflow: visible;
+  }
+
+  .logo__text {
+    font-family: var(--font-mono);
+    font-size: 20px;
+    font-weight: 500;
+  }
+
+  .logo--dark .logo__ide {
+    fill: var(--c-grafit);
+  }
+
+  .logo--light .logo__ide {
+    fill: var(--c-on-dark);
+  }
+
+  .logo__tone {
+    fill: var(--c-dub);
+  }
+
+  .logo--light .logo__tone {
+    fill: var(--c-dub-light);
+  }
+</style>

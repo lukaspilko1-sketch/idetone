@@ -1,8 +1,9 @@
 // Výpis všech TODO(klient), TODO(lukas) a NÁVRH v src/ (npm run todo).
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const root = new URL('../src', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1');
+const root = fileURLToPath(new URL('../src', import.meta.url));
 const pattern = /TODO\((klient|lukas)\)|NÁVRH/;
 const hits = [];
 
@@ -21,6 +22,6 @@ function walk(dir) {
   }
 }
 
-walk(decodeURIComponent(root));
+walk(root);
 console.log(hits.length ? hits.join('\n') : 'Žádné TODO ani NÁVRH.');
 console.log(`\nCelkem: ${hits.length}`);

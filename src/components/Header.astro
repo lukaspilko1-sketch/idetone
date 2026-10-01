@@ -1,0 +1,362 @@
+---
+import Logo from './Logo.astro';
+import Button from './Button.astro';
+import { nav, orderLink } from '../config/site';
+import { cs } from '../i18n/cs';
+import { url } from '../utils/url';
+
+const current = Astro.url.pathname;
+const isCurrent = (href: string) => current === url(href);
+const isSection = (href: string) => current.startsWith(url(href)) && href !== '/';
+---
+
+<header class="header" data-header>
+  <div class="container header__inner">
+    <a href={url('/')} class="header__logo" aria-label={cs.nav.home}>
+      <Logo height="1rem" />
+    </a>
+
+    <nav class="nav" id="hlavni-navigace" aria-label={cs.nav.label} data-nav>
+      <ul role="list" class="nav__list">
+        {nav.map((item) => (
+          <li class:list={['nav__item', { 'nav__item--parent': item.children }]}>
+            <a
+              href={url(item.href)}
+              class:list={['nav__link', { 'is-active': isSection(item.href) }]}
+              aria-current={isCurrent(item.href) ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+            {item.children && (
+              <ul role="list" class="nav__sub">
+                {item.children.map((child) => (
+                  <li>
+                    <a
+                      href={url(child.href)}
+                      class="nav__sublink"
+                      aria-current={isCurrent(child.href) ? 'page' : undefined}
+                    >
+                      {child.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+      <Button href={orderLink} variant="secondary" class="nav__order">
+        {cs.nav.order}
+      </Button>
+    </nav>
+
+    <!-- Bez JS vede „Menu“ na navigaci v patičce, s JS otevírá menu přes celou obrazovku -->
+    <a href="#navigace-paticka" class="header__toggle header__toggle--nojs">
+      {cs.nav.menu}
+    </a>
+    <button
+      type="button"
+      class="header__toggle header__toggle--js"
+      aria-expanded="false"
+      aria-controls="hlavni-navigace"
+      data-nav-toggle
+      data-label-open={cs.nav.menu}
+      data-label-close={cs.nav.close}
+    >
+      {cs.nav.menu}
+    </button>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]');
+  const navEl = document.querySelector<HTMLElement>('[data-nav]');
+
+  // Zmenšení hlavičky po odscrollování
+  if (header) {
+    let ticking = false;
+    const update = () => {
+      header.classList.toggle('is-scrolled', window.scrollY > 8);
+      ticking = false;
+    };
+    update();
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (!ticking) {
+          requestAnimationFrame(update);
+          ticking = true;
+        }
+      },
+      { passive: true },
+    );
+  }
+
+  // Mobilní menu přes celou obrazovku
+  if (header && toggle && navEl) {
+    const setOpen = (open: boolean) => {
+      header.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.textContent = (open ? toggle.dataset.labelClose : toggle.dataset.labelOpen) ?? '';
+      document.documentElement.classList.toggle('is-locked', open);
+      if (open) navEl.querySelector<HTMLElement>('a')?.focus();
+    };
+
+    toggle.addEventListener('click', () =>
+      setOpen(toggle.getAttribute('aria-expanded') !== 'true'),
+    );
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && header.classList.contains('is-open')) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    // Udržet focus v otevřeném menu (odkazy a tlačítko Zavřít)
+    header.addEventListener('keydown', (e) => {
+      if (e.key !== 'Tab' || !header.classList.contains('is-open')) return;
+      const focusables = [...navEl.querySelectorAll<HTMLElement>('a'), toggle];
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    });
+
+    // Při přechodu na desktop menu zavřít
+    window.matchMedia('(min-width: 60rem)').addEventListener('change', (e) => {
+      if (e.matches) setOpen(false);
+    });
+  }
+</script>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    border-bottom: 1px solid transparent;
+    transition:
+      background-color var(--dur-fast) var(--ease),
+      border-color var(--dur-fast) var(--ease);
+  }
+
+  .header.is-scrolled {
+    background: var(--c-len);
+    border-bottom-color: var(--c-line);
+  }
+
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-5);
+    min-height: var(--header-h);
+    transition: min-height var(--dur-fast) var(--ease);
+  }
+
+  .header.is-scrolled .header__inner {
+    min-height: var(--header-h-scrolled);
+  }
+
+  .header__logo {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    padding-block: var(--space-3);
+  }
+
+  /* Navigace – desktop */
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+  }
+
+  .nav__list {
+    display: flex;
+    gap: var(--space-5);
+  }
+
+  .nav__item {
+    position: relative;
+  }
+
+  .nav__link,
+  .nav__sublink {
+    display: inline-block;
+    padding-block: var(--space-2);
+    color: var(--c-grafit);
+    text-decoration: none;
+  }
+
+  .nav__link {
+    border-bottom: 1px solid transparent;
+  }
+
+  .nav__link:hover,
+  .nav__link.is-active,
+  .nav__link[aria-current='page'] {
+    border-bottom-color: var(--c-dub);
+  }
+
+  .nav__sublink:hover,
+  .nav__sublink[aria-current='page'] {
+    color: var(--c-dub-text);
+  }
+
+  .nav__sub {
+    position: absolute;
+    top: 100%;
+    left: calc(-1 * var(--space-4));
+    min-width: 14rem;
+    padding: var(--space-2) var(--space-4);
+    background: var(--c-papir);
+    border: var(--border);
+    border-radius: var(--radius);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(4px);
+    transition:
+      opacity var(--dur-fast) var(--ease),
+      transform var(--dur-fast) var(--ease),
+      visibility var(--dur-fast);
+  }
+
+  .nav__sub .nav__sublink {
+    display: block;
+    padding-block: var(--space-2);
+  }
+
+  .nav__item--parent:hover .nav__sub,
+  .nav__item--parent:focus-within .nav__sub {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  .header__toggle {
+    display: none;
+  }
+
+  /* Navigace – mobil a tablet */
+  @media (max-width: 59.99rem) {
+    .header__toggle {
+      position: relative;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      min-height: 2.75rem;
+      padding: var(--space-2) 0;
+      background: none;
+      border: 0;
+      font-family: var(--font-mono);
+      font-size: var(--fs-xs);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: var(--tracking-eyebrow);
+      color: var(--c-grafit);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    :global(.js) .header__toggle--nojs,
+    :global(html:not(.js)) .header__toggle--js {
+      display: none;
+    }
+
+    .nav {
+      display: none;
+    }
+
+    .header.is-open .nav {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-7);
+      padding: calc(var(--header-h) + var(--space-6)) var(--gutter) var(--space-7);
+      overflow-y: auto;
+      background: var(--c-jedle);
+    }
+
+    .header.is-open {
+      background: var(--c-jedle);
+      border-bottom-color: transparent;
+    }
+
+    .header.is-open .header__toggle {
+      color: var(--c-on-dark);
+    }
+
+    .header.is-open :global(.logo__ide) {
+      fill: var(--c-on-dark);
+    }
+
+    .header.is-open :global(.logo__tone) {
+      fill: var(--c-dub-light);
+    }
+
+    .nav__list {
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+
+    .nav__link {
+      font-family: var(--font-heading);
+      font-size: var(--fs-xl);
+      color: var(--c-on-dark);
+      border-bottom: 0;
+    }
+
+    .nav__link[aria-current='page'],
+    .nav__link.is-active {
+      color: var(--c-dub-light);
+    }
+
+    .nav__sub {
+      position: static;
+      min-width: 0;
+      padding: var(--space-1) 0 0 var(--space-4);
+      background: none;
+      border: 0;
+      border-left: 1px solid var(--c-line-dark);
+      border-radius: 0;
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+    }
+
+    .nav__sublink,
+    .nav__sub .nav__sublink {
+      padding-block: var(--space-1);
+      font-size: var(--fs-m);
+      color: var(--c-on-dark-muted);
+    }
+
+    .nav__sublink:hover,
+    .nav__sublink[aria-current='page'] {
+      color: var(--c-on-dark);
+    }
+
+    /* Tlačítko Objednat v otevřeném menu na jedli */
+    .nav :global(.nav__order) {
+      border-color: var(--c-on-dark);
+      color: var(--c-on-dark);
+    }
+
+    .nav :global(.nav__order:hover) {
+      background: var(--c-jedle-hover);
+      color: var(--c-on-dark);
+    }
+  }
+</style>

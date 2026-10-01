@@ -1,12 +1,67 @@
-/* Design tokeny ideTone – verze 0.2. Doplní se ve fázi F1. */
+/*
+ * Design tokeny ideTone – verze 0.2 (severské řemeslo: dřevo, len, klid).
+ * Vizuální úpravy podle inspiračních webů klienta se dělají jen tady.
+ * Písma (--font-heading, --font-text, --font-mono) definuje Astro Fonts API v astro.config.mjs.
+ */
 :root {
-  --c-len: #e9e6df;
-  --c-papir: #f5f3ee;
-  --c-jedle: #24342d;
-  --c-dub: #a8743f;
-  --c-dub-text: #8a5c2e;
-  --c-grafit: #1f2421;
-  --c-salvej: #8e9b88;
-  --c-line: #cfcac0;
-  --c-muted: #5c635e;
+  /* Barvy */
+  --c-len: #e9e6df; /* pozadí stránek */
+  --c-papir: #f5f3ee; /* karty, formuláře, tabulky */
+  --c-jedle: #24342d; /* jediná těžká barva: hero, pruh Poslech, patička, primární tlačítko */
+  --c-jedle-hover: #2f4239;
+  --c-dub: #a8743f; /* akcent – jen velký text a dekorace, ne plochy */
+  --c-dub-text: #8a5c2e; /* odkazy v textu (AA na lnu i papíru) */
+  --c-dub-light: #c99560; /* akcent na jedli */
+  --c-grafit: #1f2421; /* text */
+  --c-salvej: #8e9b88; /* štítky, linky grafů */
+  --c-line: #cfcac0; /* linky, rámečky */
+  --c-muted: #5c635e; /* sekundární text */
+  --c-on-dark: #edeae3; /* text na jedli */
+  --c-on-dark-muted: #b4bdb5; /* sekundární text na jedli */
+  --c-line-dark: #3d5047; /* linky na jedli */
+
+  /* Typová škála 13 / 16 / 20 / 26 / 35 / 50 (H1 max. 56) */
+  --fs-xs: 0.8125rem;
+  --fs-s: 1rem;
+  --fs-m: clamp(1.125rem, 1.05rem + 0.35vw, 1.25rem);
+  --fs-l: clamp(1.375rem, 1.25rem + 0.6vw, 1.625rem);
+  --fs-xl: clamp(1.75rem, 1.5rem + 1.1vw, 2.1875rem);
+  --fs-xxl: clamp(2.25rem, 1.6rem + 2.8vw, 3.5rem);
+
+  --lh-text: 1.6;
+  --lh-heading: 1.12;
+  --tracking-eyebrow: 0.06em;
+  --tracking-logo: 0.42em;
+  --measure: 65ch;
+
+  /* Mezery (4px rytmus) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 8rem;
+  --section-space: clamp(var(--space-8), 6vw + 1rem, var(--space-10));
+
+  /* Layout */
+  --container: 75rem; /* 1200 px */
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+  --grid-gap: clamp(1rem, 2.5vw, 2rem);
+  --header-h: 4.5rem;
+  --header-h-scrolled: 3.5rem;
+
+  /* Tvary */
+  --radius: 2px;
+  --border: 1px solid var(--c-line);
+  --focus: 2px solid var(--c-dub);
+  --product-shadow: drop-shadow(0 18px 24px rgb(31 36 33 / 0.18));
+
+  /* Pohyb */
+  --ease: cubic-bezier(0.2, 0.6, 0.2, 1);
+  --dur-fast: 180ms;
+  --dur-reveal: 400ms;
 }
