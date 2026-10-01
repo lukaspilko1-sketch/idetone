@@ -1,12 +1,12 @@
 ---
 /**
  * Otevřená sekce stránky. Sekce se oddělují linkou a mezerou, ne kartami.
- * tone: len (výchozí), papir, jedle. divider = linka nahoře. space = rytmus mezer.
+ * tone: len (výchozí), papir, uhel. divider = linka nahoře. space = rytmus mezer.
  */
 interface Props {
   as?: 'section' | 'div' | 'aside' | 'article';
   id?: string;
-  tone?: 'len' | 'papir' | 'jedle';
+  tone?: 'len' | 'papir' | 'uhel';
   divider?: boolean;
   space?: 'none' | 's' | 'm' | 'l';
   /** šířka obsahu: container = 1200 px, narrow = šířka odstavce, full = bez kontejneru */
@@ -61,17 +61,17 @@ const {
     background: var(--c-papir);
   }
 
-  .section--jedle {
-    background: var(--c-jedle);
+  .section--uhel {
+    background: var(--c-uhel);
     color: var(--c-on-dark);
   }
 
-  .section--jedle :global(.eyebrow),
-  .section--jedle :global(.muted) {
+  .section--uhel :global(.eyebrow),
+  .section--uhel :global(.muted) {
     color: var(--c-on-dark-muted);
   }
 
-  .section--jedle :global(a:not(.btn)) {
+  .section--uhel :global(a:not(.btn)) {
     color: var(--c-on-dark);
   }
 
@@ -103,7 +103,7 @@ const {
     border-top: var(--border);
   }
 
-  .section--jedle.section--divider > .container::before {
+  .section--uhel.section--divider > .container::before {
     border-top-color: var(--c-line-dark);
   }
 

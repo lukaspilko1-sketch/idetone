@@ -1,7 +1,7 @@
 ---
 /**
  * Tlačítko / odkaz ve tvaru tlačítka.
- * primary = plná jedle, secondary = obrys grafitem. tone="dark" pro použití na jedlové ploše.
+ * primary = plná Uhel (tmavá), secondary = obrys grafitem. tone="dark" pro použití na tmavé ploše.
  */
 import type { HTMLAttributes } from 'astro/types';
 import { url } from '../utils/url';
@@ -88,12 +88,12 @@ const classes = ['btn', `btn--${variant}`, `btn--on-${tone}`, className];
 
   /* Na světlé ploše */
   .btn--primary.btn--on-light {
-    background: var(--c-jedle);
+    background: var(--c-uhel);
     color: var(--c-on-dark);
   }
 
   .btn--primary.btn--on-light:hover {
-    background: var(--c-jedle-hover);
+    background: var(--c-uhel-hover);
     color: var(--c-on-dark);
   }
 
@@ -107,15 +107,15 @@ const classes = ['btn', `btn--${variant}`, `btn--on-${tone}`, className];
     color: var(--c-grafit);
   }
 
-  /* Na jedli */
+  /* Na tmavé ploše */
   .btn--primary.btn--on-dark {
     background: var(--c-on-dark);
-    color: var(--c-jedle);
+    color: var(--c-uhel);
   }
 
   .btn--primary.btn--on-dark:hover {
     background: var(--c-papir);
-    color: var(--c-jedle);
+    color: var(--c-uhel);
   }
 
   .btn--secondary.btn--on-dark {
@@ -124,7 +124,7 @@ const classes = ['btn', `btn--${variant}`, `btn--on-${tone}`, className];
   }
 
   .btn--secondary.btn--on-dark:hover {
-    background: var(--c-jedle-hover);
+    background: var(--c-uhel-hover);
     color: var(--c-on-dark);
   }
 </style>

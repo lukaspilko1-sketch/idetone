@@ -26,16 +26,16 @@ Web českého výrobce high-end reprosoustav ideTone (Petr Kocourek, Brno). Spra
 - `robots.txt` generuje `src/pages/robots.txt.ts` podle `PUBLIC_INDEXING`
 - Nasazení na Pages se zapne proměnnou repozitáře `PAGES_DEPLOY=true` (fáze F4)
 
-## Design tokeny (verze 0.2, mění se jen v `src/styles/tokens.css`)
-- Len `#E9E6DF` (pozadí) · Papír `#F5F3EE` (karty) · Jedle `#24342D` (těžké plochy, CTA, patička)
+## Design tokeny (verze 0.3, mění se jen v `src/styles/tokens.css`)
+- Len `#E9E6DF` (pozadí) · Papír `#F5F3EE` (karty) · Uhel `#262422` (teplý antracit; těžké plochy, CTA, patička; token `--c-uhel`, `Section tone="uhel"`)
 - Dub `#A8743F` (akcent, „Tone“ v logu; text v odkazech `#8A5C2E`) · Grafit `#1F2421` (text) · Šalvěj `#8E9B88`
 - Zaoblení 0–2 px, bez gradientů, bez emoji, bez stínů všude, jen světlý režim
 - Logo: „ideTone“ strojopisem, prostrkané, „ide“ grafit + „Tone“ dub; komponenta `Logo.astro` (inline SVG, varianty `dark` / `light`). Výměna loga = přepsat jen `Logo.astro`
-- Favicon: `public/favicon.svg` (T dubem na jedli), PNG verze generuje `npm run favicons`
+- Favicon: `public/favicon.svg` (T dubem na tmavé ploše), PNG verze generuje `npm run favicons`
 - Pohyb jen dvakrát: odkrytí sekcí (`data-reveal`, řeší `Section`) a posun šipky v `Button`; vše vypnuté při `prefers-reduced-motion`
 
 ## Komponenty (`src/components/`)
-- `Logo`, `Button` (`variant` primary/secondary, `tone` light/dark, `arrow`), `Section` (`tone` len/papir/jedle, `divider`, `space`, `width`), `ImageSlot` (`ratio` 4/5, 16/9, 1/1, 3/2, `label`, volitelně `src` + `alt`), `Header` (sticky, zmenšení po scrollu, mobilní menu přes celou obrazovku, bez JS vede „Menu“ do patičky), `Footer`
+- `Logo`, `Button` (`variant` primary/secondary, `tone` light/dark, `arrow`), `Section` (`tone` len/papir/uhel, `divider`, `space`, `width`), `ImageSlot` (`ratio` 4/5, 16/9, 1/1, 3/2, `label`, volitelně `src` + `alt`), `Header` (sticky, zmenšení po scrollu, mobilní menu přes celou obrazovku, bez JS vede „Menu“ do patičky), `Footer`
 - Obsahové: `ProductFeature` (blok modelu, `variant` tall/compact – záměrně ne dvě stejné karty), `SpecTable`, `CompareTable` (generovaná z kolekce products, sticky první sloupec), `Gallery` (šipky, miniatury, swipe, lightbox `<dialog>`, bez JS odkazy na velké fotky; bez fotek ImageSlot), `Quote`, `WaveguideFigure` (SVG schéma zvukovodu), `PageHeader`, `TextBlock` (odstavce/seznam/podsekce z frontmatteru), `FormPlaceholder` (dočasně, nahradí `ContactForm` v F3)
 - `BaseLayout` (`title`, `description`, `noindex`), `ProsePage` (právní stránky z Markdownu)
 - Přehled všech komponent: `/_styleguide/` (jen `npm run dev`, v produkčním buildu se negeneruje)

@@ -149,7 +149,7 @@ a:hover {
   left: var(--space-2);
   z-index: 100;
   padding: var(--space-2) var(--space-4);
-  background: var(--c-jedle);
+  background: var(--c-uhel);
   color: var(--c-on-dark);
   font-family: var(--font-mono);
   font-size: var(--fs-xs);

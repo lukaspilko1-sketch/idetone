@@ -157,7 +157,7 @@ const resolved = await Promise.all(
 
     if (s.type === 'listening') {
       return (
-        <Section tone="jedle" labelledby="poslech-title" space="m">
+        <Section tone="uhel" labelledby="poslech-title" space="m">
           <div class="listen">
             <div>
               {s.eyebrow && <span class="eyebrow">{s.eyebrow}</span>}
@@ -231,7 +231,7 @@ const resolved = await Promise.all(
     display: none;
   }
 
-  /* Mobil: jedlová plocha pod textem přes celou šířku, produkt přesahuje dolů */
+  /* Mobil: tmavá plocha pod textem přes celou šířku, produkt přesahuje dolů */
   .hero__visual {
     grid-column: 1 / -1;
     position: relative;
@@ -246,7 +246,7 @@ const resolved = await Promise.all(
     position: absolute;
     inset: 0 0 var(--space-8);
     z-index: -1;
-    background: var(--c-jedle);
+    background: var(--c-uhel);
   }
 
   .hero__caption {
@@ -284,7 +284,7 @@ const resolved = await Promise.all(
       position: absolute;
       inset: 0 0 0 58%;
       z-index: -1;
-      background: var(--c-jedle);
+      background: var(--c-uhel);
     }
 
     .hero__text {

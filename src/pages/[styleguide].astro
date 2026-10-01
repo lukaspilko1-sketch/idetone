@@ -18,7 +18,7 @@ export function getStaticPaths() {
 const colors = [
   ['--c-len', '#E9E6DF', 'Len', 'pozadí stránek'],
   ['--c-papir', '#F5F3EE', 'Papír', 'karty, formuláře, tabulky'],
-  ['--c-jedle', '#24342D', 'Jedle', 'těžké plochy, CTA, patička'],
+  ['--c-uhel', '#262422', 'Uhel', 'těžké plochy, CTA, patička'],
   ['--c-dub', '#A8743F', 'Dub', 'akcent, velký text, dekorace'],
   ['--c-dub-text', '#8A5C2E', 'Dub – text', 'odkazy v textu (AA)'],
   ['--c-grafit', '#1F2421', 'Grafit', 'text'],
@@ -188,8 +188,8 @@ const price = new Intl.NumberFormat('cs-CZ', {
     </div>
   </Section>
 
-  <Section tone="jedle" space="m" labelledby="sg-dark">
-    <span class="eyebrow">Plocha Jedle</span>
+  <Section tone="uhel" space="m" labelledby="sg-dark">
+    <span class="eyebrow">Plocha Uhel</span>
     <h2 id="sg-dark" class="sg-h">
       Než se rozhodnete, poslechněte si je
     </h2>
@@ -232,7 +232,7 @@ const price = new Intl.NumberFormat('cs-CZ', {
     </h2>
     <p>
       Sekce mají tóny <span class="mono">len</span>, <span class="mono">papir</span>,
-      <span class="mono">jedle</span>, volitelnou linku nahoře a tři rytmy mezer. Při scrollu se
+      <span class="mono">uhel</span>, volitelnou linku nahoře a tři rytmy mezer. Při scrollu se
       jednou jemně odkryjí (vypnuto při prefers-reduced-motion).
     </p>
   </Section>
@@ -359,7 +359,7 @@ const price = new Intl.NumberFormat('cs-CZ', {
   }
 
   .sg-logo--dark {
-    background: var(--c-jedle);
+    background: var(--c-uhel);
   }
 
   .sg-favicons {

@@ -286,11 +286,11 @@ const isSection = (href: string) => current.startsWith(url(href)) && href !== '/
       gap: var(--space-7);
       padding: calc(var(--header-h) + var(--space-6)) var(--gutter) var(--space-7);
       overflow-y: auto;
-      background: var(--c-jedle);
+      background: var(--c-uhel);
     }
 
     .header.is-open {
-      background: var(--c-jedle);
+      background: var(--c-uhel);
       border-bottom-color: transparent;
     }
 
@@ -348,14 +348,14 @@ const isSection = (href: string) => current.startsWith(url(href)) && href !== '/
       color: var(--c-on-dark);
     }
 
-    /* Tlačítko Objednat v otevřeném menu na jedli */
+    /* Tlačítko Objednat v otevřeném menu na tmavé ploše */
     .nav :global(.nav__order) {
       border-color: var(--c-on-dark);
       color: var(--c-on-dark);
     }
 
     .nav :global(.nav__order:hover) {
-      background: var(--c-jedle-hover);
+      background: var(--c-uhel-hover);
       color: var(--c-on-dark);
     }
   }

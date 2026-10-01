@@ -7,18 +7,18 @@
   /* Barvy */
   --c-len: #e9e6df; /* pozadí stránek */
   --c-papir: #f5f3ee; /* karty, formuláře, tabulky */
-  --c-jedle: #24342d; /* jediná těžká barva: hero, pruh Poslech, patička, primární tlačítko */
-  --c-jedle-hover: #2f4239;
+  --c-uhel: #262422; /* teplý antracit – jediná těžká barva: hero, pruh Poslech, patička, primární tlačítko */
+  --c-uhel-hover: #34312d;
   --c-dub: #a8743f; /* akcent – jen velký text a dekorace, ne plochy */
   --c-dub-text: #8a5c2e; /* odkazy v textu (AA na lnu i papíru) */
-  --c-dub-light: #c99560; /* akcent na jedli */
+  --c-dub-light: #c99560; /* akcent na tmavé ploše */
   --c-grafit: #1f2421; /* text */
   --c-salvej: #8e9b88; /* štítky, linky grafů */
   --c-line: #cfcac0; /* linky, rámečky */
   --c-muted: #5c635e; /* sekundární text */
-  --c-on-dark: #edeae3; /* text na jedli */
-  --c-on-dark-muted: #b4bdb5; /* sekundární text na jedli */
-  --c-line-dark: #3d5047; /* linky na jedli */
+  --c-on-dark: #edeae3; /* text na tmavé ploše */
+  --c-on-dark-muted: #b8b2a8; /* sekundární text na tmavé ploše */
+  --c-line-dark: #45413c; /* linky na tmavé ploše */
   --c-chart: #ffffff; /* podklad grafů měření (mají bílé pozadí) */
 
   /* Typová škála 13 / 16 / 20 / 26 / 35 / 50 (H1 max. 56) */
