@@ -1,5 +1,5 @@
-// Centrální konfigurace webu. Kontakty se ve fázi F2 přesunou do src/content/settings.yaml
-// (kvůli adminu, viz SUPERPROMPT kap. 9A) a tento soubor je bude jen načítat.
+// Technická konfigurace webu (mění jen webmaster): feature flagy, navigace, Formspree.
+// Obsah, který mění klient, je v src/content/ (kvůli adminu, viz SUPERPROMPT kap. 9A).
 
 export const features = {
   journal: false, // Deník / novinky – stránky se negenerují, nejsou v menu ani sitemapě
@@ -13,21 +13,8 @@ export const indexing = import.meta.env.PUBLIC_INDEXING === 'true';
 export const site = {
   name: 'ideTone',
   claim: 'Reprosoustavy s citem pro hudbu',
-  contact: {
-    person: 'Petr Kocourek',
-    email: 'pkocourek@idetone.cz',
-    phone: '', // TODO(klient): telefon
-  },
-  studio: {
-    label: 'Poslechové studio',
-    street: 'Filipínského 59',
-    city: 'Brno',
-    parking: 'parkování v areálu Kaláb nebo na ulici',
-  },
-  social: {
-    facebook: 'https://www.facebook.com/profile.php?id=61573306168822',
-  },
 };
+// Kontakty, adresa studia a sociální sítě: src/content/settings.yaml (getSettings() v utils/content.ts)
 
 export const formspree = {
   order: '', // TODO(lukas): Formspree ID

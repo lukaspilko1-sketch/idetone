@@ -1,0 +1,133 @@
+---
+/**
+ * Srovnávací tabulka modelů generovaná z kolekce products.
+ * Na mobilu se posouvá vodorovně, první sloupec zůstává na místě.
+ */
+import { specLabels, type Product, type SpecKey } from '../utils/content';
+import { formatPrice, typo } from '../utils/format';
+import { url } from '../utils/url';
+
+interface Props {
+  products: Product[];
+}
+
+const { products } = Astro.props;
+const keys: SpecKey[] = [
+  'concept',
+  'tweeter',
+  'woofer',
+  'lowFrequency',
+  'sensitivity',
+  'impedance',
+  'dimensions',
+  'weight',
+  'trebleControl',
+];
+---
+
+<div
+  class="compare"
+  role="region"
+  aria-label="Srovnávací tabulka, lze posouvat vodorovně"
+  tabindex="0"
+>
+  <table>
+    <caption class="visually-hidden">Srovnání parametrů modelů</caption>
+    <thead>
+      <tr>
+        <td></td>
+        {products.map((p) => (
+          <th scope="col">
+            <a href={url(`/reprosoustavy/${p.id}/`)}>{p.data.name}</a>
+          </th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      {keys.map((key) => (
+        <tr>
+          <th scope="row">{specLabels[key]}</th>
+          {products.map((p) => (
+            <td>{typo(String(p.data.specs[key] ?? 'ne'))}</td>
+          ))}
+        </tr>
+      ))}
+      <tr class="compare__price">
+        <th scope="row">Cena za pár</th>
+        {products.map((p) => (
+          <td>{formatPrice(p.data.price)}</td>
+        ))}
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .compare {
+    overflow-x: auto;
+    border: var(--border);
+    background: var(--c-papir);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    width: 100%;
+    min-width: 40rem;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    line-height: 1.55;
+  }
+
+  th,
+  td {
+    padding: var(--space-3) var(--space-4);
+    text-align: left;
+    vertical-align: top;
+    border-top: var(--border);
+  }
+
+  thead th,
+  thead td {
+    border-top: 0;
+    padding-block: var(--space-4);
+  }
+
+  thead th {
+    font-family: var(--font-heading);
+    font-size: var(--fs-l);
+    font-weight: 500;
+  }
+
+  thead a {
+    color: var(--c-grafit);
+    text-decoration: none;
+  }
+
+  thead a:hover {
+    color: var(--c-dub-text);
+  }
+
+  tbody th {
+    font-weight: 400;
+    color: var(--c-muted);
+  }
+
+  /* První sloupec zůstává na místě */
+  tr > :first-child {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    width: 11rem;
+    min-width: 9rem;
+    background: var(--c-papir);
+    border-right: var(--border);
+  }
+
+  .compare__price td {
+    font-size: var(--fs-m);
+    font-weight: 500;
+    color: var(--c-grafit);
+  }
+</style>

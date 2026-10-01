@@ -1,0 +1,119 @@
+---
+/**
+ * Zjednodušené schéma vyzařování: přímovyzařující výškový reproduktor vs. zvukovod.
+ * Bez měřítka a bez čísel – jen princip (šířka vyzařování v kritickém pásmu).
+ */
+---
+
+<figure class="wg">
+  <div class="wg__panels">
+    <div class="wg__panel">
+      <svg viewBox="0 0 300 220" role="img" aria-labelledby="wg-direct-title">
+        <title id="wg-direct-title">
+          Přímovyzařující výškový reproduktor: vlnoplochy se šíří do širokého úhlu, téměř stejně do
+          stran jako v ose poslechu.
+        </title>
+        <line class="wg__axis" x1="30" y1="110" x2="295" y2="110"></line>
+        <rect class="wg__baffle" x="18" y="30" width="12" height="160"></rect>
+        <path class="wg__wave" d="M37 70.6A40 40 0 0 1 37 149.4"></path>
+        <path class="wg__wave" d="M43 36.1A75 75 0 0 1 43 183.9"></path>
+        <path class="wg__wave" d="M49.1 1.7A110 110 0 0 1 49.1 218.3"></path>
+      </svg>
+      <p class="wg__label">Přímovyzařující výškový reproduktor</p>
+      <p class="wg__note">
+        Vyzařuje do stran téměř stejně jako v ose, zvuk víc ovlivňuje místnost.
+      </p>
+    </div>
+
+    <div class="wg__panel">
+      <svg viewBox="0 0 300 220" role="img" aria-labelledby="wg-guide-title">
+        <title id="wg-guide-title">
+          Výškový reproduktor ve zvukovodu: tvar zvukovodu soustředí vyzařování do užšího úhlu kolem
+          osy poslechu.
+        </title>
+        <line class="wg__axis" x1="30" y1="110" x2="295" y2="110"></line>
+        <rect class="wg__baffle" x="18" y="30" width="12" height="160"></rect>
+        <path class="wg__horn" d="M30 100 Q46 96 60 78 M30 120 Q46 124 60 142"></path>
+        <path class="wg__wave" d="M76 71.4A60 60 0 0 1 76 148.6"></path>
+        <path class="wg__wave" d="M102.8 48.9A95 95 0 0 1 102.8 171.1"></path>
+        <path class="wg__wave" d="M129.6 26.4A130 130 0 0 1 129.6 193.6"></path>
+      </svg>
+      <p class="wg__label">Výškový reproduktor ve zvukovodu</p>
+      <p class="wg__note">Zvukovod formuje vyzařování v kritickém pásmu kolem osy poslechu.</p>
+    </div>
+  </div>
+  <figcaption class="wg__caption">
+    Zjednodušené schéma vyzařování v pásmu ~2000–6000 Hz, pohled shora, bez měřítka.
+  </figcaption>
+</figure>
+
+<style>
+  .wg {
+    padding: var(--space-5);
+    background: var(--c-papir);
+    border: var(--border);
+  }
+
+  .wg__panels {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .wg__axis {
+    stroke: var(--c-line);
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+  }
+
+  .wg__baffle {
+    fill: var(--c-grafit);
+  }
+
+  .wg__horn {
+    fill: none;
+    stroke: var(--c-grafit);
+    stroke-width: 2;
+  }
+
+  .wg__wave {
+    fill: none;
+    stroke: var(--c-dub);
+    stroke-width: 1.5;
+  }
+
+  .wg__label {
+    margin-top: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-eyebrow);
+  }
+
+  .wg__note {
+    margin-top: var(--space-1);
+    font-size: var(--fs-xs);
+    color: var(--c-muted);
+  }
+
+  .wg__caption {
+    margin-top: var(--space-5);
+    padding-top: var(--space-3);
+    border-top: var(--border);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    color: var(--c-muted);
+  }
+
+  @media (min-width: 40rem) {
+    .wg__panels {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,25 @@
+---
+/** Jednoduchá textová stránka z kolekce pages (právní stránky). */
+import { render } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Section from '../components/Section.astro';
+import { getPage } from '../utils/content';
+
+interface Props {
+  id: string;
+}
+
+const page = await getPage(Astro.props.id);
+const { data } = page;
+const { Content } = await render(page);
+---
+
+<BaseLayout title={`${data.seoTitle ?? data.title} | ideTone`} description={data.description}>
+  <PageHeader eyebrow={data.eyebrow} title={data.title} lead={data.lead} />
+  <Section divider space="m" width="narrow">
+    <div class="prose">
+      <Content />
+    </div>
+  </Section>
+</BaseLayout>

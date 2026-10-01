@@ -1,7 +1,7 @@
 # ideTone – stav projektu a rozhodnutí
 
 Poslední aktualizace: 1. 10. 2026
-Fáze: **F1 – Design system hotová, čeká na schválení** (tokeny, písma, base.css, Logo, Button, Section, ImageSlot, Header, Footer, BaseLayout, favicon, styleguide /_styleguide/ v dev). F0 schválena a pushnuta. Další: F2 – Obsah a stránky. Zadání: SUPERPROMPT.md 1.1.
+Fáze: **F2 – Obsah a stránky hotová, čeká na schválení** (content collections, texty ze starého webu, všechny stránky ze sitemapy, galerie, SpecTable, CompareTable, SVG schéma zvukovodu). F0 a F1 schváleny a pushnuty. Další: F3 – Formuláře, SEO, redirecty. Zadání: SUPERPROMPT.md 1.1.
 
 Tento soubor je jediný zdroj pravdy o stavu projektu. Kopie je v Claude projektu „WEB - ideTone“ (claude/idetone-rozhodnuti.md) a ve složce webu na PC. Při změně aktualizovat obě.
 
@@ -74,7 +74,13 @@ Tento soubor je jediný zdroj pravdy o stavu projektu. Kopie je v Claude projekt
 - Sara: středobas 6,5" ve specifikaci vs. „sedmipalcový“ v textu
 - Firemní údaje: název, IČO, DIČ, telefon
 - Obchodní podmínky, zásady ochrany osobních údajů
+- Fotky Revy (žádné nejsou – všechny fotky ze starého webu jsou Sara), fotka přepínače výšek (na starém webu ideTone-technologie-urovne-vysek.png, v podkladech chybí), portrét Petra, dílna, studio, spodní část Sary s bassreflexem
+- Kreslené ilustrace (tužkové skici) v podkladech nejsou – 01.png a 02.png jsou screenshoty starého webu
+- Ke schválení (NÁVRH): texty úvodu (hero, nadpisy sekcí, zkrácené texty technologií, pruh Poslech), meta popisy všech stránek, perexy, „Který model pro mě?“, celá stránka Zakázkové projekty, možnosti poslechu (studio / u zákazníka), GDPR text, doplnění „během let“ v O ideTone
+- Kdy je možné domluvit poslech (dny, časy) → settings.yaml studio.hours
+- Formspree: ověřit podmínky a přenos dat do USA pro text GDPR (Lukáš)
 - Weby/.gitignore: doplnit `idetone/` (Lukáš)
+- Repozitář je soukromý (stránka Actions zvenku 404) → před F4 zveřejnit kvůli GitHub Pages (Lukáš)
 - GitHub: zapnout Pages (Source: GitHub Actions) a nastavit proměnnou PAGES_DEPLOY=true až ve fázi F4 (Lukáš)
 
 ## Historie rozhodnutí
@@ -82,3 +88,4 @@ Tento soubor je jediný zdroj pravdy o stavu projektu. Kopie je v Claude projekt
 - 1. 10. 2026: SUPERPROMPT.md 1.0 + CLAUDE.md, old-web jde do repozitáře, jen světlý režim, reference a EN za feature flagy
 - 1. 10. 2026 (F0): Astro 7 + Node 24 LTS; site/base/indexace z proměnných prostředí; testovací URL lukaspilko1-sketch.github.io/idetone/; CNAME se nevytváří (rozpor v SUPERPROMPT kap. 12 vs. kap. 2 – platí kap. 2); workflow dělá build + check při každém push, nasazení jen s proměnnou PAGES_DEPLOY=true; robots.txt generovaný podle PUBLIC_INDEXING; Markdown se Prettierem neformátuje
 - 1. 10. 2026 (F1): písma přes Astro Fonts API ze souborů @fontsource (jen použité řezy, latin + latin-ext, automatické záložní metriky, preload Figtree 400); Ω (U+03A9) v IBM Plex Mono není, vykreslí se záložním písmem; doplňkové tokeny --c-dub-light #C99560 (akcent na jedli), --c-on-dark #EDEAE3, --c-on-dark-muted, --c-line-dark, --c-jedle-hover; mobilní menu bez JS = odkaz na navigaci v patičce; favicon „T“ (geometrický, bez závislosti na písmu); Kontakt je v menu i s tlačítkem Objednat; dev toolbar Astro vypnutý
+- 1. 10. 2026 (F2): obsah klienta v datech – home.yaml (sekce + visible + pořadí), settings.yaml (kontakty, studio, firma, sociální sítě), products/*.md, pages/*.md; site.ts jen technika (flagy, navigace, Formspree); texty Konstrukce u produktů jako ### bloky v těle Markdownu; Reva v datech jako „kompaktní reprosoustava na stojan“ (podle zadání, TODO ověřit) a z úvodní věty vypuštěno „sloupová“; redakční úpravy textů (překlepy řešením/řetězci, „ve většině poslechových podmínek“, „pečlivou prací“, „směrovým charakteristikám“, jednotky s mezerou a nezlomitelnou mezerou, česká desetinná čárka, −); obrázky přes Picture AVIF+WebP s WebP fallbackem (build 27 MB → 7,6 MB); formuláře zatím jako FormPlaceholder s e-mailem (F3); stránka 404 a EN až v F3 / po zapnutí flagu; deník: šablony hotové, při journal=false se negenerují, ukázkový článek draft

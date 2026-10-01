@@ -1,0 +1,140 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import PageHeader from '../components/PageHeader.astro';
+import TextBlock from '../components/TextBlock.astro';
+import ImageSlot from '../components/ImageSlot.astro';
+import FormPlaceholder from '../components/FormPlaceholder.astro';
+import { getPage, getSettings } from '../utils/content';
+import { typo } from '../utils/format';
+
+const { data } = await getPage('poslech');
+const settings = await getSettings();
+const { studio } = settings;
+---
+
+<BaseLayout title={`${data.seoTitle ?? data.title} | ideTone`} description={data.description}>
+  <PageHeader eyebrow={data.eyebrow} title={data.title} lead={data.lead} />
+
+  <Section tone="jedle" space="m" labelledby="studio-title">
+    <div class="studio">
+      <div>
+        <h2 id="studio-title" class="eyebrow">
+          Adresa studia
+        </h2>
+        <address class="studio__address">
+          {studio.street}
+          <br />
+          {studio.city}
+        </address>
+        {studio.parking && <p class="studio__note">{typo(studio.parking)}</p>}
+        {studio.hours && <p class="studio__note">{typo(studio.hours)}</p>}
+      </div>
+      <!-- Mapa bez iframe (GDPR, výkon): jen odkazy -->
+      <ul role="list" class="studio__maps">
+        <li>
+          <a href={studio.mapyCz} rel="noopener">
+            Otevřít v Mapy.cz <span aria-hidden="true">→</span>
+          </a>
+        </li>
+        <li>
+          <a href={studio.googleMaps} rel="noopener">
+            Otevřít v Google Maps <span aria-hidden="true">→</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </Section>
+
+  <Section labelledby="moznosti-title">
+    <h2 id="moznosti-title" class="visually-hidden">
+      Možnosti poslechu
+    </h2>
+    <div class="options">
+      {data.sections.map((s) => (
+        <div class="option">
+          <h3>{typo(s.title)}</h3>
+          <TextBlock text={s.text} list={s.list} />
+        </div>
+      ))}
+      <ImageSlot ratio="3/2" label="Foto: poslechové studio – dodá klient" class="options__img" />
+    </div>
+  </Section>
+
+  <Section divider>
+    <div class="form-wrap">
+      <FormPlaceholder
+        id="formular"
+        title="Domluvit poslech"
+        email={settings.contact.email}
+        subject="ideTone – poslech"
+      />
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .studio {
+    display: grid;
+    gap: var(--space-6) var(--grid-gap);
+    align-items: end;
+  }
+
+  .studio__address {
+    margin-top: var(--space-3);
+    font-family: var(--font-heading);
+    font-size: var(--fs-xl);
+    font-style: normal;
+    line-height: 1.2;
+  }
+
+  .studio__note {
+    margin-top: var(--space-3);
+    color: var(--c-on-dark-muted);
+  }
+
+  .studio__maps {
+    display: grid;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-eyebrow);
+  }
+
+  .studio__maps a {
+    text-decoration: none;
+  }
+
+  @media (min-width: 48rem) {
+    .studio {
+      grid-template-columns: 2fr 1fr;
+    }
+  }
+
+  .options {
+    display: grid;
+    gap: var(--space-7) var(--grid-gap);
+  }
+
+  .option h3 {
+    padding-top: var(--space-3);
+    margin-bottom: var(--space-3);
+    border-top: 1px solid var(--c-grafit);
+    font-size: var(--fs-m);
+  }
+
+  @media (min-width: 48rem) {
+    .options {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .options :global(.options__img) {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .form-wrap {
+    max-width: 48rem;
+  }
+</style>

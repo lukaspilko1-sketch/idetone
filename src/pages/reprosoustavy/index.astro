@@ -1,0 +1,122 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/Section.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import ProductFeature from '../../components/ProductFeature.astro';
+import CompareTable from '../../components/CompareTable.astro';
+import TextBlock from '../../components/TextBlock.astro';
+import Button from '../../components/Button.astro';
+import { getPage, getProducts } from '../../utils/content';
+import { typo } from '../../utils/format';
+
+const page = await getPage('reprosoustavy');
+const products = await getProducts();
+const { data } = page;
+const advice = data.sections.find((s) => s.id === 'ktery-model');
+---
+
+<BaseLayout title={`${data.seoTitle ?? data.title} | ideTone`} description={data.description}>
+  <PageHeader eyebrow={data.eyebrow} title={data.title} lead={data.lead} />
+
+  <Section space="s" reveal={false}>
+    <div class="list">
+      {products.map((product, i) => (
+        <ProductFeature
+          product={product}
+          variant={i % 2 === 0 ? 'tall' : 'compact'}
+          level={2}
+          long
+        />
+      ))}
+    </div>
+  </Section>
+
+  <Section id="srovnani" divider labelledby="srovnani-title">
+    <h2 id="srovnani-title" class="title">
+      Srovnání modelů
+    </h2>
+    <CompareTable products={products} />
+  </Section>
+
+  {advice && (
+    <Section divider labelledby="ktery-model-title">
+      <div class="advice">
+        <h2 id="ktery-model-title">{typo(advice.title)}</h2>
+        <div class="advice__items">
+          {advice.subsections.map((sub) => (
+            <div class="advice__item">
+              <h3>{sub.title}</h3>
+              <TextBlock text={sub.text} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </Section>
+  )}
+
+  <Section tone="papir" space="m" labelledby="na-miru-title">
+    <div class="custom">
+      <div>
+        <span class="eyebrow">Na míru</span>
+        <h2 id="na-miru-title" class="custom__title">
+          Zakázkové projekty
+        </h2>
+        <p>Reprosoustava navržená a naladěná pro konkrétní prostor, sestavu a interiér.</p>
+        <!-- NÁVRH: ke schválení -->
+      </div>
+      <Button href="/zakazkove-projekty/" variant="secondary">
+        Zakázkové projekty
+      </Button>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .list {
+    display: grid;
+    gap: var(--space-10);
+  }
+
+  .title {
+    margin-bottom: var(--space-6);
+  }
+
+  .advice {
+    display: grid;
+    gap: var(--space-6) var(--grid-gap);
+  }
+
+  .advice__items {
+    display: grid;
+    gap: var(--space-6) var(--grid-gap);
+  }
+
+  .advice__item h3 {
+    padding-top: var(--space-3);
+    margin-bottom: var(--space-3);
+    border-top: 1px solid var(--c-grafit);
+    font-size: var(--fs-m);
+  }
+
+  @media (min-width: 48rem) {
+    .advice {
+      grid-template-columns: 4fr 8fr;
+    }
+
+    .advice__items {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .custom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: var(--space-5);
+  }
+
+  .custom__title {
+    margin-block: var(--space-2) var(--space-3);
+  }
+</style>

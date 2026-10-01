@@ -19,6 +19,7 @@
   --c-on-dark: #edeae3; /* text na jedli */
   --c-on-dark-muted: #b4bdb5; /* sekundární text na jedli */
   --c-line-dark: #3d5047; /* linky na jedli */
+  --c-chart: #ffffff; /* podklad grafů měření (mají bílé pozadí) */
 
   /* Typová škála 13 / 16 / 20 / 26 / 35 / 50 (H1 max. 56) */
   --fs-xs: 0.8125rem;

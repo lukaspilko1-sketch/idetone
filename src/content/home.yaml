@@ -1,0 +1,76 @@
+# Úvodní stránka – sekce v pořadí, v jakém se zobrazí.
+# visible: false sekci skryje. Typ sekce (type) neměnit.
+home:
+  sections:
+    - type: hero
+      visible: true
+      eyebrow: Reprosoustavy s citem pro hudbu
+      # NÁVRH: ke schválení (nadpis a věta)
+      title: Ručně laděné reprosoustavy z Brna
+      text: Navrhuji, ladím a vyrábím dvoupásmové reprosoustavy, které nechají vyniknout hudbě i s jejím emočním nábojem.
+      primary:
+        label: Prohlédnout modely
+        href: /reprosoustavy/
+      secondary:
+        label: Domluvit poslech
+        href: /poslech/
+      product: sara
+      image:
+        src: ../assets/products/sara/DSC_0800i-1.png
+        alt: Pár reprosoustav Sara šikmo zezadu, dřevěné bočnice a černé podstavce
+
+    - type: models
+      visible: true
+      eyebrow: Modely
+      title: Dvě reprosoustavy, jeden přístup # NÁVRH: ke schválení
+      products: [sara, reva]
+      compareLink:
+        label: Porovnat modely
+        href: /reprosoustavy/#srovnani
+
+    - type: quote
+      visible: true
+      text: Reprosoustava je složitý celek, ve kterém se protínají nejen čistě technické, ale i emoční a estetické aspekty.
+      author: Petr Kocourek
+      link:
+        label: O ideTone
+        href: /o-idetone/
+
+    - type: technology
+      visible: true
+      eyebrow: Technologie
+      title: Tři konstrukční řešení # NÁVRH: ke schválení
+      # NÁVRH: ke schválení (zkrácené texty z podstránky Technologie)
+      items:
+        - title: Zvukovod u výškového reproduktoru
+          text: Zvukovod formuje vyzařování v kritickém pásmu 2000–6000 Hz. Přináší lehkost a přirozenost bez náznaku ostrosti a menší nároky na akustiku místnosti.
+          image:
+            src: ../assets/products/sara/DSC_0834-1.png
+            alt: Detail čelní desky Sary – páskový výškový reproduktor ve zvukovodu
+        - title: Regulace výšek −1 / 0 / +1 dB
+          text: Sara umožňuje otočným přepínačem vzadu upravit úroveň výšek nad 2000 Hz podle sestavy a poslechových preferencí. Přepínač není v přímé signálové cestě.
+          imageSlot:
+            label: 'Foto: přepínač úrovně výšek na zadním panelu Sary'
+            ratio: 4/5
+        - title: Bassreflex vyvedený dolů
+          text: Reprosoustava je méně citlivá na umístění blíže stěn a nemá tendenci zadunívat.
+          imageSlot:
+            label: 'Foto: spodní část Sary s vývodem bassreflexu'
+            ratio: 4/5
+      link:
+        label: Jak to funguje
+        href: /technologie/
+
+    - type: listening
+      visible: true
+      eyebrow: Poslechové studio Brno
+      # NÁVRH: ke schválení
+      title: Než se rozhodnete, poslechněte si je
+      text: Reprosoustavy si můžete poslechnout v poslechovém studiu v Brně. Termín domluvíme individuálně.
+      button:
+        label: Domluvit poslech
+        href: /poslech/
+
+    - type: references
+      visible: false
+      title: Co říkají posluchači

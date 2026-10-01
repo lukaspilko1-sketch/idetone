@@ -1,0 +1,154 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import PageHeader from '../components/PageHeader.astro';
+import FormPlaceholder from '../components/FormPlaceholder.astro';
+import { getPage, getSettings } from '../utils/content';
+import { typo } from '../utils/format';
+
+const { data } = await getPage('kontakt');
+const { contact, company, studio, social } = await getSettings();
+
+// Firemní údaje – řádky se zobrazí, až budou vyplněné v settings.yaml
+const companyRows = [
+  ['Název', company.name],
+  ['IČO', company.ico],
+  ['DIČ', company.dic],
+  ['Sídlo', company.address],
+].filter(([, value]) => value);
+---
+
+<BaseLayout title={`${data.seoTitle ?? data.title} | ideTone`} description={data.description}>
+  <PageHeader eyebrow={data.eyebrow} title={data.title} lead={data.lead} />
+
+  <Section divider space="m" labelledby="kontakt-udaje">
+    <h2 id="kontakt-udaje" class="visually-hidden">
+      Kontaktní údaje
+    </h2>
+    <div class="contact">
+      <div class="contact__block">
+        <span class="eyebrow">Kontaktní osoba</span>
+        <p class="contact__name">{contact.person}</p>
+        <p>
+          <a href={`mailto:${contact.email}`} class="contact__big">
+            {contact.email}
+          </a>
+        </p>
+        {contact.phone && (
+          <p>
+            <a href={`tel:${contact.phone.replace(/\s/g, '')}`} class="contact__big">
+              {contact.phone}
+            </a>
+          </p>
+        )}
+      </div>
+
+      <div class="contact__block">
+        <span class="eyebrow">Poslechové studio</span>
+        <address>
+          {studio.street}
+          <br />
+          {studio.city}
+        </address>
+        {studio.parking && <p class="muted">{typo(studio.parking)}</p>}
+        <p class="contact__links mono">
+          <a href={studio.mapyCz} rel="noopener">
+            Mapy.cz
+          </a>
+          <a href={studio.googleMaps} rel="noopener">
+            Google Maps
+          </a>
+        </p>
+      </div>
+
+      <div class="contact__block">
+        {companyRows.length > 0 && (
+          <>
+            <span class="eyebrow">Fakturační údaje</span>
+            <dl class="company mono">
+              {companyRows.map(([label, value]) => (
+                <div>
+                  <dt>{label}</dt>
+                  <dd>{value}</dd>
+                </div>
+              ))}
+            </dl>
+          </>
+        )}
+        {social.facebook && (
+          <p class="contact__links mono">
+            <a href={social.facebook} rel="noopener">
+              Facebook
+            </a>
+          </p>
+        )}
+      </div>
+    </div>
+  </Section>
+
+  <Section divider>
+    <div class="form-wrap">
+      <FormPlaceholder
+        id="objednavka"
+        title="Objednávka"
+        email={contact.email}
+        subject="ideTone – objednávka"
+      />
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .contact {
+    display: grid;
+    gap: var(--space-7) var(--grid-gap);
+  }
+
+  .contact__block > * + * {
+    margin-top: var(--space-3);
+  }
+
+  .contact__name {
+    font-family: var(--font-heading);
+    font-size: var(--fs-l);
+  }
+
+  .contact__big {
+    font-size: var(--fs-m);
+  }
+
+  address {
+    font-style: normal;
+    font-size: var(--fs-m);
+  }
+
+  .contact__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    font-size: var(--fs-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-eyebrow);
+  }
+
+  .company div {
+    display: flex;
+    gap: var(--space-3);
+    font-size: var(--fs-xs);
+  }
+
+  .company dt {
+    min-width: 4rem;
+    color: var(--c-muted);
+  }
+
+  @media (min-width: 48rem) {
+    .contact {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .form-wrap {
+    max-width: 48rem;
+  }
+</style>

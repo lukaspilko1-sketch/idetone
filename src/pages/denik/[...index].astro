@@ -1,0 +1,59 @@
+---
+/** Výpis deníku – generuje se jen se zapnutým features.journal. */
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import Section from '../../components/Section.astro';
+import { features } from '../../config/site';
+import { url } from '../../utils/url';
+
+export function getStaticPaths() {
+  return features.journal ? [{ params: { index: undefined } }] : [];
+}
+
+const posts = (await getCollection('journal', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+const dateFormat = new Intl.DateTimeFormat('cs-CZ', { dateStyle: 'long' });
+---
+
+<BaseLayout title="Deník | ideTone" description="Novinky a deník vývoje reprosoustav ideTone.">
+  <PageHeader eyebrow="Deník" title="Z dílny a vývoje" />
+  <Section divider space="m">
+    <ul role="list" class="posts">
+      {posts.map((post) => (
+        <li class="post">
+          <time class="mono small muted" datetime={post.data.date.toISOString()}>
+            {dateFormat.format(post.data.date)}
+          </time>
+          <h2 class="h3">
+            <a href={url(`/denik/${post.id}/`)}>{post.data.title}</a>
+          </h2>
+          <p>{post.data.excerpt}</p>
+        </li>
+      ))}
+    </ul>
+  </Section>
+</BaseLayout>
+
+<style>
+  .posts {
+    display: grid;
+    gap: var(--space-7);
+  }
+
+  .post {
+    max-width: none;
+    padding-top: var(--space-4);
+    border-top: var(--border);
+  }
+
+  .post h2 {
+    margin-block: var(--space-2);
+  }
+
+  .post a {
+    color: inherit;
+    text-decoration: none;
+  }
+</style>

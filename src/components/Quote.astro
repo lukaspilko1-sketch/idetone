@@ -1,0 +1,88 @@
+---
+import { typo } from '../utils/format';
+import { url } from '../utils/url';
+
+interface Props {
+  text: string;
+  author: string;
+  link?: { label: string; href: string };
+}
+
+const { text, author, link } = Astro.props;
+---
+
+<figure class="quote">
+  <blockquote>
+    <p>{typo(text)}</p>
+  </blockquote>
+  <figcaption>
+    <span class="quote__author">{author}</span>
+    {link && (
+      <a class="quote__link" href={url(link.href)}>
+        {link.label} <span aria-hidden="true">→</span>
+      </a>
+    )}
+  </figcaption>
+</figure>
+
+<style>
+  .quote {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  blockquote p {
+    position: relative;
+    max-width: 30ch;
+    font-family: var(--font-heading);
+    font-size: var(--fs-xl);
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    text-indent: -0.42em;
+  }
+
+  blockquote p::before {
+    content: '„';
+    color: var(--c-dub);
+  }
+
+  blockquote p::after {
+    content: '“';
+    color: var(--c-dub);
+  }
+
+  figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-3) var(--space-6);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-eyebrow);
+  }
+
+  .quote__author::before {
+    content: '';
+    display: inline-block;
+    width: 2rem;
+    margin-right: var(--space-3);
+    vertical-align: middle;
+    border-top: 1px solid var(--c-grafit);
+  }
+
+  .quote__link {
+    text-decoration: none;
+  }
+
+  .quote__link span {
+    display: inline-block;
+    transition: transform var(--dur-fast) var(--ease);
+  }
+
+  .quote__link:hover span {
+    transform: translateX(4px);
+  }
+</style>

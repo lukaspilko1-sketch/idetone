@@ -1,0 +1,76 @@
+---
+/** Specifikace produktu jako měřicí protokol: label šedě vlevo, hodnota strojopisem vpravo. */
+import { specLabels, type Product, type SpecKey } from '../utils/content';
+import { typo } from '../utils/format';
+
+interface Props {
+  product: Product;
+  caption?: string;
+}
+
+const { product, caption } = Astro.props;
+const rows = (Object.keys(specLabels) as SpecKey[])
+  .map((key) => ({ label: specLabels[key], value: product.data.specs[key] }))
+  .filter((row) => row.value !== undefined && row.value !== '');
+---
+
+<table class="spec">
+  {caption && <caption class="visually-hidden">{caption}</caption>}
+  <tbody>
+    {rows.map((row) => (
+      <tr>
+        <th scope="row">{row.label}</th>
+        <td>{typo(String(row.value))}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+<style>
+  .spec {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--c-papir);
+    border: var(--border);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    line-height: 1.55;
+  }
+
+  .spec th,
+  .spec td {
+    padding: var(--space-3) var(--space-4);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .spec tr + tr > * {
+    border-top: var(--border);
+  }
+
+  .spec th {
+    width: 38%;
+    font-weight: 400;
+    color: var(--c-muted);
+  }
+
+  .spec td {
+    color: var(--c-grafit);
+  }
+
+  @media (max-width: 30rem) {
+    .spec th,
+    .spec td {
+      display: block;
+      width: auto;
+    }
+
+    .spec td {
+      padding-top: 0;
+    }
+
+    .spec tr + tr > td {
+      border-top: 0;
+    }
+  }
+</style>

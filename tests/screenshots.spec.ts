@@ -4,11 +4,30 @@ import { test, type Page } from '@playwright/test';
 const widths = [390, 768, 1440];
 const pages = [
   { name: 'uvod', path: '/' },
+  { name: 'reprosoustavy', path: '/reprosoustavy/' },
+  { name: 'sara', path: '/reprosoustavy/sara/' },
+  { name: 'reva', path: '/reprosoustavy/reva/' },
+  { name: 'zakazkove-projekty', path: '/zakazkove-projekty/' },
+  { name: 'technologie', path: '/technologie/' },
+  { name: 'poslech', path: '/poslech/' },
+  { name: 'o-idetone', path: '/o-idetone/' },
+  { name: 'kontakt', path: '/kontakt/' },
+  { name: 'obchodni-podminky', path: '/obchodni-podminky/' },
+  { name: 'ochrana-osobnich-udaju', path: '/ochrana-osobnich-udaju/' },
   { name: 'styleguide', path: '/_styleguide/' },
 ];
 
 async function ready(page: Page) {
   await page.evaluate(() => document.fonts.ready);
+  // Projet stránku kvůli lazy obrázkům, pak zpět nahoru
+  await page.evaluate(async () => {
+    for (let y = 0; y < document.body.scrollHeight; y += 600) {
+      window.scrollTo(0, y);
+      await new Promise((r) => setTimeout(r, 40));
+    }
+    window.scrollTo(0, 0);
+  });
+  await page.waitForLoadState('networkidle');
 }
 
 for (const width of widths) {

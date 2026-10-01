@@ -3,6 +3,9 @@ import Logo from './Logo.astro';
 import { site, nav, legalNav } from '../config/site';
 import { cs } from '../i18n/cs';
 import { url } from '../utils/url';
+import { getSettings } from '../utils/content';
+
+const settings = await getSettings();
 
 const year = new Date().getFullYear();
 const pages = nav.flatMap((item) => [item, ...(item.children ?? [])]);
@@ -21,13 +24,15 @@ const pages = nav.flatMap((item) => [item, ...(item.children ?? [])]);
       <div class="footer__col">
         <h2 class="eyebrow footer__title">{cs.footer.contact}</h2>
         <p>
-          {site.contact.person}
+          {settings.contact.person}
           <br />
-          <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
-          {site.contact.phone && (
+          <a href={`mailto:${settings.contact.email}`}>{settings.contact.email}</a>
+          {settings.contact.phone && (
             <>
               <br />
-              <a href={`tel:${site.contact.phone.replace(/\s/g, '')}`}>{site.contact.phone}</a>
+              <a href={`tel:${settings.contact.phone.replace(/\s/g, '')}`}>
+                {settings.contact.phone}
+              </a>
             </>
           )}
         </p>
@@ -36,9 +41,9 @@ const pages = nav.flatMap((item) => [item, ...(item.children ?? [])]);
       <div class="footer__col">
         <h2 class="eyebrow footer__title">{cs.footer.studio}</h2>
         <address>
-          {site.studio.street}
+          {settings.studio.street}
           <br />
-          {site.studio.city}
+          {settings.studio.city}
         </address>
       </div>
 
@@ -62,11 +67,13 @@ const pages = nav.flatMap((item) => [item, ...(item.children ?? [])]);
             <a href={url(item.href)}>{item.label}</a>
           </li>
         ))}
-        <li>
-          <a href={site.social.facebook} rel="noopener">
-            {cs.footer.facebook}
-          </a>
-        </li>
+        {settings.social.facebook && (
+          <li>
+            <a href={settings.social.facebook} rel="noopener">
+              {cs.footer.facebook}
+            </a>
+          </li>
+        )}
       </ul>
     </div>
   </div>

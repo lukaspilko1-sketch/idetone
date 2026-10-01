@@ -1,0 +1,21 @@
+# Nastavení webu – kontakty, adresa studia, sociální sítě.
+# Prázdné hodnoty se na webu nezobrazí.
+settings:
+  contact:
+    person: Petr Kocourek
+    email: pkocourek@idetone.cz
+    phone: '' # TODO(klient): telefon
+  company:
+    name: '' # TODO(klient): název obchodní společnosti
+    ico: '' # TODO(klient): IČO
+    dic: '' # TODO(klient): DIČ
+    address: '' # TODO(klient): sídlo firmy (pokud se liší od studia)
+  studio:
+    street: Filipínského 59
+    city: Brno
+    parking: Parkování v areálu Kaláb nebo na ulici.
+    hours: '' # TODO(klient): kdy je možné poslech domluvit (dny, časy)
+    mapyCz: https://mapy.cz/zakladni?q=Filip%C3%ADnsk%C3%A9ho%2059%2C%20Brno
+    googleMaps: https://www.google.com/maps/search/?api=1&query=Filip%C3%ADnsk%C3%A9ho+59%2C+Brno
+  social:
+    facebook: https://www.facebook.com/profile.php?id=61573306168822

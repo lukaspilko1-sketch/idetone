@@ -1,12 +1,438 @@
 ---
+/**
+ * Úvodní stránka – sekce a jejich pořadí se berou ze src/content/home.yaml.
+ */
+import { Picture } from 'astro:assets';
+import { getEntry, getEntries } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/Section.astro';
+import Button from '../components/Button.astro';
+import ImageSlot from '../components/ImageSlot.astro';
+import ProductFeature from '../components/ProductFeature.astro';
+import Quote from '../components/Quote.astro';
+import { features } from '../config/site';
+import { getHomeSections, getSettings } from '../utils/content';
+import { formatPrice, typo } from '../utils/format';
+import { url } from '../utils/url';
+
+// NÁVRH: ke schválení (meta popis úvodní stránky níže)
+const sections = await getHomeSections();
+const settings = await getSettings();
+
+// Načtení produktů, na které sekce odkazují
+const resolved = await Promise.all(
+  sections.map(async (section) => {
+    if (section.type === 'hero') {
+      return { section, product: await getEntry(section.product) };
+    }
+    if (section.type === 'models') {
+      return { section, products: await getEntries(section.products) };
+    }
+    return { section };
+  }),
+);
 ---
 
-<BaseLayout title="ideTone – reprosoustavy s citem pro hudbu">
-  <Section>
-    <span class="eyebrow">Reprosoustavy s citem pro hudbu</span>
-    <h1>ideTone</h1>
-    <p class="lead">Obsah úvodní stránky vznikne ve fázi F2.</p>
-  </Section>
+<BaseLayout
+  title="ideTone – reprosoustavy s citem pro hudbu"
+  description="Ručně laděné dvoupásmové reprosoustavy Sara a Reva od Petra Kocourka z Brna. Poslech ve studiu v Brně, objednávka a zakázkové projekty."
+>
+  {resolved.map((item) => {
+    const s = item.section;
+
+    if (s.type === 'hero' && 'product' in item && item.product) {
+      const p = item.product;
+      return (
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero__panel" aria-hidden="true" />
+          <div class="container hero__grid">
+            <div class="hero__text">
+              <span class="eyebrow">{s.eyebrow}</span>
+              <h1 id="hero-title">{typo(s.title)}</h1>
+              <p class="lead hero__lead">{typo(s.text)}</p>
+              <div class="hero__actions">
+                <Button href={s.primary.href}>{s.primary.label}</Button>
+                {s.secondary && (
+                  <Button href={s.secondary.href} variant="secondary">
+                    {s.secondary.label}
+                  </Button>
+                )}
+              </div>
+            </div>
+            <figure class="hero__visual">
+              <figcaption class="hero__caption mono">
+                <a href={url(`/reprosoustavy/${p.id}/`)}>{p.data.name}</a>
+                <span>{formatPrice(p.data.price)} / pár</span>
+              </figcaption>
+              <Picture
+                src={s.image.src}
+                alt={s.image.alt}
+                formats={['avif', 'webp']}
+                fallbackFormat="webp"
+                widths={[360, 560, 800]}
+                sizes="(min-width: 60rem) 400px, 70vw"
+                loading="eager"
+                fetchpriority="high"
+                class="hero__img"
+              />
+            </figure>
+          </div>
+        </section>
+      );
+    }
+
+    if (s.type === 'models' && 'products' in item && item.products) {
+      return (
+        <Section id="modely" labelledby="modely-title" reveal={false} class="models">
+          <header class="models__head" data-reveal>
+            {s.eyebrow && <span class="eyebrow">{s.eyebrow}</span>}
+            <h2 id="modely-title">{typo(s.title)}</h2>
+          </header>
+          <div class="models__list">
+            {item.products.map((product, i) => (
+              <ProductFeature product={product} variant={i % 2 === 0 ? 'tall' : 'compact'} />
+            ))}
+          </div>
+          {s.compareLink && (
+            <p class="models__compare" data-reveal>
+              <Button href={s.compareLink.href} variant="secondary">
+                {s.compareLink.label}
+              </Button>
+            </p>
+          )}
+        </Section>
+      );
+    }
+
+    if (s.type === 'quote') {
+      return (
+        <Section divider class="quote-section">
+          <Quote text={s.text} author={s.author} link={s.link} />
+        </Section>
+      );
+    }
+
+    if (s.type === 'technology') {
+      return (
+        <Section divider labelledby="technologie-title" reveal={false}>
+          <header class="tech__head" data-reveal>
+            {s.eyebrow && <span class="eyebrow">{s.eyebrow}</span>}
+            <h2 id="technologie-title">{typo(s.title)}</h2>
+          </header>
+          <div class="tech__list">
+            {s.items.map((t, i) => (
+              <article class:list={['tech__item', { 'tech__item--flip': i % 2 === 1 }]} data-reveal>
+                <div class="tech__media">
+                  {t.image ? (
+                    <Picture
+                      src={t.image.src}
+                      alt={t.image.alt}
+                      formats={['avif', 'webp']}
+                      fallbackFormat="webp"
+                      widths={[320, 560]}
+                      sizes="(min-width: 48rem) 320px, 70vw"
+                      class="tech__img"
+                    />
+                  ) : t.imageSlot ? (
+                    <ImageSlot ratio={t.imageSlot.ratio} label={t.imageSlot.label} />
+                  ) : null}
+                </div>
+                <div class="tech__body">
+                  <h3>{typo(t.title)}</h3>
+                  <p>{typo(t.text)}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+          {s.link && (
+            <p class="tech__more" data-reveal>
+              <Button href={s.link.href} variant="secondary">
+                {s.link.label}
+              </Button>
+            </p>
+          )}
+        </Section>
+      );
+    }
+
+    if (s.type === 'listening') {
+      return (
+        <Section tone="jedle" labelledby="poslech-title" space="m">
+          <div class="listen">
+            <div>
+              {s.eyebrow && <span class="eyebrow">{s.eyebrow}</span>}
+              <h2 id="poslech-title" class="listen__title">
+                {typo(s.title)}
+              </h2>
+              {s.text && <p class="listen__text">{typo(s.text)}</p>}
+            </div>
+            <div class="listen__side">
+              <address class="mono">
+                {settings.studio.street}
+                <br />
+                {settings.studio.city}
+              </address>
+              {settings.studio.parking && <p class="muted small">{settings.studio.parking}</p>}
+              <Button href={s.button.href} tone="dark">
+                {s.button.label}
+              </Button>
+            </div>
+          </div>
+        </Section>
+      );
+    }
+
+    // Reference: zobrazí se až se zapnutým flagem a skutečnými citacemi
+    if (s.type === 'references' && features.references) {
+      return null;
+    }
+
+    return null;
+  })}
 </BaseLayout>
+
+<style>
+  /* Hero */
+  .hero {
+    position: relative;
+    z-index: 1;
+    padding-top: clamp(var(--space-6), 5vw, var(--space-8));
+  }
+
+  .hero__grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--grid-gap);
+  }
+
+  .hero__text {
+    grid-column: 1 / -1;
+    padding-bottom: var(--space-7);
+  }
+
+  .hero h1 {
+    margin-top: var(--space-4);
+    max-width: 14ch;
+  }
+
+  .hero__lead {
+    margin-top: var(--space-5);
+    max-width: 42ch;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+
+  .hero__panel {
+    display: none;
+  }
+
+  /* Mobil: jedlová plocha pod textem přes celou šířku, produkt přesahuje dolů */
+  .hero__visual {
+    grid-column: 1 / -1;
+    position: relative;
+    margin-inline: calc(-1 * var(--gutter));
+    margin-bottom: calc(-1 * var(--space-8));
+    padding: var(--space-5) var(--gutter) 0;
+    isolation: isolate;
+  }
+
+  .hero__visual::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 var(--space-8);
+    z-index: -1;
+    background: var(--c-jedle);
+  }
+
+  .hero__caption {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    font-size: var(--fs-xs);
+    color: var(--c-on-dark-muted);
+  }
+
+  .hero__caption a {
+    color: var(--c-on-dark);
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .hero__caption a:hover {
+    color: var(--c-dub-light);
+  }
+
+  .hero__visual :global(.hero__img) {
+    width: min(78%, 22rem);
+    height: auto;
+    margin: var(--space-5) auto 0;
+    filter: drop-shadow(0 24px 30px rgb(0 0 0 / 0.28));
+  }
+
+  @media (min-width: 60rem) {
+    .hero {
+      padding-top: var(--space-9);
+    }
+
+    .hero__panel {
+      display: block;
+      position: absolute;
+      inset: 0 0 0 58%;
+      z-index: -1;
+      background: var(--c-jedle);
+    }
+
+    .hero__text {
+      grid-column: 1 / span 6;
+      align-self: center;
+      padding-bottom: var(--space-10);
+    }
+
+    .hero__visual {
+      grid-column: 8 / span 5;
+      margin: 0 0 calc(-1 * var(--space-9));
+      padding: 0;
+      align-self: end;
+    }
+
+    .hero__visual::before {
+      display: none;
+    }
+
+    .hero__visual :global(.hero__img) {
+      width: min(100%, 25rem);
+    }
+  }
+
+  /* Modely */
+  .models {
+    padding-top: calc(var(--section-space) + var(--space-8));
+  }
+
+  .models__head {
+    margin-bottom: var(--space-8);
+  }
+
+  .models__head h2,
+  .tech__head h2 {
+    margin-top: var(--space-3);
+  }
+
+  .models__list {
+    display: grid;
+    gap: var(--space-9);
+  }
+
+  .models__compare {
+    margin-top: var(--space-8);
+  }
+
+  @media (min-width: 60rem) {
+    .models {
+      padding-top: calc(var(--section-space) + var(--space-9));
+    }
+  }
+
+  /* Technologie */
+  .tech__head {
+    margin-bottom: var(--space-8);
+  }
+
+  .tech__list {
+    display: grid;
+    gap: var(--space-8);
+  }
+
+  .tech__item {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--space-5) var(--grid-gap);
+    align-items: center;
+  }
+
+  .tech__media,
+  .tech__body {
+    grid-column: 1 / -1;
+  }
+
+  .tech__media {
+    max-width: 18rem;
+  }
+
+  .tech__media :global(.tech__img) {
+    width: 100%;
+    height: auto;
+    filter: var(--product-shadow);
+  }
+
+  .tech__body p {
+    margin-top: var(--space-3);
+    max-width: 48ch;
+  }
+
+  .tech__more {
+    margin-top: var(--space-8);
+  }
+
+  @media (min-width: 48rem) {
+    .tech__media {
+      grid-column: 2 / span 4;
+      max-width: none;
+    }
+
+    .tech__body {
+      grid-column: 7 / span 5;
+    }
+
+    .tech__item--flip .tech__media {
+      grid-column: 8 / span 4;
+      grid-row: 1;
+    }
+
+    .tech__item--flip .tech__body {
+      grid-column: 1 / span 6;
+      grid-row: 1;
+    }
+  }
+
+  /* Poslech */
+  .listen {
+    display: grid;
+    gap: var(--space-7) var(--grid-gap);
+    align-items: end;
+  }
+
+  .listen__title {
+    margin-top: var(--space-3);
+    max-width: 16ch;
+  }
+
+  .listen__text {
+    margin-top: var(--space-4);
+    max-width: 44ch;
+    color: var(--c-on-dark-muted);
+  }
+
+  .listen__side {
+    display: grid;
+    gap: var(--space-4);
+    justify-items: start;
+  }
+
+  .listen__side address {
+    font-style: normal;
+    font-size: var(--fs-m);
+    line-height: 1.4;
+  }
+
+  @media (min-width: 48rem) {
+    .listen {
+      grid-template-columns: 7fr 4fr;
+    }
+  }
+</style>

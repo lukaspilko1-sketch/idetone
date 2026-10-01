@@ -1,0 +1,111 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import ImageSlot from '../components/ImageSlot.astro';
+import Button from '../components/Button.astro';
+import { getPage } from '../utils/content';
+
+const page = await getPage('o-idetone');
+const { data } = page;
+const { Content } = await render(page);
+---
+
+<BaseLayout title={`${data.seoTitle ?? data.title} | ideTone`} description={data.description}>
+  <div class="container about">
+    <div class="about__text">
+      <span class="eyebrow">{data.eyebrow}</span>
+      <h1>{data.title}</h1>
+      <div class="prose about__prose">
+        <Content />
+      </div>
+      {data.signature && (
+        <p class="signature">
+          {data.signature.greeting}
+          <span class="signature__name">{data.signature.name}</span>
+        </p>
+      )}
+    </div>
+    <div class="about__portrait">
+      <ImageSlot ratio="4/5" label="Foto: portrét Petra Kocourka – dodá klient" />
+    </div>
+  </div>
+
+  <Section divider space="m">
+    <ImageSlot ratio="3/2" label="Foto: dílna – dodá klient" />
+  </Section>
+
+  <Section space="s">
+    <div class="links">
+      <Button href="/reprosoustavy/">Prohlédnout modely</Button>
+      <Button href="/technologie/" variant="secondary">
+        Technologie
+      </Button>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .about {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--space-7) var(--grid-gap);
+    padding-block: clamp(var(--space-7), 6vw, var(--space-9)) var(--section-space);
+  }
+
+  .about__text,
+  .about__portrait {
+    grid-column: 1 / -1;
+  }
+
+  .about h1 {
+    margin-top: var(--space-3);
+  }
+
+  .about__prose {
+    margin-top: var(--space-6);
+    font-size: var(--fs-m);
+    line-height: 1.6;
+  }
+
+  .about__prose :global(p:first-child) {
+    font-family: var(--font-heading);
+    font-size: var(--fs-l);
+    line-height: 1.35;
+  }
+
+  .signature {
+    display: grid;
+    gap: var(--space-1);
+    margin-top: var(--space-7);
+    color: var(--c-muted);
+  }
+
+  .signature__name {
+    font-family: var(--font-heading);
+    font-size: var(--fs-l);
+    color: var(--c-grafit);
+  }
+
+  .about__portrait {
+    max-width: 24rem;
+  }
+
+  @media (min-width: 60rem) {
+    .about__text {
+      grid-column: 1 / span 7;
+    }
+
+    .about__portrait {
+      grid-column: 9 / span 4;
+      max-width: none;
+      padding-top: var(--space-10);
+    }
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+</style>

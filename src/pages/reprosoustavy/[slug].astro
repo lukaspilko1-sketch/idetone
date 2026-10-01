@@ -1,0 +1,414 @@
+---
+/**
+ * Detail produktu – společná šablona pro všechny modely, data ze src/content/products/*.md.
+ */
+import { Picture, getImage } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Section from '../../components/Section.astro';
+import Button from '../../components/Button.astro';
+import Gallery from '../../components/Gallery.astro';
+import SpecTable from '../../components/SpecTable.astro';
+import ImageSlot from '../../components/ImageSlot.astro';
+import { getProducts, type Product } from '../../utils/content';
+import { formatPrice, headedBlocks, typo } from '../../utils/format';
+import { url } from '../../utils/url';
+
+export async function getStaticPaths() {
+  const products = await getProducts();
+  return products.map((product) => ({
+    params: { slug: product.id },
+    props: { product, others: products.filter((p) => p.id !== product.id) },
+  }));
+}
+
+interface Props {
+  product: Product;
+  others: Product[];
+}
+
+const { product, others } = Astro.props;
+const { data } = product;
+const blocks = headedBlocks(product.body);
+const orderHref = `/kontakt/?model=${product.id}#objednavka`;
+const chartFull = data.impedanceChart
+  ? await getImage({ src: data.impedanceChart.src, format: 'webp' })
+  : undefined;
+const title = `${data.seo.title ?? `${data.name} – ${data.type}`} | ideTone`;
+---
+
+<BaseLayout title={title} description={data.seo.description}>
+  <div class="container product">
+    <div class="product__gallery">
+      <Gallery
+        name={data.name}
+        images={data.gallery}
+        slots={data.gallerySlots}
+        slotLabel={data.imageSlotLabel}
+      />
+    </div>
+
+    <div class="product__info">
+      <nav aria-label="Drobečková navigace" class="crumbs mono">
+        <a href={url('/reprosoustavy/')}>Reprosoustavy</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{data.name}</span>
+      </nav>
+      <span class="eyebrow">{data.type}</span>
+      <h1>{data.name}</h1>
+      <p class="product__intro">{typo(data.intro)}</p>
+
+      <p class="product__price">
+        <span class="price">{formatPrice(data.price)}</span>
+        <span class="muted"> / pár</span>
+      </p>
+      {data.accessories.map((a) => (
+        <p class="product__acc mono">
+          + {a.name.toLowerCase()} {formatPrice(a.price)} / pár
+        </p>
+      ))}
+
+      <div class="product__actions">
+        <Button href={orderHref}>Objednat</Button>
+        <Button href="/poslech/" variant="secondary">
+          Domluvit poslech
+        </Button>
+      </div>
+    </div>
+  </div>
+
+  {data.closing && (
+    <Section divider space="m">
+      <p class="closing">{typo(data.closing)}</p>
+    </Section>
+  )}
+
+  {blocks.length > 0 && (
+    <Section divider labelledby="konstrukce" space="m">
+      <h2 id="konstrukce" class="block-title">
+        Konstrukce
+      </h2>
+      <div class="blocks">
+        {blocks.map((b) => (
+          <div class="block">
+            <h3>{typo(b.title)}</h3>
+            {b.paragraphs.map((p) => (
+              <p>{typo(p)}</p>
+            ))}
+          </div>
+        ))}
+      </div>
+    </Section>
+  )}
+
+  <Section divider labelledby="specifikace" space="m">
+    <div class="specs">
+      <div>
+        <h2 id="specifikace" class="block-title">
+          Specifikace
+        </h2>
+        <SpecTable product={product} caption={`Specifikace ${data.name}`} />
+      </div>
+      <div>
+        <h2 class="block-title">Měření</h2>
+        {data.impedanceChart && chartFull ? (
+          <figure class="chart">
+            <a href={chartFull.src} class="chart__link" aria-label="Zvětšit graf impedance">
+              <Picture
+                src={data.impedanceChart.src}
+                alt={data.impedanceChart.alt}
+                formats={['avif', 'webp']}
+                fallbackFormat="webp"
+                sizes="(min-width: 60rem) 480px, 100vw"
+              />
+            </a>
+            <figcaption class="mono small muted">
+              Impedance {data.name} · kliknutím zvětšit
+            </figcaption>
+          </figure>
+        ) : (
+          <ImageSlot ratio="3/2" label={`Graf impedance ${data.name} – dodá klient`} />
+        )}
+      </div>
+    </div>
+  </Section>
+
+  {data.accessories.length > 0 && (
+    <Section divider labelledby="doplnky" space="m">
+      <div class="acc">
+        {data.accessories.map((a) => (
+          <div class="acc__item">
+            <span class="eyebrow">Doplněk</span>
+            <h2 id="doplnky" class="acc__title">
+              {a.name}
+            </h2>
+            {a.text && <p>{typo(a.text)}</p>}
+            <p class="acc__price">
+              <span class="price">{formatPrice(a.price)}</span>
+              <span class="muted"> / pár</span>
+            </p>
+          </div>
+        ))}
+        <ImageSlot ratio="4/5" label={`Foto: ${data.name} na stojanu – dodá klient`} />
+      </div>
+    </Section>
+  )}
+
+  <Section divider space="m">
+    <div class="next">
+      <a class="next__link" href={url('/reprosoustavy/#srovnani')}>
+        <span class="eyebrow">Srovnání</span>
+        <span class="next__title">
+          Porovnat modely <span aria-hidden="true">→</span>
+        </span>
+      </a>
+      {others.map((o) => (
+        <a class="next__link" href={url(`/reprosoustavy/${o.id}/`)}>
+          <span class="eyebrow">{o.data.type}</span>
+          <span class="next__title">
+            {o.data.name} <span aria-hidden="true">→</span>
+          </span>
+        </a>
+      ))}
+    </div>
+  </Section>
+
+  <!-- Mobil: lišta s cenou a objednávkou přichycená dole -->
+  <div class="buybar" aria-label={`Objednat ${data.name}`} role="region">
+    <span class="buybar__price">
+      <span class="mono small">{data.name}</span>
+      <span class="price">{formatPrice(data.price)}</span>
+    </span>
+    <Button href={orderHref}>Objednat</Button>
+  </div>
+</BaseLayout>
+
+<style>
+  .product {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--space-7) var(--grid-gap);
+    padding-top: var(--space-6);
+    padding-bottom: var(--section-space);
+  }
+
+  .product__gallery,
+  .product__info {
+    grid-column: 1 / -1;
+  }
+
+  .crumbs {
+    display: flex;
+    gap: var(--space-2);
+    margin-bottom: var(--space-6);
+    font-size: var(--fs-xs);
+    color: var(--c-muted);
+  }
+
+  .crumbs a {
+    color: var(--c-muted);
+  }
+
+  .product h1 {
+    margin-top: var(--space-2);
+    font-size: clamp(3rem, 2rem + 4vw, 4.5rem);
+    line-height: 1;
+  }
+
+  .product__intro {
+    margin-top: var(--space-5);
+  }
+
+  .product__price {
+    margin-top: var(--space-6);
+    padding-top: var(--space-5);
+    border-top: var(--border);
+  }
+
+  .product__price .price {
+    font-size: var(--fs-xl);
+  }
+
+  .product__acc {
+    margin-top: var(--space-2);
+    font-size: var(--fs-xs);
+    color: var(--c-muted);
+  }
+
+  .product__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+
+  @media (min-width: 60rem) {
+    .product__gallery {
+      grid-column: 1 / span 7;
+    }
+
+    .product__info {
+      grid-column: 9 / span 4;
+      align-self: start;
+      position: sticky;
+      top: calc(var(--header-h-scrolled) + var(--space-6));
+      padding-top: var(--space-6);
+    }
+  }
+
+  .closing {
+    max-width: 30ch;
+    font-family: var(--font-heading);
+    font-size: var(--fs-xl);
+    font-weight: 500;
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+
+  .block-title {
+    margin-bottom: var(--space-6);
+    font-size: var(--fs-l);
+  }
+
+  .blocks {
+    display: grid;
+    gap: var(--space-7) var(--grid-gap);
+  }
+
+  .block h3 {
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--c-grafit);
+    font-size: var(--fs-m);
+  }
+
+  .block p {
+    margin-top: var(--space-3);
+  }
+
+  @media (min-width: 48rem) {
+    .blocks {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .specs {
+    display: grid;
+    gap: var(--space-8) var(--grid-gap);
+  }
+
+  @media (min-width: 60rem) {
+    .specs {
+      grid-template-columns: 7fr 5fr;
+    }
+  }
+
+  .chart {
+    padding: var(--space-4);
+    background: var(--c-chart);
+    border: var(--border);
+  }
+
+  .chart__link {
+    display: block;
+    cursor: zoom-in;
+  }
+
+  .chart :global(img) {
+    width: 100%;
+    height: auto;
+  }
+
+  .chart figcaption {
+    margin-top: var(--space-3);
+  }
+
+  .acc {
+    display: grid;
+    gap: var(--space-7) var(--grid-gap);
+    align-items: end;
+  }
+
+  .acc__title {
+    margin-top: var(--space-2);
+  }
+
+  .acc__item p {
+    margin-top: var(--space-4);
+  }
+
+  .acc__price .price {
+    font-size: var(--fs-l);
+  }
+
+  .acc :global(.slot) {
+    max-width: 18rem;
+  }
+
+  @media (min-width: 48rem) {
+    .acc {
+      grid-template-columns: 7fr 5fr;
+    }
+  }
+
+  .next {
+    display: grid;
+    gap: var(--grid-gap);
+  }
+
+  .next__link {
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-5) 0;
+    border-top: 1px solid var(--c-grafit);
+    color: var(--c-grafit);
+    text-decoration: none;
+  }
+
+  .next__title {
+    font-family: var(--font-heading);
+    font-size: var(--fs-l);
+  }
+
+  .next__title span {
+    display: inline-block;
+    transition: transform var(--dur-fast) var(--ease);
+  }
+
+  .next__link:hover .next__title span {
+    transform: translateX(4px);
+  }
+
+  @media (min-width: 48rem) {
+    .next {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  /* Lišta s cenou na mobilu */
+  .buybar {
+    position: sticky;
+    bottom: 0;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--gutter);
+    background: var(--c-len);
+    border-top: var(--border);
+  }
+
+  .buybar__price {
+    display: grid;
+    line-height: 1.3;
+  }
+
+  .buybar__price .mono {
+    color: var(--c-muted);
+  }
+
+  @media (min-width: 48rem) {
+    .buybar {
+      display: none;
+    }
+  }
+</style>

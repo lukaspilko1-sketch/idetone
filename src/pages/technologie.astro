@@ -1,0 +1,142 @@
+---
+import { Picture } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import PageHeader from '../components/PageHeader.astro';
+import TextBlock from '../components/TextBlock.astro';
+import ImageSlot from '../components/ImageSlot.astro';
+import WaveguideFigure from '../components/WaveguideFigure.astro';
+import Button from '../components/Button.astro';
+import { getPage } from '../utils/content';
+import { typo } from '../utils/format';
+
+const { data } = await getPage('technologie');
+---
+
+<BaseLayout title={`${data.seoTitle ?? data.title} | ideTone`} description={data.description}>
+  <PageHeader eyebrow={data.eyebrow} title={data.title} lead={data.lead}>
+    <nav class="toc" aria-label="Obsah stránky">
+      <ul role="list">
+        {data.sections.map((s) => (
+          <li>
+            <a href={`#${s.id}`}>{s.title}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </PageHeader>
+
+  {data.sections.map((s, i) => (
+    <Section id={s.id} divider labelledby={`${s.id}-title`}>
+      <div class:list={['chapter', { 'chapter--flip': i % 2 === 1 }]}>
+        <div class="chapter__text">
+          {s.eyebrow && <span class="eyebrow">{s.eyebrow}</span>}
+          <h2 id={`${s.id}-title`}>{typo(s.title)}</h2>
+          <TextBlock text={s.text} list={s.list} subsections={s.subsections} />
+        </div>
+        <div class="chapter__media">
+          {s.image ? (
+            <Picture
+              src={s.image.src}
+              alt={s.image.alt}
+              formats={['avif', 'webp']}
+              fallbackFormat="webp"
+              widths={[320, 560, 800]}
+              sizes="(min-width: 60rem) 400px, 80vw"
+              class="chapter__img"
+            />
+          ) : s.imageSlot ? (
+            <ImageSlot ratio={s.imageSlot.ratio} label={s.imageSlot.label} />
+          ) : null}
+        </div>
+        {s.figure === 'waveguide' && (
+          <div class="chapter__figure">
+            <WaveguideFigure />
+          </div>
+        )}
+      </div>
+    </Section>
+  ))}
+
+  <Section tone="jedle" space="m">
+    <div class="cta">
+      <h2 class="h3">Rozdíl je nejlepší slyšet</h2>
+      <!-- NÁVRH: ke schválení -->
+      <Button href="/poslech/" tone="dark">
+        Domluvit poslech
+      </Button>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .toc ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-5);
+    margin-top: var(--space-7);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+  }
+
+  .chapter {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--space-7) var(--grid-gap);
+  }
+
+  .chapter__text,
+  .chapter__media,
+  .chapter__figure {
+    grid-column: 1 / -1;
+  }
+
+  .chapter__text h2 {
+    margin-block: var(--space-3) var(--space-6);
+  }
+
+  .chapter__media {
+    max-width: 22rem;
+  }
+
+  .chapter__media :global(.chapter__img) {
+    width: 100%;
+    height: auto;
+    filter: var(--product-shadow);
+  }
+
+  @media (min-width: 60rem) {
+    .chapter__text {
+      grid-column: 1 / span 6;
+    }
+
+    .chapter__media {
+      grid-column: 8 / span 4;
+      max-width: none;
+      padding-top: var(--space-9);
+    }
+
+    .chapter--flip .chapter__text {
+      grid-column: 6 / span 7;
+      grid-row: 1;
+    }
+
+    .chapter--flip .chapter__media {
+      grid-column: 1 / span 4;
+      grid-row: 1;
+      padding-top: 0;
+    }
+
+    .chapter__figure {
+      grid-column: 1 / span 10;
+    }
+  }
+
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-5);
+  }
+</style>

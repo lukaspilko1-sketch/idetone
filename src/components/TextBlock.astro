@@ -1,0 +1,85 @@
+---
+/** Text z obsahu: odstavce (oddělené prázdným řádkem), seznam a podsekce. */
+import { paragraphs, typo } from '../utils/format';
+
+interface Sub {
+  title: string;
+  text?: string;
+  list?: string[];
+}
+
+interface Props {
+  text?: string;
+  list?: string[];
+  subsections?: Sub[];
+  /** úroveň nadpisů podsekcí */
+  level?: 3 | 4;
+}
+
+const { text, list = [], subsections = [], level = 3 } = Astro.props;
+const H = `h${level}` as 'h3' | 'h4';
+---
+
+<div class="text-block">
+  {paragraphs(text).map((p) => (
+    <p>{typo(p)}</p>
+  ))}
+  {list.length > 0 && (
+    <ul class="text-block__list">
+      {list.map((item) => (
+        <li>{typo(item)}</li>
+      ))}
+    </ul>
+  )}
+  {subsections.map((sub) => (
+    <div class="text-block__sub">
+      <H class="text-block__title">{typo(sub.title)}</H>
+      {paragraphs(sub.text).map((p) => (
+        <p>{typo(p)}</p>
+      ))}
+      {sub.list && sub.list.length > 0 && (
+        <ul class="text-block__list">
+          {sub.list.map((item) => (
+            <li>{typo(item)}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  ))}
+</div>
+
+<style>
+  .text-block > * + *,
+  .text-block__sub > * + * {
+    margin-top: var(--space-4);
+  }
+
+  .text-block > .text-block__sub {
+    margin-top: var(--space-7);
+  }
+
+  .text-block__title {
+    font-size: var(--fs-m);
+  }
+
+  .text-block__list {
+    display: grid;
+    gap: var(--space-3);
+    padding: 0;
+    list-style: none;
+  }
+
+  .text-block__list li {
+    position: relative;
+    padding-left: var(--space-6);
+  }
+
+  .text-block__list li::before {
+    content: '';
+    position: absolute;
+    top: 0.8em;
+    left: 0;
+    width: var(--space-4);
+    border-top: 1px solid var(--c-dub);
+  }
+</style>

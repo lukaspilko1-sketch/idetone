@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import PageHeader from '../components/PageHeader.astro';
+import FormPlaceholder from '../components/FormPlaceholder.astro';
+import { getPage, getSettings } from '../utils/content';
+import { typo } from '../utils/format';
+
+const { data } = await getPage('zakazkove-projekty');
+const settings = await getSettings();
+---
+
+<BaseLayout title={`${data.seoTitle ?? data.title} | ideTone`} description={data.description}>
+  <PageHeader eyebrow={data.eyebrow} title={data.title} lead={data.lead} />
+
+  <Section divider labelledby="postup-title">
+    <h2 id="postup-title" class="title">
+      Postup spolupráce
+    </h2>
+    <ol role="list" class="steps">
+      {data.steps.map((step, i) => (
+        <li class="step">
+          <span class="step__num mono" aria-hidden="true">
+            {String(i + 1).padStart(2, '0')}
+          </span>
+          <h3>{typo(step.title)}</h3>
+          <p>{typo(step.text)}</p>
+        </li>
+      ))}
+    </ol>
+  </Section>
+
+  <Section divider>
+    <div class="form-wrap">
+      <FormPlaceholder
+        id="poptavka"
+        title="Nezávazná poptávka"
+        email={settings.contact.email}
+        subject="ideTone – zakázka"
+      />
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .title {
+    margin-bottom: var(--space-7);
+  }
+
+  .steps {
+    display: grid;
+    gap: var(--space-7) var(--grid-gap);
+    counter-reset: step;
+  }
+
+  .step {
+    max-width: none;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--c-grafit);
+  }
+
+  .step__num {
+    display: block;
+    margin-bottom: var(--space-5);
+    font-size: var(--fs-l);
+    color: var(--c-dub);
+  }
+
+  .step h3 {
+    font-size: var(--fs-m);
+  }
+
+  .step p {
+    margin-top: var(--space-3);
+  }
+
+  @media (min-width: 48rem) {
+    .steps {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 72rem) {
+    .steps {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .form-wrap {
+    max-width: 48rem;
+  }
+</style>
