@@ -306,6 +306,11 @@ const resolved = await Promise.all(
     display: block;
   }
 
+  /* Další řádky nadpisu („Emoce i klid. Na celý život.“) o něco menší než hlavní věta */
+  .hero__line + .hero__line {
+    font-size: 0.8em;
+  }
+
   .hero__lead {
     margin-top: var(--space-5);
     max-width: 40ch;
@@ -361,9 +366,10 @@ const resolved = await Promise.all(
       column-gap: var(--space-7);
     }
 
-    /* Text začíná nahoře (bez prázdného místa nad ním) */
+    /* Text začíná nahoře s menším odsazením od hlavičky (cca polovina původního) */
     .hero__text {
       align-self: start;
+      padding-top: var(--space-7);
       container-type: inline-size;
     }
 
