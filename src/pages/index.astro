@@ -72,7 +72,25 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
               <h1 id="hero-title" class="hero__in" style="--i: 1">
                 {/* každý řádek z home.yaml = jedna věta */}
                 {s.title.split(/\r?\n/).map((line) => (
-                  <span class="hero__line">{typo(line.trim())}</span>
+                  <span class="hero__line">
+                    {/* „|“ jako jemný oddělovač */}
+                    {typo(line.trim())
+                      .split(' | ')
+                      .map((part, j) => (
+                        <>
+                          {j > 0 && (
+                            <>
+                              {/* před oddělovačem nezlomitelná mezera – řádek se láme až za ním */}
+                              {' '}
+                              <span class="hero__sep" aria-hidden="true">
+                                |
+                              </span>{' '}
+                            </>
+                          )}
+                          <span class="hero__part">{part}</span>
+                        </>
+                      ))}
+                  </span>
                 ))}
               </h1>
               <p class="lead hero__lead hero__in" style="--i: 2">
@@ -351,8 +369,23 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
   }
 
   /* Další řádky nadpisu („Emoce i klid. Na celý život.“) o něco menší než hlavní věta */
+  /* Druhý řádek („Emoce | Klid | Hodiny poslechu bez únavy“): menší, v dubu, s větší mezerou */
   .hero__line + .hero__line {
-    font-size: 0.8em;
+    margin-top: var(--space-4);
+    font-size: 0.56em;
+    letter-spacing: 0;
+    color: var(--c-dub-text);
+  }
+
+  /* část věty se nezalomí uvnitř, řádek se láme jen u oddělovače */
+  .hero__line + .hero__line .hero__part {
+    white-space: nowrap;
+  }
+
+  .hero__sep {
+    margin-inline: 0.2em;
+    color: var(--c-dub);
+    font-weight: 400;
   }
 
   .hero__lead {

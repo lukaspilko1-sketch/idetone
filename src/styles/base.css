@@ -229,13 +229,13 @@ hr {
 @media (prefers-reduced-motion: no-preference) {
   .js [data-reveal] {
     transition:
-      opacity var(--dur-reveal) var(--ease),
-      transform var(--dur-reveal) var(--ease);
+      opacity var(--dur-reveal) var(--ease-calm),
+      transform var(--dur-reveal) var(--ease-calm);
   }
 
   .js [data-reveal]:not(.is-revealed) {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(var(--reveal-shift));
   }
 }
 
@@ -290,7 +290,7 @@ hr {
 /* Fotky: odhalení clip-path zdola nahoru (dávka 1.3), jednou, jen s JS a bez omezení pohybu */
 @media (prefers-reduced-motion: no-preference) {
   .js [data-reveal-img] {
-    transition: clip-path var(--dur-img-reveal) var(--ease-out);
+    transition: clip-path var(--dur-img-reveal) var(--ease-calm);
   }
 
   .js [data-reveal-img]:not(.is-revealed) {

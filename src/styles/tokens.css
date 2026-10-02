@@ -115,7 +115,7 @@
     33svh,
     22rem
   ); /* výška kresby v hero (mobil) – hero max. jedna obrazovka */
-  --dur-header: 320ms;
+  --dur-header: 500ms;
 
   /* Tvary */
   /* Zaoblení (dávka 3.5): manufaktura = měkčí hrany. Vyříznuté produkty a kresba bez zaoblení. */
@@ -130,12 +130,15 @@
 
   /* Pohyb */
   --ease: cubic-bezier(0.2, 0.6, 0.2, 1);
-  --dur-fast: 180ms;
-  --dur-reveal: 700ms; /* odkrytí sekcí při scrollu */
-  --dur-img-reveal: 1000ms; /* odkrytí fotek (clip-path) */
-  --dur-fade: 500ms; /* prolnutí při omezeném pohybu */
-  --dur-hover-img: 700ms; /* zvětšení fotky modelu při najetí */
-  --dur-page: 400ms; /* přechod mezi stránkami */
+  /* Animace mimo hero – pomalé a klidné (prémiový dojem) */
+  --dur-fast: 450ms; /* hover tlačítek, odkazů, šipek */
+  --dur-reveal: 1400ms; /* odkrytí sekcí při scrollu */
+  --dur-img-reveal: 1800ms; /* odkrytí fotek (clip-path) */
+  --dur-fade: 900ms; /* prolnutí při omezeném pohybu */
+  --dur-hover-img: 1200ms; /* zvětšení fotky modelu při najetí */
+  --dur-page: 700ms; /* přechod mezi stránkami */
+  --reveal-shift: 24px; /* posun sekcí při odkrytí */
+  --ease-calm: cubic-bezier(0.22, 1, 0.36, 1); /* dlouhý, měkký dojezd */
   /* Hero: pomalé, efektní „kreslení“ kresby a psaní podpisu */
   --dur-hero-in: 800ms; /* nástup textu */
   --hero-stagger: 140ms; /* rozestup nástupu prvků */

@@ -296,3 +296,21 @@ Na úvodu stačí zkrácené verze (1–2 věty), plné texty na stránce Techno
 ### Výstup dávky 4
 1. Screenshoty úvodu a stránky Poslech (375 / 1280 px).
 2. Výsledky axe (kontrast tlačítek a textu na dubu).
+
+---
+
+## Dávka 5 – druhý řádek hero, prémiově pomalejší animace
+
+**Stav:** HOTOVO (2. 10. 2026) – zadání Lukáše přímo v Claude Code
+**Datum:** 2. 10. 2026
+
+### 5.1 Hero – druhý řádek nadpisu
+- Text „Emoce i klid. Hodiny poslechu bez únavy.“ → **„Emoce | Klid | Hodiny poslechu bez únavy“** (`home.yaml`).
+- Menší písmo (0,56 × hlavní nadpis), barva dub (`--c-dub-text`, oddělovače `|` v `--c-dub`), větší mezera nad řádkem (`--space-4`).
+- Části se nezalamují uvnitř, řádek se láme jen za oddělovačem (na mobilu „Emoce | Klid |“ / „Hodiny poslechu bez únavy“).
+
+### 5.2 Pomalejší animace mimo hero (prémiový, klidný dojem)
+- Odkrytí sekcí 0,7 → 1,4 s a posun 12 → 24 px, odkrytí fotek 1 → 1,8 s, zvětšení fotky modelu 0,7 → 1,2 s, hover tlačítek / odkazů / šipek 180 → 450 ms, přechod mezi stránkami 0,4 → 0,7 s, změna hlavičky 320 → 500 ms, prolnutí při omezeném pohybu 0,5 → 0,9 s.
+- Měkčí dojezd `--ease-calm`. Animace v hero beze změny.
+- Vše v tokenech (`tokens.css`), testy (99) zelené.
+
