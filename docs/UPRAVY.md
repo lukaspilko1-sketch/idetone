@@ -9,8 +9,16 @@ Pokyn pro Claude Code: *„Přečti docs/UPRAVY.md a proveď dávku N.“*
 
 ## Dávka 1 – hlavička, modely, animace, typografie na mobilu, ilustrační fotky
 
-**Stav:** SCHVÁLENO
+**Stav:** HOTOVO (2. 10. 2026)
 **Datum:** 2. 10. 2026
+
+**Výsledek:**
+- 1.1 Hlavička pevně nahoře (obsah má rezervu, zmenšení nic neposouvá): desktop velké logo na střed (Plex Mono 600, `clamp(40px, 5.4vw, 68px)`, prostrkání 0,3 em), vpravo Objednat, pod tím menu verzálkami 14 px; po scrollu jeden řádek s logem 22 px vlevo, světlé sklo 0,88 + blur 16 px + linka. Mobil logo 28 → 18 px na střed, vpravo „Menu“. Hero na 1280×800 ukazuje nadpis i tlačítka.
+- 1.2 `showPrices: false` v `home.yaml` (ceny na úvodu vypnuté, štítek v hero „Sara · sloupová reprosoustava“); název modelu `--fs-model` 48 → 96 px; Sara a Reva vedle sebe (7 : 5, Reva odsazená s linkou), sekce na 1280 px 1 148 px (z toho ~180 px rezerva pod produktem přesahujícím z hero, dříve ~1 700 px); Reva = obrysová kresba „Foto připravujeme“ (úvod, přehled, detail).
+- 1.3 Ken Burns pozadí hero (28 s, max. 1,08), nástup prvků hero (80 ms rozestup, do 700 ms), produkt se vynoří a má parallax; odhalení fotek clip-path; hover modelů; View Transitions (fotka modelu přejde do galerie detailu); komponenta `HeroMedia` s podporou videa. Vše bez knihoven, vypnuté při `prefers-reduced-motion`.
+- 1.4 Sémantické tokeny písma (`--fs-body`, `--fs-lead`, `--fs-data`, `--fs-small`, `--fs-label`, `--fs-legal`, `--fs-quote`, `--fs-model`) na všech stránkách; citát v Figtree 400 s větším řádkováním.
+- 1.5 7 ilustrací v `src/assets/uploads/ai/` s `placeholder: true` (výpis v `npm run todo`), jemné sjednocení `--photo-ai-filter`; Technologie na úvodu = jedna fotka + tři sloupce s odkazy. Na produktových místech AI fotky nejsou.
+- Lighthouse mobil: úvod 98 / 100 / 100 / 100, Sara 96 / 100 / 100 / 100; axe bez nálezů; 97 funkčních testů zelených.
 **Kontext:** design se bude dál ladit podle oblíbených webů klienta. Úpravy dělej přes tokeny a komponenty, ať jde vzhled později snadno měnit.
 
 ### 1.1 Hlavička: velké logo na střed, menu pod ním (priorita: vysoká)

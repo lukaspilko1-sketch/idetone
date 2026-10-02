@@ -5,6 +5,16 @@ seoTitle: Technologie – zvukovod, regulace výšek, bassreflex
 description: Zvukovod u výškového reproduktoru, regulace výšek −1 / 0 / +1 dB a bassreflex vyvedený dolů. Konstrukční řešení reprosoustav ideTone.
 eyebrow: Technologie
 lead: Tři konstrukční řešení, která společně určují, jak reprosoustavy ideTone hrají v běžném obývacím pokoji.
+# Dočasné AI ilustrace (placeholder: true) – před spuštěním nahradit skutečnými fotkami
+photos:
+  - src: ../../assets/uploads/ai/dilna-vyhybka.png
+    alt: Ilustrační foto – ruce pájí cívky a kondenzátory frekvenční výhybky
+    placeholder: true
+    source: AI ilustrace – nahradit
+  - src: ../../assets/uploads/ai/mereni.png
+    alt: Ilustrační foto – měřicí mikrofon a notebook s grafem frekvenční charakteristiky
+    placeholder: true
+    source: AI ilustrace – nahradit
 sections:
   - id: zvukovod
     eyebrow: Výškový reproduktor

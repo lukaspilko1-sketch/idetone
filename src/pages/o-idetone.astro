@@ -4,6 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/Section.astro';
 import ImageSlot from '../components/ImageSlot.astro';
 import Button from '../components/Button.astro';
+import Photo from '../components/Photo.astro';
 import { getPage } from '../utils/content';
 
 const page = await getPage('o-idetone');
@@ -35,9 +36,29 @@ const { Content } = await render(page);
     </div>
   </div>
 
-  <Section divider space="m">
-    <ImageSlot ratio="3/2" label="Foto: dílna – dodá klient" />
-  </Section>
+  {data.photos.length > 0 && (
+    <Section divider space="m">
+      <div class="gallery-row">
+        <Photo
+          src={data.photos[0].src}
+          alt={data.photos[0].alt}
+          placeholder={data.photos[0].placeholder}
+          ratio="3/2"
+          sizes="(min-width: 64rem) 760px, 100vw"
+          class="gallery-row__main"
+        />
+        {data.photos.slice(1, 3).map((p, i) => (
+          <Photo
+            src={p.src}
+            alt={p.alt}
+            placeholder={p.placeholder}
+            ratio={i === 0 ? '3/2' : '4/5'}
+            sizes="(min-width: 64rem) 380px, 50vw"
+          />
+        ))}
+      </div>
+    </Section>
+  )}
 
   <Section space="s">
     <div class="links">
@@ -104,6 +125,27 @@ const { Content } = await render(page);
       grid-column: 9 / span 4;
       max-width: none;
       padding-top: var(--space-10);
+    }
+  }
+
+  .gallery-row {
+    display: grid;
+    gap: var(--grid-gap);
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+  }
+
+  .gallery-row :global(.gallery-row__main) {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 64rem) {
+    .gallery-row {
+      grid-template-columns: 2fr 1fr 0.8fr;
+    }
+
+    .gallery-row :global(.gallery-row__main) {
+      grid-column: auto;
     }
   }
 

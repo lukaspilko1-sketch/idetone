@@ -287,154 +287,154 @@ const messages = {
 
   onPage(() => {
     document.querySelectorAll<HTMLFormElement>('[data-cf]').forEach((form) => {
-    const msg: Messages = JSON.parse(form.dataset.messages ?? '{}');
-    const email = form.dataset.email ?? '';
-    const status = form.querySelector<HTMLElement>('[data-status]')!;
-    const submit = form.querySelector<HTMLButtonElement>('[data-submit]')!;
-    const submitLabel = form.querySelector<HTMLElement>('[data-submit-label]')!;
-    const defaultLabel = submitLabel.textContent ?? '';
-    const success = form.parentElement?.querySelector<HTMLElement>('[data-success]');
-    const model = form.querySelector<HTMLSelectElement>('[data-model]');
-    const stands = form.querySelector<HTMLFieldSetElement>('[data-stands]');
-    const subject = form.querySelector<HTMLInputElement>('[data-subject]');
-    let attempted = false;
+      const msg: Messages = JSON.parse(form.dataset.messages ?? '{}');
+      const email = form.dataset.email ?? '';
+      const status = form.querySelector<HTMLElement>('[data-status]')!;
+      const submit = form.querySelector<HTMLButtonElement>('[data-submit]')!;
+      const submitLabel = form.querySelector<HTMLElement>('[data-submit-label]')!;
+      const defaultLabel = submitLabel.textContent ?? '';
+      const success = form.parentElement?.querySelector<HTMLElement>('[data-success]');
+      const model = form.querySelector<HTMLSelectElement>('[data-model]');
+      const stands = form.querySelector<HTMLFieldSetElement>('[data-stands]');
+      const subject = form.querySelector<HTMLInputElement>('[data-subject]');
+      let attempted = false;
 
-    // Vlastní validace (bez JS platí validace prohlížeče)
-    form.noValidate = true;
+      // Vlastní validace (bez JS platí validace prohlížeče)
+      form.noValidate = true;
 
-    // Předvyplnění modelu z URL (?model=sara)
-    const wanted = new URLSearchParams(location.search).get('model');
-    if (model && wanted) {
-      const option = [...model.options].find((o) => o.dataset.id === wanted);
-      if (option) model.value = option.value;
-    }
-
-    // Stojany jen u Revy, předmět e-mailu podle modelu
-    const syncModel = () => {
-      const id = model?.selectedOptions[0]?.dataset.id;
-      if (stands) {
-        const isReva = id === 'reva';
-        stands.hidden = !isReva;
-        stands.disabled = !isReva;
-      }
-      if (subject && form.dataset.type === 'order' && model) {
-        subject.value = `${msg.subject} ${model.value}`;
-      }
-    };
-    model?.addEventListener('change', syncModel);
-    syncModel();
-
-    const fieldError = (input: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement) => {
-      const v = input.validity;
-      if (v.valid) return '';
-      if (input.type === 'checkbox') return msg.consent;
-      if (v.valueMissing) return fill(msg.required, { label: input.dataset.label ?? '' });
-      if (input.type === 'email') return msg.email;
-      if (input.type === 'tel') return msg.phone;
-      return fill(msg.required, { label: input.dataset.label ?? '' });
-    };
-
-    const showError = (
-      input: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement,
-      text: string,
-    ) => {
-      const box = form.querySelector<HTMLElement>(`#${CSS.escape(input.id)}-error`);
-      if (!box) return;
-      box.textContent = text;
-      box.hidden = !text;
-      if (text) {
-        input.setAttribute('aria-invalid', 'true');
-        input.setAttribute('aria-describedby', box.id);
-      } else {
-        input.removeAttribute('aria-invalid');
-        input.removeAttribute('aria-describedby');
-      }
-    };
-
-    const validate = () => {
-      const inputs = [
-        ...form.querySelectorAll<HTMLInputElement>('input[required], select[required]'),
-        ...form.querySelectorAll<HTMLInputElement>('input[type="email"], input[type="tel"]'),
-      ];
-      let first: HTMLElement | null = null;
-      for (const input of new Set(inputs)) {
-        const text = fieldError(input);
-        showError(input, text);
-        if (text && !first) first = input;
-      }
-      return first;
-    };
-
-    form.addEventListener('input', () => {
-      if (attempted) validate();
-    });
-
-    const setStatus = (text: string) => {
-      status.textContent = text;
-      status.hidden = !text;
-    };
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      attempted = true;
-      setStatus('');
-
-      const invalid = validate();
-      if (invalid) {
-        setStatus(msg.summary);
-        invalid.focus();
-        return;
+      // Předvyplnění modelu z URL (?model=sara)
+      const wanted = new URLSearchParams(location.search).get('model');
+      if (model && wanted) {
+        const option = [...model.options].find((o) => o.dataset.id === wanted);
+        if (option) model.value = option.value;
       }
 
-      const endpoint = form.dataset.endpoint;
-      if (!endpoint) {
-        setStatus(fill(msg.inactive, { email }));
-        return;
-      }
+      // Stojany jen u Revy, předmět e-mailu podle modelu
+      const syncModel = () => {
+        const id = model?.selectedOptions[0]?.dataset.id;
+        if (stands) {
+          const isReva = id === 'reva';
+          stands.hidden = !isReva;
+          stands.disabled = !isReva;
+        }
+        if (subject && form.dataset.type === 'order' && model) {
+          subject.value = `${msg.subject} ${model.value}`;
+        }
+      };
+      model?.addEventListener('change', syncModel);
+      syncModel();
 
-      const data = Object.fromEntries(new FormData(form));
-      delete data._next;
+      const fieldError = (input: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement) => {
+        const v = input.validity;
+        if (v.valid) return '';
+        if (input.type === 'checkbox') return msg.consent;
+        if (v.valueMissing) return fill(msg.required, { label: input.dataset.label ?? '' });
+        if (input.type === 'email') return msg.email;
+        if (input.type === 'tel') return msg.phone;
+        return fill(msg.required, { label: input.dataset.label ?? '' });
+      };
 
-      submit.disabled = true;
-      submitLabel.textContent = msg.sending;
-      form.setAttribute('aria-busy', 'true');
+      const showError = (
+        input: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement,
+        text: string,
+      ) => {
+        const box = form.querySelector<HTMLElement>(`#${CSS.escape(input.id)}-error`);
+        if (!box) return;
+        box.textContent = text;
+        box.hidden = !text;
+        if (text) {
+          input.setAttribute('aria-invalid', 'true');
+          input.setAttribute('aria-describedby', box.id);
+        } else {
+          input.removeAttribute('aria-invalid');
+          input.removeAttribute('aria-describedby');
+        }
+      };
 
-      try {
-        const res = await fetch(endpoint, {
-          method: 'POST',
-          headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-          body: JSON.stringify(data),
-        });
-        if (res.ok) {
-          form.hidden = true;
-          if (success) {
-            success.hidden = false;
-            success.focus();
-          }
+      const validate = () => {
+        const inputs = [
+          ...form.querySelectorAll<HTMLInputElement>('input[required], select[required]'),
+          ...form.querySelectorAll<HTMLInputElement>('input[type="email"], input[type="tel"]'),
+        ];
+        let first: HTMLElement | null = null;
+        for (const input of new Set(inputs)) {
+          const text = fieldError(input);
+          showError(input, text);
+          if (text && !first) first = input;
+        }
+        return first;
+      };
+
+      form.addEventListener('input', () => {
+        if (attempted) validate();
+      });
+
+      const setStatus = (text: string) => {
+        status.textContent = text;
+        status.hidden = !text;
+      };
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        attempted = true;
+        setStatus('');
+
+        const invalid = validate();
+        if (invalid) {
+          setStatus(msg.summary);
+          invalid.focus();
           return;
         }
-        // Chyby u konkrétních polí z Formspree (např. neplatný e-mail)
-        const body = await res.json().catch(() => ({}));
-        const errors: { field?: string; message?: string }[] = body.errors ?? [];
-        let marked = false;
-        for (const err of errors) {
-          const input = err.field
-            ? form.querySelector<HTMLInputElement>(`[name="${CSS.escape(err.field)}"]`)
-            : null;
-          if (input?.id) {
-            showError(input, input.type === 'email' ? msg.email : (err.message ?? ''));
-            marked = true;
-          }
+
+        const endpoint = form.dataset.endpoint;
+        if (!endpoint) {
+          setStatus(fill(msg.inactive, { email }));
+          return;
         }
-        setStatus(marked ? msg.summary : fill(msg.server, { email }));
-      } catch {
-        setStatus(fill(msg.network, { email }));
-      } finally {
-        submit.disabled = false;
-        submitLabel.textContent = defaultLabel;
-        form.removeAttribute('aria-busy');
-      }
-    });
+
+        const data = Object.fromEntries(new FormData(form));
+        delete data._next;
+
+        submit.disabled = true;
+        submitLabel.textContent = msg.sending;
+        form.setAttribute('aria-busy', 'true');
+
+        try {
+          const res = await fetch(endpoint, {
+            method: 'POST',
+            headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          });
+          if (res.ok) {
+            form.hidden = true;
+            if (success) {
+              success.hidden = false;
+              success.focus();
+            }
+            return;
+          }
+          // Chyby u konkrétních polí z Formspree (např. neplatný e-mail)
+          const body = await res.json().catch(() => ({}));
+          const errors: { field?: string; message?: string }[] = body.errors ?? [];
+          let marked = false;
+          for (const err of errors) {
+            const input = err.field
+              ? form.querySelector<HTMLInputElement>(`[name="${CSS.escape(err.field)}"]`)
+              : null;
+            if (input?.id) {
+              showError(input, input.type === 'email' ? msg.email : (err.message ?? ''));
+              marked = true;
+            }
+          }
+          setStatus(marked ? msg.summary : fill(msg.server, { email }));
+        } catch {
+          setStatus(fill(msg.network, { email }));
+        } finally {
+          submit.disabled = false;
+          submitLabel.textContent = defaultLabel;
+          form.removeAttribute('aria-busy');
+        }
+      });
     });
   });
 </script>

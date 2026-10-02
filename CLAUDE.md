@@ -26,18 +26,20 @@ Web českého výrobce high-end reprosoustav ideTone (Petr Kocourek, Brno). Spra
 - `robots.txt` generuje `src/pages/robots.txt.ts` podle `PUBLIC_INDEXING`
 - Nasazení na Pages se zapne proměnnou repozitáře `PAGES_DEPLOY=true`; workflow: build + `check` + `links` a testy, deploy jen z `main` po úspěchu obou
 
-## Design tokeny (verze 0.4, mění se jen v `src/styles/tokens.css`)
+## Design tokeny (verze 0.5, mění se jen v `src/styles/tokens.css`)
 - Len `#E9E6DF` (pozadí) · Papír `#F5F3EE` (karty) · Uhel `#262422` (teplý antracit; těžké plochy, CTA, patička; token `--c-uhel`, `Section tone="uhel"`)
 - Dub `#A8743F` (akcent, „Tone“ v logu; text v odkazech `#8A5C2E`) · Grafit `#1F2421` (text) · Šalvěj `#8E9B88`
 - Zaoblení 0–2 px, bez gradientů, bez emoji, bez stínů všude, jen světlý režim
 - Sklo (glass, od 1. 10. 2026 na přání Lukáše, ruší zákaz glassmorphismu ze zadání): tmavé plochy (hero panel, `Section tone="uhel"`, patička) = `GlassBackdrop` (rozostřená fotka dřeva pod průsvitným Uhlem); skleněné karty `--glass-card` + `--glass-edge` + `backdrop-filter`; mobilní menu a lightbox `--glass-overlay`; hlavička po scrollu a lišta s cenou `--glass-light`. Tokeny `--glass-*` v `tokens.css`, bez podpory backdrop-filter plné barvy
-- Logo: „ideTone“ strojopisem, prostrkané, „ide“ grafit + „Tone“ dub; komponenta `Logo.astro` (inline SVG, varianty `dark` / `light`). Výměna loga = přepsat jen `Logo.astro`
+- Logo: „ideTone“ IBM Plex Mono 600, prostrkání 0,3 em, „ide“ grafit + „Tone“ dub; komponenta `Logo.astro` (inline SVG na jednom řádku kvůli mezerám – `prettier-ignore`, varianty `dark` / `light`, `height` = velikost písma). Výměna loga = přepsat jen `Logo.astro`
+- Typografie jen přes sémantické tokeny: `--fs-body` (odstavce 17/18), `--fs-lead` (perex, jen první odstavec), `--fs-data` (strojopis min. 14), `--fs-small` (poznámky min. 14), `--fs-label` (štítky 13, 1–3 slova), `--fs-legal` (copyright 13), `--fs-quote`, `--fs-model` (název modelu 48–96); nadpisy `--fs-xxl…--fs-m`
 - Favicon: `public/favicon.svg` (T dubem na tmavé ploše), PNG verze generuje `npm run favicons`
-- Pohyb jen dvakrát: odkrytí sekcí (`data-reveal`, řeší `Section`) a posun šipky v `Button`; vše vypnuté při `prefers-reduced-motion`
+- Pohyb (dávka 1.3): odkrytí sekcí `data-reveal`, fotek `data-reveal-img` (clip-path), nástup hero (CSS), Ken Burns pozadí hero, parallax produktu, hover modelů, šipky tlačítek, View Transitions. Vše vypnuté při `prefers-reduced-motion`, obsah viditelný bez JS
+- View Transitions (`<ClientRouter />` v `BaseLayout`): skripty komponent spouštět přes `onPage()` z `src/utils/lifecycle.ts` (posluchače s `{ signal }`), ne přímo
 
 ## Komponenty (`src/components/`)
-- `Logo`, `Button` (`variant` primary/secondary, `tone` light/dark, `arrow`), `Section` (`tone` len/papir/uhel, `divider`, `space`, `width`), `ImageSlot` (`ratio` 4/5, 16/9, 1/1, 3/2, `label`, volitelně `src` + `alt`), `Header` (sticky, zmenšení po scrollu, mobilní menu přes celou obrazovku, bez JS vede „Menu“ do patičky), `Footer`
-- Obsahové: `ProductFeature` (blok modelu, `variant` tall/compact – záměrně ne dvě stejné karty), `SpecTable`, `CompareTable` (generovaná z kolekce products, sticky první sloupec), `Gallery` (šipky, miniatury, swipe, lightbox `<dialog>`, bez JS odkazy na velké fotky; bez fotek ImageSlot), `Quote`, `WaveguideFigure` (SVG schéma zvukovodu), `PageHeader`, `TextBlock` (odstavce/seznam/podsekce z frontmatteru), `ContactForm` (`type` order/listening/custom; Formspree přes fetch + JSON, české validační hlášky, stavy odesílám/úspěch/chyba, honeypot `_gotcha`, souhlas GDPR, `?model=` předvyplní model, stojany jen u Revy; bez JS klasický POST)
+- `Logo`, `Button` (`variant` primary/secondary, `tone` light/dark, `arrow`), `Section` (`tone` len/papir/uhel, `divider`, `space`, `width`, `glass`/`glassImage` pro tón uhel), `ImageSlot` (`ratio` 4/5, 16/9, 1/1, 3/2, `label`), `Photo` (obsahová fotka s ořezem, `placeholder` → filtr AI), `HeroMedia` (pozadí hero: fotka s Ken Burns nebo video), `ProductSilhouette` (obrysová kresba, když chybí fotka modelu), `Header` (fixed, nahoře velké logo na střed + menu pod ním, po scrollu jeden řádek; rezerva `--header-top-h` na `main`; mobil logo na střed + „Menu“), `Footer`
+- Obsahové: `ProductFeature` (blok modelu, `variant` tall/compact – záměrně ne dvě stejné karty, `showPrice`, rozvržení přes container queries, `transition:name` `model-<id>` sdílený s `Gallery`), `SpecTable`, `CompareTable` (generovaná z kolekce products, sticky první sloupec), `Gallery` (šipky, miniatury, swipe, lightbox `<dialog>`, bez JS odkazy na velké fotky; bez fotek ImageSlot), `Quote`, `WaveguideFigure` (SVG schéma zvukovodu), `PageHeader`, `TextBlock` (odstavce/seznam/podsekce z frontmatteru), `ContactForm` (`type` order/listening/custom; Formspree přes fetch + JSON, české validační hlášky, stavy odesílám/úspěch/chyba, honeypot `_gotcha`, souhlas GDPR, `?model=` předvyplní model, stojany jen u Revy; bez JS klasický POST)
 - `BaseLayout` (`title`, `description` povinný, `noindex`, `image` OG, `ogType`, `crumbs` pro BreadcrumbList, `jsonLd`), `ProsePage` (právní stránky z Markdownu)
 - SEO: canonical, OG + Twitter, JSON-LD (Organization na všech stránkách, LocalBusiness na úvodu/Poslech/Kontakt, Product + Offer u modelů, BreadcrumbList) v `src/utils/seo.ts`; hreflang se vypíše až s `features.english`
 - OG obrázky 1200×630: `public/og/<id>.png`, předloha `/og-nahled/<id>/` (jen dev), generuje `npm run og` (po změně ceny, názvu nebo fotky modelu spustit znovu; nový model doplnit do `tests/og.gen.ts`)
@@ -47,7 +49,8 @@ Web českého výrobce high-end reprosoustav ideTone (Petr Kocourek, Brno). Spra
 
 ## Kde co je
 - Schémata obsahu (Zod): `src/content.config.ts`
-- Úvodní stránka – sekce, pořadí, `visible`: `src/content/home.yaml`
+- Úvodní stránka – sekce, pořadí, `visible`, `showPrices`, pozadí hero (`background.image` / `video`): `src/content/home.yaml`
+- Dočasné AI ilustrace: `src/assets/uploads/ai/`, v datech `placeholder: true` + `source` (originály `podklady/ai-obrazky/`); `npm run todo` je vypíše. Na produktových místech (modely, přepínač, bassreflex, portrét) je nepoužívat
 - Kontakty, adresa studia, firemní údaje, sociální sítě: `src/content/settings.yaml` (čte `getSettings()` z `src/utils/content.ts`; prázdné hodnoty se nezobrazí)
 - Produkty (ceny, specifikace, galerie, texty Konstrukce jako `### bloky` v těle): `src/content/products/*.md`
 - Stránky (texty, sekce, kroky): `src/content/pages/*.md`; šablony v `src/pages/`

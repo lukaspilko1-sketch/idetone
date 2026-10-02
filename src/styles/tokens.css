@@ -43,8 +43,16 @@
 
   /* Sémantické velikosti (dávka 1.4) – používat tyto, ne čísla */
   --fs-body: clamp(1.0625rem, 1.03rem + 0.15vw, 1.125rem); /* odstavce 17 → 18 */
-  --fs-lead: clamp(1.1875rem, 1.15rem + 0.2vw, 1.25rem); /* perex – jen první odstavec stránky, 19 → 20 */
-  --fs-data: clamp(0.875rem, 0.86rem + 0.08vw, 0.9375rem); /* strojopis: parametry, ceny v tabulkách, 14 → 15 */
+  --fs-lead: clamp(
+    1.1875rem,
+    1.15rem + 0.2vw,
+    1.25rem
+  ); /* perex – jen první odstavec stránky, 19 → 20 */
+  --fs-data: clamp(
+    0.875rem,
+    0.86rem + 0.08vw,
+    0.9375rem
+  ); /* strojopis: parametry, ceny v tabulkách, 14 → 15 */
   --fs-small: 0.875rem; /* poznámky, nápovědy, patička – min. 14 */
   --fs-label: 0.8125rem; /* štítky verzálkami, jen 1–3 slova */
   --fs-legal: 0.8125rem; /* copyright, právní odkazy */

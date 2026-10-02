@@ -14,7 +14,11 @@ const { name, label = 'Foto připravujeme', class: className } = Astro.props;
 ---
 
 <figure class:list={['silhouette', className]}>
-  <svg viewBox="0 0 200 400" role="img" aria-label={`${name} – obrysová kresba, fotografie se připravuje`}>
+  <svg
+    viewBox="0 0 200 400"
+    role="img"
+    aria-label={`${name} – obrysová kresba, fotografie se připravuje`}
+  >
     <g class="silhouette__lines">
       <!-- ozvučnice -->
       <rect x="55" y="20" width="90" height="165" rx="1.5"></rect>

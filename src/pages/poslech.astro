@@ -5,6 +5,7 @@ import PageHeader from '../components/PageHeader.astro';
 import TextBlock from '../components/TextBlock.astro';
 import ImageSlot from '../components/ImageSlot.astro';
 import ContactForm from '../components/ContactForm.astro';
+import Photo from '../components/Photo.astro';
 import { getPage, getProducts, getSettings } from '../utils/content';
 import { typo } from '../utils/format';
 import { localBusiness } from '../utils/seo';
@@ -64,7 +65,18 @@ const models = (await getProducts()).map((p) => ({ id: p.id, name: p.data.name }
           <TextBlock text={s.text} list={s.list} />
         </div>
       ))}
-      <ImageSlot ratio="3/2" label="Foto: poslechové studio – dodá klient" class="options__img" />
+      {data.photos[0] ? (
+        <Photo
+          src={data.photos[0].src}
+          alt={data.photos[0].alt}
+          placeholder={data.photos[0].placeholder}
+          ratio="16/9"
+          sizes="(min-width: 75rem) 1200px, 100vw"
+          class="options__img"
+        />
+      ) : (
+        <ImageSlot ratio="3/2" label="Foto: poslechové studio – dodá klient" class="options__img" />
+      )}
     </div>
   </Section>
 

@@ -58,6 +58,15 @@ Web fotky sám zmenší a převede na AVIF/WebP, originál velikost nehraje roli
 ### Nahradit šedé místo pro fotku (ImageSlot)
 Na stránkách (`src/content/pages/*.md`, `home.yaml`) vyměňte `imageSlot: { label, ratio }` za `image: { src, alt }`. Portrét Petra, dílna a studio jsou zatím přímo v šablonách (`src/pages/o-idetone.astro`, `poslech.astro`) – po dodání fotek je převedu do obsahu.
 
+### Ceny na úvodní stránce
+V `src/content/home.yaml` přepínač `showPrices` (teď `false`). Cena je vždy na detailu modelu, v přehledu a ve srovnávací tabulce.
+
+### Video v hero místo fotky
+Krátké video z dílny (5–15 s, bez zvuku, ideálně do 3 MB) uložte do `public/video/` (např. `dilna.webm`, případně i `dilna.mp4`) a v `home.yaml` u hero doplňte do `background` řádek `video: /video/dilna.webm` (a `videoMp4: /video/dilna.mp4`). Fotka v `background.image` zůstane jako náhled, než se video načte.
+
+### Vyměnit ilustrační (AI) fotky za skutečné
+`npm run todo` vypíše všechny fotky s `placeholder: true`. Nový soubor uložte (např. do `src/assets/uploads/`), v datech změňte `src`, upravte `alt` a smažte řádky `placeholder` a `source`.
+
 ### Upravit texty úvodní stránky / skrýt sekci
 `src/content/home.yaml` – každá sekce má `visible: true/false`, pořadí odpovídá pořadí v souboru. Pole `type` neměňte.
 

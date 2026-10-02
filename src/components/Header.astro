@@ -25,47 +25,49 @@ const isSection = (href: string) => current.startsWith(url(href)) && href !== '/
 
     <nav class="nav" id="hlavni-navigace" aria-label={cs.nav.label} data-nav>
       <ul role="list" class="nav__list">
-        {
-          nav.map((item) => (
-            <li class:list={['nav__item', { 'nav__item--parent': item.children }]}>
-              <a
-                href={url(item.href)}
-                class:list={['nav__link', { 'is-active': isSection(item.href) }]}
-                aria-current={isCurrent(item.href) ? 'page' : undefined}
-              >
-                {item.label}
-                {item.children && (
-<span class="nav__caret" aria-hidden="true" />
-                )}
-              </a>
-              {item.children && (
-                <ul role="list" class="nav__sub">
-                  {item.children.map((child) => (
-                    <li>
-                      <a
-                        href={url(child.href)}
-                        class="nav__sublink"
-                        aria-current={isCurrent(child.href) ? 'page' : undefined}
-                      >
-                        {child.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          ))
-        }
+        {nav.map((item) => (
+          <li class:list={['nav__item', { 'nav__item--parent': item.children }]}>
+            <a
+              href={url(item.href)}
+              class:list={['nav__link', { 'is-active': isSection(item.href) }]}
+              aria-current={isCurrent(item.href) ? 'page' : undefined}
+            >
+              {item.label}
+              {item.children && <span class="nav__caret" aria-hidden="true" />}
+            </a>
+            {item.children && (
+              <ul role="list" class="nav__sub">
+                {item.children.map((child) => (
+                  <li>
+                    <a
+                      href={url(child.href)}
+                      class="nav__sublink"
+                      aria-current={isCurrent(child.href) ? 'page' : undefined}
+                    >
+                      {child.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
       </ul>
       <!-- Objednat v mobilním menu -->
-      <Button href={orderLink} variant="secondary" class="nav__order">{cs.nav.order}</Button>
+      <Button href={orderLink} variant="secondary" class="nav__order">
+        {cs.nav.order}
+      </Button>
     </nav>
 
     <!-- Objednat v hlavičce na desktopu -->
-    <Button href={orderLink} variant="secondary" class="header__order">{cs.nav.order}</Button>
+    <Button href={orderLink} variant="secondary" class="header__order">
+      {cs.nav.order}
+    </Button>
 
     <!-- Bez JS vede „Menu“ na navigaci v patičce, s JS otevírá menu přes celou obrazovku -->
-    <a href="#navigace-paticka" class="header__toggle header__toggle--nojs">{cs.nav.menu}</a>
+    <a href="#navigace-paticka" class="header__toggle header__toggle--nojs">
+      {cs.nav.menu}
+    </a>
     <button
       type="button"
       class="header__toggle header__toggle--js"
@@ -119,9 +121,13 @@ const isSection = (href: string) => current.startsWith(url(href)) && href !== '/
       if (open) navEl.querySelector<HTMLElement>('a')?.focus();
     };
 
-    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'), {
-      signal,
-    });
+    toggle.addEventListener(
+      'click',
+      () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'),
+      {
+        signal,
+      },
+    );
 
     document.addEventListener(
       'keydown',

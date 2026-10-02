@@ -29,25 +29,27 @@ const href = url(`/reprosoustavy/${product.id}/`);
 <article class:list={['pf', `pf--${variant}`]}>
   <div class="pf__layout">
     <a class="pf__media" href={href} tabindex="-1" aria-hidden="true" data-reveal-img>
-      {
-        data.image ? (
-          <div class="pf__frame" transition:name={`model-${product.id}`}>
-            <Picture
-              src={data.image.src}
-              alt=""
-              formats={['avif', 'webp']}
-              fallbackFormat="webp"
-              widths={[320, 560, 800].filter((w) => w <= data.image!.src.width)}
-              sizes={variant === 'tall' ? '(min-width: 64rem) 300px, 60vw' : '(min-width: 64rem) 220px, 50vw'}
-              class="pf__img"
-            />
-          </div>
-        ) : (
-          <div class="pf__frame" transition:name={`model-${product.id}`}>
-            <ProductSilhouette name={data.name} />
-          </div>
-        )
-      }
+      {data.image ? (
+        <div class="pf__frame" transition:name={`model-${product.id}`}>
+          <Picture
+            src={data.image.src}
+            alt=""
+            formats={['avif', 'webp']}
+            fallbackFormat="webp"
+            widths={[320, 560, 800].filter((w) => w <= data.image!.src.width)}
+            sizes={
+              variant === 'tall'
+                ? '(min-width: 64rem) 300px, 60vw'
+                : '(min-width: 64rem) 220px, 50vw'
+            }
+            class="pf__img"
+          />
+        </div>
+      ) : (
+        <div class="pf__frame" transition:name={`model-${product.id}`}>
+          <ProductSilhouette name={data.name} />
+        </div>
+      )}
     </a>
 
     <div class="pf__body" data-reveal>
@@ -55,30 +57,28 @@ const href = url(`/reprosoustavy/${product.id}/`);
       <H class="pf__name">
         <a href={href}>
           {data.name}
-          <span class="pf__arrow" aria-hidden="true">→</span>
+          <span class="pf__arrow" aria-hidden="true">
+            →
+          </span>
         </a>
       </H>
       <p class="pf__text">{typo(long ? data.intro : data.tagline)}</p>
 
       <dl class="pf__specs">
-        {
-          data.highlights.map((key) => (
-            <div>
-              <dt>{specLabels[key]}</dt>
-              <dd>{typo(shortSpec(product, key))}</dd>
-            </div>
-          ))
-        }
+        {data.highlights.map((key) => (
+          <div>
+            <dt>{specLabels[key]}</dt>
+            <dd>{typo(shortSpec(product, key))}</dd>
+          </div>
+        ))}
       </dl>
 
-      {
-        showPrice && (
-          <p class="pf__price">
-            <span class="price">{formatPrice(data.price)}</span>
-            <span class="muted small"> / pár</span>
-          </p>
-        )
-      }
+      {showPrice && (
+        <p class="pf__price">
+          <span class="price">{formatPrice(data.price)}</span>
+          <span class="muted small"> / pár</span>
+        </p>
+      )}
 
       <a class="pf__link" href={href}>
         Detail modelu {data.name}

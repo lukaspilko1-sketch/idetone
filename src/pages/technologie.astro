@@ -7,6 +7,7 @@ import TextBlock from '../components/TextBlock.astro';
 import ImageSlot from '../components/ImageSlot.astro';
 import WaveguideFigure from '../components/WaveguideFigure.astro';
 import Button from '../components/Button.astro';
+import Photo from '../components/Photo.astro';
 import { getPage } from '../utils/content';
 import { typo } from '../utils/format';
 
@@ -30,6 +31,22 @@ const { data } = await getPage('technologie');
     </nav>
   </PageHeader>
 
+  {data.photos.length > 0 && (
+    <Section space="none" reveal={false}>
+      <div class="photo-strip">
+        {data.photos.slice(0, 2).map((p) => (
+          <Photo
+            src={p.src}
+            alt={p.alt}
+            placeholder={p.placeholder}
+            ratio="3/2"
+            sizes="(min-width: 48rem) 600px, 100vw"
+          />
+        ))}
+      </div>
+    </Section>
+  )}
+
   {data.sections.map((s, i) => (
     <Section id={s.id} divider labelledby={`${s.id}-title`}>
       <div class:list={['chapter', { 'chapter--flip': i % 2 === 1 }]}>
@@ -38,7 +55,7 @@ const { data } = await getPage('technologie');
           <h2 id={`${s.id}-title`}>{typo(s.title)}</h2>
           <TextBlock text={s.text} list={s.list} subsections={s.subsections} />
         </div>
-        <div class="chapter__media">
+        <div class="chapter__media" data-reveal-img>
           {s.image ? (
             <Picture
               src={s.image.src}
@@ -74,6 +91,19 @@ const { data } = await getPage('technologie');
 </BaseLayout>
 
 <style>
+  .photo-strip {
+    display: grid;
+    gap: var(--grid-gap);
+    padding-bottom: var(--section-space);
+  }
+
+  @media (min-width: 48rem) {
+    .photo-strip {
+      grid-template-columns: 3fr 2fr;
+      align-items: end;
+    }
+  }
+
   .toc ul {
     display: flex;
     flex-wrap: wrap;

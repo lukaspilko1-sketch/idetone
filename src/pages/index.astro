@@ -40,206 +40,204 @@ const resolved = await Promise.all(
   description="Ručně laděné dvoupásmové reprosoustavy Sara a Reva od Petra Kocourka z Brna. Poslech ve studiu v Brně, objednávka a zakázkové projekty."
   jsonLd={[localBusiness(settings, Astro.site)]}
 >
-  {
-    resolved.map((item) => {
-      const s = item.section;
+  {resolved.map((item) => {
+    const s = item.section;
 
-      if (s.type === 'hero' && 'product' in item && item.product) {
-        const p = item.product;
-        const bg = s.background;
-        return (
-          <section class="hero" aria-labelledby="hero-title" data-hero>
-            <div class="container hero__grid">
-              <div class="hero__text">
-                <span class="eyebrow hero__in" style="--i: 0">
-                  {s.eyebrow}
-                </span>
-                <h1 id="hero-title" class="hero__in" style="--i: 1">
-                  {typo(s.title)}
-                </h1>
-                <p class="lead hero__lead hero__in" style="--i: 2">
-                  {typo(s.text)}
-                </p>
-                <div class="hero__actions hero__in" style="--i: 3">
-                  <Button href={s.primary.href}>{s.primary.label}</Button>
-                  {s.secondary && (
-                    <Button href={s.secondary.href} variant="secondary">
-                      {s.secondary.label}
-                    </Button>
-                  )}
-                </div>
-              </div>
-              <figure class="hero__visual">
-                {/* Pozadí za sklem: na mobilu pod textem, na desktopu pravá část hero */}
-                <HeroMedia
-                  image={bg?.image.src ?? s.image.src}
-                  video={bg?.video}
-                  videoMp4={bg?.videoMp4}
-                  position="35% 50%"
-                  class="hero__bg"
-                />
-                <figcaption class="hero__caption mono">
-                  <a href={url(`/reprosoustavy/${p.id}/`)}>{p.data.name}</a>
-                  <span>
-                    {showPrices ? `${formatPrice(p.data.price)} / pár` : p.data.type}
-                  </span>
-                </figcaption>
-                <div class="hero__product" data-parallax>
-                  <Picture
-                    src={s.image.src}
-                    alt={s.image.alt}
-                    formats={['avif', 'webp']}
-                    fallbackFormat="webp"
-                    widths={[360, 560, 800]}
-                    sizes="(min-width: 64rem) 400px, 70vw"
-                    loading="eager"
-                    fetchpriority="high"
-                    class="hero__img"
-                  />
-                </div>
-              </figure>
-            </div>
-          </section>
-        );
-      }
-
-      if (s.type === 'models' && 'products' in item && item.products) {
-        return (
-          <Section id="modely" labelledby="modely-title" reveal={false} class="models">
-            <header class="models__head" data-reveal>
-              {s.eyebrow && <span class="eyebrow">{s.eyebrow}</span>}
-              <h2 id="modely-title">{typo(s.title)}</h2>
-            </header>
-            <div class="models__list">
-              {item.products.map((product, i) => (
-                <div class:list={['models__item', i % 2 === 0 ? 'models__item--a' : 'models__item--b']}>
-                  <ProductFeature
-                    product={product}
-                    variant={i % 2 === 0 ? 'tall' : 'compact'}
-                    showPrice={showPrices}
-                  />
-                </div>
-              ))}
-            </div>
-            {s.compareLink && (
-              <p class="models__compare" data-reveal>
-                <Button href={s.compareLink.href} variant="secondary">
-                  {s.compareLink.label}
-                </Button>
+    if (s.type === 'hero' && 'product' in item && item.product) {
+      const p = item.product;
+      const bg = s.background;
+      return (
+        <section class="hero" aria-labelledby="hero-title" data-hero>
+          <div class="container hero__grid">
+            <div class="hero__text">
+              <span class="eyebrow hero__in" style="--i: 0">
+                {s.eyebrow}
+              </span>
+              <h1 id="hero-title" class="hero__in" style="--i: 1">
+                {typo(s.title)}
+              </h1>
+              <p class="lead hero__lead hero__in" style="--i: 2">
+                {typo(s.text)}
               </p>
-            )}
-          </Section>
-        );
-      }
-
-      if (s.type === 'quote') {
-        return (
-          <Section divider class="quote-section">
-            <div class:list={['quote-row', { 'quote-row--image': s.image }]}>
-              <Quote text={s.text} author={s.author} link={s.link} />
-              {s.image && (
-                <Photo
-                  src={s.image.src}
-                  alt={s.image.alt}
-                  placeholder={s.image.placeholder}
-                  ratio="4/5"
-                  sizes="(min-width: 64rem) 360px, 80vw"
-                  class="quote-row__img"
-                />
-              )}
-            </div>
-          </Section>
-        );
-      }
-
-      if (s.type === 'technology') {
-        return (
-          <Section divider labelledby="technologie-title" reveal={false}>
-            <div class="tech">
-              {s.image && (
-                <Photo
-                  src={s.image.src}
-                  alt={s.image.alt}
-                  placeholder={s.image.placeholder}
-                  ratio="4/5"
-                  position="60% 50%"
-                  sizes="(min-width: 64rem) 420px, 100vw"
-                  class="tech__photo"
-                />
-              )}
-              <div class="tech__content">
-                <header class="tech__head" data-reveal>
-                  {s.eyebrow && <span class="eyebrow">{s.eyebrow}</span>}
-                  <h2 id="technologie-title">{typo(s.title)}</h2>
-                </header>
-                <ul role="list" class="tech__cols" data-reveal>
-                  {s.items.map((t) => (
-                    <li class="tech__col">
-                      <h3>{typo(t.title)}</h3>
-                      <p>{typo(t.text)}</p>
-                      {t.href && (
-                        <a class="tech__link" href={url(t.href)}>
-                          Víc o řešení <span aria-hidden="true">→</span>
-                          <span class="visually-hidden">: {t.title}</span>
-                        </a>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-                {s.link && (
-                  <p class="tech__more" data-reveal>
-                    <Button href={s.link.href} variant="secondary">
-                      {s.link.label}
-                    </Button>
-                  </p>
+              <div class="hero__actions hero__in" style="--i: 3">
+                <Button href={s.primary.href}>{s.primary.label}</Button>
+                {s.secondary && (
+                  <Button href={s.secondary.href} variant="secondary">
+                    {s.secondary.label}
+                  </Button>
                 )}
               </div>
             </div>
-          </Section>
-        );
-      }
+            <figure class="hero__visual">
+              {/* Pozadí za sklem: na mobilu pod textem, na desktopu pravá část hero */}
+              <HeroMedia
+                image={bg?.image.src ?? s.image.src}
+                video={bg?.video}
+                videoMp4={bg?.videoMp4}
+                position="35% 50%"
+                class="hero__bg"
+              />
+              <figcaption class="hero__caption mono">
+                <a href={url(`/reprosoustavy/${p.id}/`)}>{p.data.name}</a>
+                <span>{showPrices ? `${formatPrice(p.data.price)} / pár` : p.data.type}</span>
+              </figcaption>
+              <div class="hero__product" data-parallax>
+                <Picture
+                  src={s.image.src}
+                  alt={s.image.alt}
+                  formats={['avif', 'webp']}
+                  fallbackFormat="webp"
+                  widths={[360, 560, 800]}
+                  sizes="(min-width: 64rem) 400px, 70vw"
+                  loading="eager"
+                  fetchpriority="high"
+                  class="hero__img"
+                />
+              </div>
+            </figure>
+          </div>
+        </section>
+      );
+    }
 
-      if (s.type === 'listening') {
-        return (
-          <Section
-            tone="uhel"
-            labelledby="poslech-title"
-            space="m"
-            glass="30% 60%"
-            glassImage={s.background?.src}
-          >
-            <div class="listen">
-              <div>
+    if (s.type === 'models' && 'products' in item && item.products) {
+      return (
+        <Section id="modely" labelledby="modely-title" reveal={false} class="models">
+          <header class="models__head" data-reveal>
+            {s.eyebrow && <span class="eyebrow">{s.eyebrow}</span>}
+            <h2 id="modely-title">{typo(s.title)}</h2>
+          </header>
+          <div class="models__list">
+            {item.products.map((product, i) => (
+              <div
+                class:list={['models__item', i % 2 === 0 ? 'models__item--a' : 'models__item--b']}
+              >
+                <ProductFeature
+                  product={product}
+                  variant={i % 2 === 0 ? 'tall' : 'compact'}
+                  showPrice={showPrices}
+                />
+              </div>
+            ))}
+          </div>
+          {s.compareLink && (
+            <p class="models__compare" data-reveal>
+              <Button href={s.compareLink.href} variant="secondary">
+                {s.compareLink.label}
+              </Button>
+            </p>
+          )}
+        </Section>
+      );
+    }
+
+    if (s.type === 'quote') {
+      return (
+        <Section divider class="quote-section">
+          <div class:list={['quote-row', { 'quote-row--image': s.image }]}>
+            <Quote text={s.text} author={s.author} link={s.link} />
+            {s.image && (
+              <Photo
+                src={s.image.src}
+                alt={s.image.alt}
+                placeholder={s.image.placeholder}
+                ratio="4/5"
+                sizes="(min-width: 64rem) 360px, 80vw"
+                class="quote-row__img"
+              />
+            )}
+          </div>
+        </Section>
+      );
+    }
+
+    if (s.type === 'technology') {
+      return (
+        <Section divider labelledby="technologie-title" reveal={false}>
+          <div class="tech">
+            {s.image && (
+              <Photo
+                src={s.image.src}
+                alt={s.image.alt}
+                placeholder={s.image.placeholder}
+                ratio="4/5"
+                position="60% 50%"
+                sizes="(min-width: 64rem) 420px, 100vw"
+                class="tech__photo"
+              />
+            )}
+            <div class="tech__content">
+              <header class="tech__head" data-reveal>
                 {s.eyebrow && <span class="eyebrow">{s.eyebrow}</span>}
-                <h2 id="poslech-title" class="listen__title">
-                  {typo(s.title)}
-                </h2>
-                {s.text && <p class="listen__text">{typo(s.text)}</p>}
-              </div>
-              <div class="listen__side">
-                <address class="mono">
-                  {settings.studio.street}
-                  <br />
-                  {settings.studio.city}
-                </address>
-                {settings.studio.parking && <p class="small">{typo(settings.studio.parking)}</p>}
-                <Button href={s.button.href} tone="dark">
-                  {s.button.label}
-                </Button>
-              </div>
+                <h2 id="technologie-title">{typo(s.title)}</h2>
+              </header>
+              <ul role="list" class="tech__cols" data-reveal>
+                {s.items.map((t) => (
+                  <li class="tech__col">
+                    <h3>{typo(t.title)}</h3>
+                    <p>{typo(t.text)}</p>
+                    {t.href && (
+                      <a class="tech__link" href={url(t.href)}>
+                        Víc o řešení <span aria-hidden="true">→</span>
+                        <span class="visually-hidden">: {t.title}</span>
+                      </a>
+                    )}
+                  </li>
+                ))}
+              </ul>
+              {s.link && (
+                <p class="tech__more" data-reveal>
+                  <Button href={s.link.href} variant="secondary">
+                    {s.link.label}
+                  </Button>
+                </p>
+              )}
             </div>
-          </Section>
-        );
-      }
+          </div>
+        </Section>
+      );
+    }
 
-      // Reference: zobrazí se až se zapnutým flagem a skutečnými citacemi
-      if (s.type === 'references' && features.references) {
-        return null;
-      }
+    if (s.type === 'listening') {
+      return (
+        <Section
+          tone="uhel"
+          labelledby="poslech-title"
+          space="m"
+          glass="30% 60%"
+          glassImage={s.background?.src}
+        >
+          <div class="listen">
+            <div>
+              {s.eyebrow && <span class="eyebrow">{s.eyebrow}</span>}
+              <h2 id="poslech-title" class="listen__title">
+                {typo(s.title)}
+              </h2>
+              {s.text && <p class="listen__text">{typo(s.text)}</p>}
+            </div>
+            <div class="listen__side">
+              <address class="mono">
+                {settings.studio.street}
+                <br />
+                {settings.studio.city}
+              </address>
+              {settings.studio.parking && <p class="small">{typo(settings.studio.parking)}</p>}
+              <Button href={s.button.href} tone="dark">
+                {s.button.label}
+              </Button>
+            </div>
+          </div>
+        </Section>
+      );
+    }
 
+    // Reference: zobrazí se až se zapnutým flagem a skutečnými citacemi
+    if (s.type === 'references' && features.references) {
       return null;
-    })
-  }
+    }
+
+    return null;
+  })}
 </BaseLayout>
 
 <script>
@@ -250,7 +248,9 @@ const resolved = await Promise.all(
     const product = document.querySelector<HTMLElement>('[data-parallax]');
     const hero = document.querySelector<HTMLElement>('[data-hero]');
     if (!product || !hero) return;
-    const motion = window.matchMedia('(prefers-reduced-motion: no-preference) and (min-width: 64rem)');
+    const motion = window.matchMedia(
+      '(prefers-reduced-motion: no-preference) and (min-width: 64rem)',
+    );
     let ticking = false;
     const update = () => {
       ticking = false;

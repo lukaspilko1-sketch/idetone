@@ -67,11 +67,7 @@ const description = data.seo.description ?? data.tagline;
 >
   <div class="container product">
     <div class="product__gallery">
-      <Gallery
-        name={data.name}
-        images={data.gallery}
-        transitionName={`model-${product.id}`}
-      />
+      <Gallery name={data.name} images={data.gallery} transitionName={`model-${product.id}`} />
     </div>
 
     <div class="product__info">

@@ -4,6 +4,20 @@ seoTitle: O ideTone – Petr Kocourek
 # NÁVRH: ke schválení (meta popis)
 description: ideTone navazuje na léta vývoje pod DIY značkou PKAudio. Petr Kocourek navrhuje a ladí reprosoustavy, které nechají vyniknout hudbě.
 eyebrow: O ideTone
+# Dočasné AI ilustrace (placeholder: true) – před spuštěním nahradit skutečnými fotkami
+photos:
+  - src: ../../assets/uploads/ai/dilna-hero.png
+    alt: Ilustrační foto – dílna s ponkem, dýhami a ručním hoblíkem
+    placeholder: true
+    source: AI ilustrace – nahradit
+  - src: ../../assets/uploads/ai/dilna-vyhybka.png
+    alt: Ilustrační foto – ruce pájí cívky a kondenzátory frekvenční výhybky
+    placeholder: true
+    source: AI ilustrace – nahradit
+  - src: ../../assets/uploads/ai/hudba-gramofon.png
+    alt: Ilustrační foto – přenoska gramofonu na vinylové desce
+    placeholder: true
+    source: AI ilustrace – nahradit
 signature:
   greeting: Přeji příjemný poslech,
   name: Petr Kocourek

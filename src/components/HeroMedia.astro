@@ -18,32 +18,31 @@ interface Props {
 }
 
 const { image, video, videoMp4, position = '50% 50%', class: className } = Astro.props;
-const poster = video || videoMp4 ? await getImage({ src: image, width: 1200, format: 'webp' }) : undefined;
+const poster =
+  video || videoMp4 ? await getImage({ src: image, width: 1200, format: 'webp' }) : undefined;
 ---
 
 <div class:list={['hero-media', className]} aria-hidden="true">
-  {
-    video || videoMp4 ? (
-      <>
-        <video
-          class="hero-media__video"
-          muted
-          autoplay
-          loop
-          playsinline
-          preload="metadata"
-          poster={poster?.src}
-          data-hero-video
-        >
-          {video && <source src={url(video)} type="video/webm" />}
-          {videoMp4 && <source src={url(videoMp4)} type="video/mp4" />}
-        </video>
-        <div class="hero-media__tint" />
-      </>
-    ) : (
-      <GlassBackdrop image={image} position={position} animated />
-    )
-  }
+  {video || videoMp4 ? (
+    <>
+      <video
+        class="hero-media__video"
+        muted
+        autoplay
+        loop
+        playsinline
+        preload="metadata"
+        poster={poster?.src}
+        data-hero-video
+      >
+        {video && <source src={url(video)} type="video/webm" />}
+        {videoMp4 && <source src={url(videoMp4)} type="video/mp4" />}
+      </video>
+      <div class="hero-media__tint" />
+    </>
+  ) : (
+    <GlassBackdrop image={image} position={position} animated />
+  )}
 </div>
 
 <script>

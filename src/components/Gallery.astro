@@ -124,71 +124,73 @@ const items = await Promise.all(
 
   onPage(() => {
     document.querySelectorAll<HTMLElement>('[data-gallery]').forEach((gallery) => {
-    const slides = [...gallery.querySelectorAll<HTMLAnchorElement>('[data-slide]')];
-    const thumbs = [...gallery.querySelectorAll<HTMLAnchorElement>('[data-thumb]')];
-    const count = gallery.querySelector<HTMLElement>('[data-count]');
-    const stage = gallery.querySelector<HTMLElement>('[data-stage]');
-    const dialog = gallery.querySelector<HTMLDialogElement>('[data-lightbox]');
-    const lbImg = gallery.querySelector<HTMLImageElement>('[data-lightbox-img]');
-    let current = 0;
+      const slides = [...gallery.querySelectorAll<HTMLAnchorElement>('[data-slide]')];
+      const thumbs = [...gallery.querySelectorAll<HTMLAnchorElement>('[data-thumb]')];
+      const count = gallery.querySelector<HTMLElement>('[data-count]');
+      const stage = gallery.querySelector<HTMLElement>('[data-stage]');
+      const dialog = gallery.querySelector<HTMLDialogElement>('[data-lightbox]');
+      const lbImg = gallery.querySelector<HTMLImageElement>('[data-lightbox-img]');
+      let current = 0;
 
-    const show = (index: number) => {
-      current = (index + slides.length) % slides.length;
-      slides.forEach((s, i) => (s.hidden = i !== current));
+      const show = (index: number) => {
+        current = (index + slides.length) % slides.length;
+        slides.forEach((s, i) => (s.hidden = i !== current));
+        thumbs.forEach((t, i) =>
+          i === current
+            ? t.setAttribute('aria-current', 'true')
+            : t.removeAttribute('aria-current'),
+        );
+        if (count) count.textContent = `${current + 1} / ${slides.length}`;
+        if (dialog?.open && lbImg) setLightbox();
+      };
+
+      const setLightbox = () => {
+        if (!lbImg) return;
+        const slide = slides[current];
+        lbImg.src = slide.dataset.full ?? '';
+        lbImg.alt = slide.querySelector('img')?.alt ?? '';
+      };
+
+      gallery.querySelector('[data-prev]')?.addEventListener('click', () => show(current - 1));
+      gallery.querySelector('[data-next]')?.addEventListener('click', () => show(current + 1));
       thumbs.forEach((t, i) =>
-        i === current ? t.setAttribute('aria-current', 'true') : t.removeAttribute('aria-current'),
+        t.addEventListener('click', (e) => {
+          e.preventDefault();
+          show(i);
+        }),
       );
-      if (count) count.textContent = `${current + 1} / ${slides.length}`;
-      if (dialog?.open && lbImg) setLightbox();
-    };
 
-    const setLightbox = () => {
-      if (!lbImg) return;
-      const slide = slides[current];
-      lbImg.src = slide.dataset.full ?? '';
-      lbImg.alt = slide.querySelector('img')?.alt ?? '';
-    };
+      // Swipe na hlavní fotce
+      let startX = 0;
+      stage?.addEventListener('touchstart', (e) => (startX = e.touches[0].clientX), {
+        passive: true,
+      });
+      stage?.addEventListener('touchend', (e) => {
+        const dx = e.changedTouches[0].clientX - startX;
+        if (Math.abs(dx) > 40) show(current + (dx < 0 ? 1 : -1));
+      });
 
-    gallery.querySelector('[data-prev]')?.addEventListener('click', () => show(current - 1));
-    gallery.querySelector('[data-next]')?.addEventListener('click', () => show(current + 1));
-    thumbs.forEach((t, i) =>
-      t.addEventListener('click', (e) => {
-        e.preventDefault();
-        show(i);
-      }),
-    );
+      // Lightbox
+      slides.forEach((s) =>
+        s.addEventListener('click', (e) => {
+          if (!dialog) return;
+          e.preventDefault();
+          setLightbox();
+          dialog.showModal();
+        }),
+      );
+      dialog?.querySelector('[data-lb-prev]')?.addEventListener('click', () => show(current - 1));
+      dialog?.querySelector('[data-lb-next]')?.addEventListener('click', () => show(current + 1));
+      dialog?.querySelector('[data-lb-close]')?.addEventListener('click', () => dialog.close());
+      dialog?.addEventListener('click', (e) => {
+        if (e.target === dialog) dialog.close();
+      });
 
-    // Swipe na hlavní fotce
-    let startX = 0;
-    stage?.addEventListener('touchstart', (e) => (startX = e.touches[0].clientX), {
-      passive: true,
-    });
-    stage?.addEventListener('touchend', (e) => {
-      const dx = e.changedTouches[0].clientX - startX;
-      if (Math.abs(dx) > 40) show(current + (dx < 0 ? 1 : -1));
-    });
-
-    // Lightbox
-    slides.forEach((s) =>
-      s.addEventListener('click', (e) => {
-        if (!dialog) return;
-        e.preventDefault();
-        setLightbox();
-        dialog.showModal();
-      }),
-    );
-    dialog?.querySelector('[data-lb-prev]')?.addEventListener('click', () => show(current - 1));
-    dialog?.querySelector('[data-lb-next]')?.addEventListener('click', () => show(current + 1));
-    dialog?.querySelector('[data-lb-close]')?.addEventListener('click', () => dialog.close());
-    dialog?.addEventListener('click', (e) => {
-      if (e.target === dialog) dialog.close();
-    });
-
-    // Šipky na klávesnici (v lightboxu i na galerii)
-    gallery.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') show(current - 1);
-      if (e.key === 'ArrowRight') show(current + 1);
-    });
+      // Šipky na klávesnici (v lightboxu i na galerii)
+      gallery.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') show(current - 1);
+        if (e.key === 'ArrowRight') show(current + 1);
+      });
     });
   });
 </script>
