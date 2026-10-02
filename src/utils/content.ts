@@ -9,10 +9,13 @@ export async function getSettings() {
   return entry.data;
 }
 
-export async function getHomeSections(): Promise<HomeSection[]> {
+export async function getHome() {
   const entry = await getEntry('home', 'home');
   if (!entry) throw new Error('Chybí src/content/home.yaml (klíč „home“).');
-  return entry.data.sections.filter((s) => s.visible);
+  return {
+    showPrices: entry.data.showPrices,
+    sections: entry.data.sections.filter((s) => s.visible) as HomeSection[],
+  };
 }
 
 export async function getProducts(): Promise<Product[]> {

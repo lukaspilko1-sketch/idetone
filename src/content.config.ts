@@ -71,12 +71,9 @@ const products = defineCollection({
         )
         .max(3)
         .default(['lowFrequency', 'sensitivity', 'weight']),
-      /** hlavní (vyříznutá) fotka; když chybí, zobrazí se ImageSlot */
+      /** hlavní (vyříznutá) fotka; když chybí, zobrazí se obrysová kresba */
       image: photo(image).optional(),
-      imageSlotLabel: z.string().optional(),
       gallery: z.array(photo(image)).default([]),
-      /** popisky chybějících fotek v galerii */
-      gallerySlots: z.array(z.object({ label: z.string(), ratio: slotRatio })).default([]),
       impedanceChart: photo(image).optional(),
       accessories: z
         .array(

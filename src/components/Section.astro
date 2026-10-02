@@ -4,6 +4,7 @@
  * tone: len (výchozí), papir, uhel. divider = linka nahoře. space = rytmus mezer.
  * Tón uhel má skleněné pozadí (GlassBackdrop), glass = výřez fotky, která prosvítá.
  */
+import type { ImageMetadata } from 'astro';
 import GlassBackdrop from './GlassBackdrop.astro';
 
 interface Props {
@@ -18,6 +19,8 @@ interface Props {
   labelledby?: string;
   /** výřez prosvítající fotky u tónu uhel (CSS background-position) */
   glass?: string;
+  /** fotka prosvítající za sklem u tónu uhel (jinak výchozí fotka dřeva) */
+  glassImage?: ImageMetadata;
   class?: string;
 }
 
@@ -31,6 +34,7 @@ const {
   reveal = true,
   labelledby,
   glass,
+  glassImage,
   class: className,
 } = Astro.props;
 ---
@@ -46,7 +50,7 @@ const {
   ]}
   aria-labelledby={labelledby}
 >
-  {tone === 'uhel' && <GlassBackdrop position={glass} />}
+  {tone === 'uhel' && <GlassBackdrop position={glass} image={glassImage} />}
   {width === 'full' ? (
     <slot />
   ) : (

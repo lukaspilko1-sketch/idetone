@@ -1,6 +1,9 @@
 # Úvodní stránka – sekce v pořadí, v jakém se zobrazí.
 # visible: false sekci skryje. Typ sekce (type) neměnit.
+# Fotky s placeholder: true jsou dočasné AI ilustrace – před spuštěním nahradit (npm run todo).
 home:
+  # Ceny na úvodu (sekce Modely a štítek v hero). Cena je vždy na detailu, v přehledu a ve srovnání.
+  showPrices: false
   sections:
     - type: hero
       visible: true
@@ -18,6 +21,14 @@ home:
       image:
         src: ../assets/products/sara/DSC_0800i-1.png
         alt: Pár reprosoustav Sara šikmo zezadu, dřevěné bočnice a černé podstavce
+      # Pozadí za sklem: fotka (rozostřená). Video z dílny: soubory do public/video/
+      # a doplnit video: /video/dilna.webm (případně videoMp4: /video/dilna.mp4), fotka zůstane jako poster.
+      background:
+        image:
+          src: ../assets/uploads/ai/dilna-hero.png
+          alt: Ilustrační foto – dílna s ponkem a dýhami
+          placeholder: true
+          source: AI ilustrace – nahradit
 
     - type: models
       visible: true
@@ -35,28 +46,32 @@ home:
       link:
         label: O ideTone
         href: /o-idetone/
+      image:
+        src: ../assets/uploads/ai/hudba-gramofon.png
+        alt: Ilustrační foto – přenoska gramofonu na vinylové desce
+        placeholder: true
+        source: AI ilustrace – nahradit
 
     - type: technology
       visible: true
       eyebrow: Technologie
       title: Tři konstrukční řešení # NÁVRH: ke schválení
+      image:
+        src: ../assets/uploads/ai/dilna-vyhybka.png
+        alt: Ilustrační foto – ruce pájí cívky a kondenzátory frekvenční výhybky
+        placeholder: true
+        source: AI ilustrace – nahradit
       # NÁVRH: ke schválení (zkrácené texty z podstránky Technologie)
       items:
         - title: Zvukovod u výškového reproduktoru
-          text: Zvukovod formuje vyzařování v kritickém pásmu 2000–6000 Hz. Přináší lehkost a přirozenost bez náznaku ostrosti a menší nároky na akustiku místnosti.
-          image:
-            src: ../assets/products/sara/DSC_0834-1.png
-            alt: Detail čelní desky Sary – páskový výškový reproduktor ve zvukovodu
+          text: Formuje vyzařování v kritickém pásmu 2000–6000 Hz. Lehkost a přirozenost bez náznaku ostrosti.
+          href: /technologie/#zvukovod
         - title: Regulace výšek −1 / 0 / +1 dB
-          text: Sara umožňuje otočným přepínačem vzadu upravit úroveň výšek nad 2000 Hz podle sestavy a poslechových preferencí. Přepínač není v přímé signálové cestě.
-          imageSlot:
-            label: 'Foto: přepínač úrovně výšek na zadním panelu Sary'
-            ratio: 4/5
+          text: U Sary otočným přepínačem vzadu, mimo přímou signálovou cestu.
+          href: /technologie/#uroven-vysek
         - title: Bassreflex vyvedený dolů
-          text: Reprosoustava je méně citlivá na umístění blíže stěn a nemá tendenci zadunívat.
-          imageSlot:
-            label: 'Foto: spodní část Sary s vývodem bassreflexu'
-            ratio: 4/5
+          text: Méně citlivá na umístění blíže stěn, bez tendence zadunívat.
+          href: /technologie/#bassreflex
       link:
         label: Jak to funguje
         href: /technologie/
@@ -70,6 +85,11 @@ home:
       button:
         label: Domluvit poslech
         href: /poslech/
+      background:
+        src: ../assets/uploads/ai/poslech-mistnost.png
+        alt: Ilustrační foto – poslechová místnost s křeslem a gramofonem
+        placeholder: true
+        source: AI ilustrace – nahradit
 
     - type: references
       visible: false

@@ -70,8 +70,7 @@ const description = data.seo.description ?? data.tagline;
       <Gallery
         name={data.name}
         images={data.gallery}
-        slots={data.gallerySlots}
-        slotLabel={data.imageSlotLabel}
+        transitionName={`model-${product.id}`}
       />
     </div>
 

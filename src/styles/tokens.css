@@ -88,12 +88,16 @@
   --border: 1px solid var(--c-line);
   --focus: 2px solid var(--c-dub);
   --product-shadow: drop-shadow(0 18px 24px rgb(31 36 33 / 0.18));
+  /* Dočasné AI ilustrace jsou teplejší a sytější než paleta – jemné sjednocení */
+  --photo-ai-filter: saturate(0.85) contrast(0.97);
 
   /* Pohyb */
   --ease: cubic-bezier(0.2, 0.6, 0.2, 1);
   --dur-fast: 180ms;
   --dur-reveal: 400ms;
   --dur-img-reveal: 600ms;
+  --dur-kenburns: 28s; /* pomalý pohyb pozadí v hero */
+  --hero-stagger: 80ms; /* rozestup nástupu prvků v hero */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 

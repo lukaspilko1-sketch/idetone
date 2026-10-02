@@ -11,15 +11,17 @@ interface Props {
   image?: ImageMetadata;
   /** výřez fotky (CSS background-position) – kde má dřevo nejvíc prosvítat */
   position?: string;
+  /** pomalý posun a zvětšení pozadí (Ken Burns), vypnuté při prefers-reduced-motion */
+  animated?: boolean;
 }
 
-const { image = defaultImage, position = '50% 50%' } = Astro.props;
+const { image = defaultImage, position = '50% 50%', animated = false } = Astro.props;
 // Fotka je rozostřená, stačí malé rozlišení (pár kB)
 const small = await getImage({ src: image, width: 360, format: 'webp', quality: 60 });
 ---
 
 <div
-  class="glass-bg"
+  class:list={['glass-bg', { 'glass-bg--animated': animated }]}
   aria-hidden="true"
   style={`--glass-img: url('${small.src}'); --glass-pos: ${position}`}
 ></div>
@@ -41,6 +43,23 @@ const small = await getImage({ src: image, width: 360, format: 'webp', quality: 
     background: var(--glass-img) var(--glass-pos) / cover no-repeat;
     filter: blur(64px) saturate(1.35);
     opacity: var(--glass-glow-opacity);
+  }
+
+  /* Ken Burns: pomalý posun a zvětšení, smyčka ~28 s, max. scale 1.08 */
+  @media (prefers-reduced-motion: no-preference) {
+    .glass-bg--animated::before {
+      animation: glass-drift var(--dur-kenburns) ease-in-out infinite alternate;
+    }
+  }
+
+  @keyframes glass-drift {
+    from {
+      transform: scale(1) translate3d(0, 0, 0);
+    }
+
+    to {
+      transform: scale(1.08) translate3d(-2.5%, -1.5%, 0);
+    }
   }
 
   .glass-bg::after {

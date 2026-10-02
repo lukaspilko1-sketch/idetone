@@ -1,0 +1,61 @@
+---
+/**
+ * Obrysová kresba reprosoustavy, dokud chybí fotka (dávka 1.2). Jen ilustrační silueta, ne technický výkres.
+ * variant „stand“ = kompaktní reprosoustava na stojanu (Reva).
+ */
+interface Props {
+  name: string;
+  variant?: 'stand';
+  label?: string;
+  class?: string;
+}
+
+const { name, label = 'Foto připravujeme', class: className } = Astro.props;
+---
+
+<figure class:list={['silhouette', className]}>
+  <svg viewBox="0 0 200 400" role="img" aria-label={`${name} – obrysová kresba, fotografie se připravuje`}>
+    <g class="silhouette__lines">
+      <!-- ozvučnice -->
+      <rect x="55" y="20" width="90" height="165" rx="1.5"></rect>
+      <!-- výškový reproduktor ve zvukovodu -->
+      <circle cx="100" cy="55" r="18"></circle>
+      <circle cx="100" cy="55" r="6"></circle>
+      <!-- středobasový reproduktor -->
+      <circle cx="100" cy="122" r="32"></circle>
+      <circle cx="100" cy="122" r="12"></circle>
+      <!-- stojan -->
+      <rect x="62" y="185" width="76" height="6"></rect>
+      <rect x="94" y="191" width="12" height="179"></rect>
+      <rect x="48" y="370" width="104" height="8" rx="1"></rect>
+    </g>
+  </svg>
+  <figcaption class="silhouette__label">{label}</figcaption>
+</figure>
+
+<style>
+  .silhouette {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-3);
+  }
+
+  svg {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+  }
+
+  .silhouette__lines {
+    fill: none;
+    stroke: var(--c-line);
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .silhouette__label {
+    font-family: var(--font-mono);
+    font-size: var(--fs-small);
+    color: var(--c-muted);
+  }
+</style>

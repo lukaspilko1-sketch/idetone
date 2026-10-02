@@ -33,15 +33,7 @@ specs:
   weight: 18 kg
   amplifier: třída A, AB, D, výkon > 25 W
 highlights: [lowFrequency, sensitivity, dimensions]
-# TODO(klient): fotky Revy (vyříznutá produktová fotka + galerie)
-imageSlotLabel: 'Foto: Reva na stojanu, vyříznutá – dodá klient'
-gallerySlots:
-  - label: 'Foto: zepředu'
-    ratio: 4/5
-  - label: 'Foto: z boku'
-    ratio: 4/5
-  - label: 'Foto: zvukovod'
-    ratio: 4/5
+# TODO(klient): fotky Revy (vyříznutá produktová fotka + galerie) – do té doby obrysová kresba
 accessories:
   - name: Stojany
     price: 25000
