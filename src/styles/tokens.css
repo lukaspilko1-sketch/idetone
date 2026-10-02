@@ -62,7 +62,7 @@
   --lh-text: 1.6;
   --lh-heading: 1.12;
   --tracking-eyebrow: 0.06em;
-  --tracking-logo: 0.42em;
+  --tracking-logo: 0; /* značka ideTone vcelku, bez prostrkání */
   --measure: 65ch;
 
   /* Mezery (4px rytmus) */
@@ -83,8 +83,8 @@
   --gutter: clamp(1rem, 4vw, 2.5rem);
   --grid-gap: clamp(1rem, 2.5vw, 2rem);
   /* Hlavička (dávka 1.1) – mobil; desktop níže v media query */
-  --logo-top-h: 28px; /* velikost písma loga nahoře */
-  --logo-scrolled-h: 18px; /* po scrollu */
+  --logo-top-h: 26px; /* velikost písma loga nahoře (mobil) */
+  --logo-scrolled-h: 20px; /* po scrollu */
   --header-pad: 1.75rem; /* desktop: odsazení loga shora */
   --header-top-h: 4.5rem; /* výška hlavičky nahoře = rezerva nad obsahem */
   --header-scrolled-h: 3.5rem;
@@ -112,7 +112,7 @@
 /* Hlavička na desktopu: velké logo na střed (jako Focal / Dynaudio) */
 @media (min-width: 64rem) {
   :root {
-    --logo-top-h: clamp(40px, 5.4vw, 68px);
+    --logo-top-h: clamp(32px, 3.4vw, 48px);
     --logo-scrolled-h: 22px;
     --header-top-h: calc(var(--header-pad) + var(--logo-top-h) + 4.75rem);
     --header-scrolled-h: 4.25rem;
