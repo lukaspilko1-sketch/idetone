@@ -237,13 +237,27 @@ hr {
   }
 }
 
+/* Omezený pohyb (dávka 2.6, v souladu s WCAG): žádné posuny, parallax ani masky,
+   ale jemné prolnutí průhlednosti a hover stavy zůstávají */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+  .js [data-reveal],
+  .js [data-reveal-img] {
+    transition: opacity var(--dur-fade) ease;
+  }
+
+  .js [data-reveal]:not(.is-revealed),
+  .js [data-reveal-img]:not(.is-revealed) {
+    opacity: 0;
+  }
+
+  :root {
+    scroll-behavior: auto;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
   }
 }
 

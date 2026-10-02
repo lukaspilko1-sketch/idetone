@@ -2,7 +2,7 @@
 # visible: false sekci skryje. Typ sekce (type) neměnit.
 # Fotky s placeholder: true jsou dočasné AI ilustrace – před spuštěním nahradit (npm run todo).
 home:
-  # Ceny na úvodu (sekce Modely a štítek v hero). Cena je vždy na detailu, v přehledu a ve srovnání.
+  # Ceny na úvodu (sekce Modely). Cena je vždy na detailu, v přehledu a ve srovnání.
   showPrices: false
   sections:
     - type: hero
@@ -11,24 +11,16 @@ home:
       # NÁVRH: ke schválení (nadpis a věta)
       title: Ručně laděné reprosoustavy z Brna
       text: Navrhuji, ladím a vyrábím dvoupásmové reprosoustavy, které nechají vyniknout hudbě i s jejím emočním nábojem.
-      primary:
-        label: Prohlédnout modely
-        href: /reprosoustavy/
-      secondary:
-        label: Domluvit poslech
-        href: /poslech/
-      product: sara
-      image:
-        src: ../assets/products/sara/DSC_0800i-1.png
-        alt: Pár reprosoustav Sara šikmo zezadu, dřevěné bočnice a černé podstavce
-      # Pozadí za sklem: fotka (rozostřená). Video z dílny: soubory do public/video/
-      # a doplnit video: /video/dilna.webm (případně videoMp4: /video/dilna.mp4), fotka zůstane jako poster.
-      background:
-        image:
-          src: ../assets/uploads/ai/dilna-hero.png
-          alt: Ilustrační foto – dílna s ponkem a dýhami
-          placeholder: true
-          source: AI ilustrace – nahradit
+      # TODO(klient): originál kresby a podpisu ve vysokém rozlišení / vektor (teď výřez ze starého webu)
+      drawing:
+        src: ../assets/uploads/kresby/kresba-sara.png
+        alt: Tužková kresba páru reprosoustav Sara
+      signature:
+        src: ../assets/uploads/kresby/podpis-petr-kocourek.png
+        alt: Podpis Petr Kocourek
+      scroll:
+        label: Modely
+        href: '#modely'
 
     - type: models
       visible: true
@@ -39,18 +31,53 @@ home:
         label: Porovnat modely
         href: /reprosoustavy/#srovnani
 
-    - type: quote
+    # Texty Koncept a Proces vývoje: starý úvod idetone.cz (2. 10. 2026), redakčně učesané
+    - type: concept
       visible: true
-      text: Reprosoustava je složitý celek, ve kterém se protínají nejen čistě technické, ale i emoční a estetické aspekty.
+      eyebrow: Koncept
+      statement: Klid, hladkost a přirozený detail před efektností na první poslech.
+      text: |-
+        Vše souvisí se vším. Rovnováha a synergie, snaha o konstruktérsky elegantní a čisté řešení – to jsou základní principy, které uplatňuji při vývoji, protože některé volby na začátku potom určují možnosti a řešení v pozdější fázi.
+
+        Za základní atributy reprosoustav ideTone považuji výborné chování v poslechovém prostoru a z toho plynoucí univerzálnost. Další vlastností je, že reprosoustavy jsou neunavující pro dlouhodobý poslech. Zde upřednostňuji klid, hladkost a přirozený detail před efektností na první poslech. Ucelený a propojený charakter s pocitem jednopásmovosti je dalším neoddělitelným kritériem při vývoji reprosoustav.
       author: Petr Kocourek
+      signature:
+        src: ../assets/uploads/kresby/podpis-petr-kocourek.png
+        alt: Podpis Petr Kocourek
       link:
         label: O ideTone
         href: /o-idetone/
-      image:
-        src: ../assets/uploads/ai/hudba-gramofon.png
-        alt: Ilustrační foto – přenoska gramofonu na vinylové desce
-        placeholder: true
-        source: AI ilustrace – nahradit
+
+    - type: process
+      visible: true
+      eyebrow: Proces vývoje
+      title: Od návrhu po poslech
+      # NÁVRH: ke schválení (nadpis a zkrácené texty kroků; plné texty na stránce Technologie)
+      steps:
+        - title: CAD design
+          text: Mechanický design a konstrukce vznikají v CAD systému. Několik variant prochází důkladným výběrem a postupnou optimalizací.
+          image:
+            src: ../assets/uploads/ai/dilna-hero.png
+            alt: Ilustrační foto – dílna s ponkem, dýhami a ručním hoblíkem
+            placeholder: true
+            source: AI ilustrace – nahradit
+        - title: Akustická měření
+          text: Měniče měřím v ose i mimo osu. Návrh filtrů zohledňuje i vyzařování mimo osu, které určuje zvuk v reálné místnosti.
+          image:
+            src: ../assets/uploads/ai/mereni.png
+            alt: Ilustrační foto – měřicí mikrofon a notebook s grafem frekvenční charakteristiky
+            placeholder: true
+            source: AI ilustrace – nahradit
+        - title: Poslechové testy
+          text: Každá verze prochází poslechovými testy a mnoha iteracemi, dokud nenajdu optimum pro rozmanité žánry i dlouhodobý poslech.
+          image:
+            src: ../assets/uploads/ai/hudba-gramofon.png
+            alt: Ilustrační foto – přenoska gramofonu na vinylové desce
+            placeholder: true
+            source: AI ilustrace – nahradit
+      link:
+        label: Proces vývoje podrobně
+        href: /technologie/#proces
 
     - type: technology
       visible: true
@@ -79,17 +106,27 @@ home:
     - type: listening
       visible: true
       eyebrow: Poslechové studio Brno
-      # NÁVRH: ke schválení
+      # NÁVRH: ke schválení (nadpis); text ze starého úvodu idetone.cz
       title: Než se rozhodnete, poslechněte si je
-      text: Reprosoustavy si můžete poslechnout v poslechovém studiu v Brně. Termín domluvíme individuálně.
+      # TODO(klient): ověřit přesné názvy modelů sestavy (na starém webu „pračka Accuphase PS-1200“ – síťový zdroj / regenerátor?)
+      text: Reprosoustavy jsou ke slyšení v poslechovém studiu v Brně na zesilovači Pass Labs INT-25, CD/SACD zdroji Esoteric K-01XD, síťovém zdroji Accuphase PS-1200 a vše je propojeno kabeláží Ansuz. Vaše oblíbená CD a SACD s sebou!
       button:
-        label: Domluvit poslech
-        href: /poslech/
+        label: Zarezervujte si poslech
+        href: /poslech/#formular
       background:
         src: ../assets/uploads/ai/poslech-mistnost.png
         alt: Ilustrační foto – poslechová místnost s křeslem a gramofonem
         placeholder: true
         source: AI ilustrace – nahradit
+
+    # Citát (zatím nepoužitý – zvýrazněním úvodu je výrok v sekci Koncept)
+    - type: quote
+      visible: false
+      text: Reprosoustava je složitý celek, ve kterém se protínají nejen čistě technické, ale i emoční a estetické aspekty.
+      author: Petr Kocourek
+      link:
+        label: O ideTone
+        href: /o-idetone/
 
     - type: references
       visible: false

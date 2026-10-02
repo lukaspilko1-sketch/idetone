@@ -3,17 +3,17 @@
  * Úvodní stránka – sekce a jejich pořadí se berou ze src/content/home.yaml.
  */
 import { Picture } from 'astro:assets';
-import { getEntry, getEntries } from 'astro:content';
+import { getEntries } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/Section.astro';
 import Button from '../components/Button.astro';
 import ProductFeature from '../components/ProductFeature.astro';
 import Quote from '../components/Quote.astro';
 import Photo from '../components/Photo.astro';
-import HeroMedia from '../components/HeroMedia.astro';
+import ProcessSteps from '../components/ProcessSteps.astro';
 import { features } from '../config/site';
 import { getHome, getSettings } from '../utils/content';
-import { formatPrice, typo } from '../utils/format';
+import { paragraphs, typo } from '../utils/format';
 import { url } from '../utils/url';
 import { localBusiness } from '../utils/seo';
 
@@ -23,15 +23,11 @@ const settings = await getSettings();
 
 // Načtení produktů, na které sekce odkazují
 const resolved = await Promise.all(
-  sections.map(async (section) => {
-    if (section.type === 'hero') {
-      return { section, product: await getEntry(section.product) };
-    }
-    if (section.type === 'models') {
-      return { section, products: await getEntries(section.products) };
-    }
-    return { section };
-  }),
+  sections.map(async (section) =>
+    section.type === 'models'
+      ? { section, products: await getEntries(section.products) }
+      : { section },
+  ),
 );
 ---
 
@@ -43,11 +39,10 @@ const resolved = await Promise.all(
   {resolved.map((item) => {
     const s = item.section;
 
-    if (s.type === 'hero' && 'product' in item && item.product) {
-      const p = item.product;
-      const bg = s.background;
+    // Hero: text vlevo, kresba s podpisem vpravo (dávka 2.2)
+    if (s.type === 'hero') {
       return (
-        <section class="hero" aria-labelledby="hero-title" data-hero>
+        <section class="hero" aria-labelledby="hero-title">
           <div class="container hero__grid">
             <div class="hero__text">
               <span class="eyebrow hero__in" style="--i: 0">
@@ -59,47 +54,43 @@ const resolved = await Promise.all(
               <p class="lead hero__lead hero__in" style="--i: 2">
                 {typo(s.text)}
               </p>
-              <div class="hero__actions hero__in" style="--i: 3">
-                <Button href={s.primary.href}>{s.primary.label}</Button>
-                {s.secondary && (
-                  <Button href={s.secondary.href} variant="secondary">
-                    {s.secondary.label}
-                  </Button>
-                )}
-              </div>
+              {s.scroll && (
+                <a class="hero__scroll hero__in" style="--i: 3" href={url(s.scroll.href)}>
+                  {s.scroll.label} <span aria-hidden="true">↓</span>
+                </a>
+              )}
             </div>
-            <figure class="hero__visual">
-              {/* Pozadí za sklem: na mobilu pod textem, na desktopu pravá část hero */}
-              <HeroMedia
-                image={bg?.image.src ?? s.image.src}
-                video={bg?.video}
-                videoMp4={bg?.videoMp4}
-                position="35% 50%"
-                class="hero__bg"
+            <figure class="hero__art">
+              <Picture
+                src={s.drawing.src}
+                alt={s.drawing.alt}
+                formats={['avif', 'webp']}
+                fallbackFormat="webp"
+                widths={[s.drawing.src.width]}
+                sizes={`${s.drawing.src.width}px`}
+                loading="eager"
+                fetchpriority="high"
+                class="hero__drawing"
               />
-              <figcaption class="hero__caption mono">
-                <a href={url(`/reprosoustavy/${p.id}/`)}>{p.data.name}</a>
-                <span>{showPrices ? `${formatPrice(p.data.price)} / pár` : p.data.type}</span>
-              </figcaption>
-              <div class="hero__product" data-parallax>
+              {s.signature && (
                 <Picture
-                  src={s.image.src}
-                  alt={s.image.alt}
+                  src={s.signature.src}
+                  alt={s.signature.alt}
                   formats={['avif', 'webp']}
                   fallbackFormat="webp"
-                  widths={[360, 560, 800]}
-                  sizes="(min-width: 64rem) 400px, 70vw"
+                  widths={[s.signature.src.width]}
+                  sizes={`${s.signature.src.width}px`}
                   loading="eager"
-                  fetchpriority="high"
-                  class="hero__img"
+                  class="hero__signature"
                 />
-              </div>
+              )}
             </figure>
           </div>
         </section>
       );
     }
 
+    // Modely: dva stejně široké sloupce, fotky na stejné podlaze, bez specifikací (dávka 2.4)
     if (s.type === 'models' && 'products' in item && item.products) {
       return (
         <Section id="modely" labelledby="modely-title" reveal={false} class="models">
@@ -108,16 +99,13 @@ const resolved = await Promise.all(
             <h2 id="modely-title">{typo(s.title)}</h2>
           </header>
           <div class="models__list">
-            {item.products.map((product, i) => (
-              <div
-                class:list={['models__item', i % 2 === 0 ? 'models__item--a' : 'models__item--b']}
-              >
-                <ProductFeature
-                  product={product}
-                  variant={i % 2 === 0 ? 'tall' : 'compact'}
-                  showPrice={showPrices}
-                />
-              </div>
+            {item.products.map((product) => (
+              <ProductFeature
+                product={product}
+                variant="column"
+                showPrice={showPrices}
+                showSpecs={false}
+              />
             ))}
           </div>
           {s.compareLink && (
@@ -131,26 +119,78 @@ const resolved = await Promise.all(
       );
     }
 
-    if (s.type === 'quote') {
+    // Koncept: velký výrok vlevo, texty a podpis vpravo (dávka 2.5a)
+    if (s.type === 'concept') {
       return (
-        <Section divider class="quote-section">
-          <div class:list={['quote-row', { 'quote-row--image': s.image }]}>
-            <Quote text={s.text} author={s.author} link={s.link} />
-            {s.image && (
-              <Photo
-                src={s.image.src}
-                alt={s.image.alt}
-                placeholder={s.image.placeholder}
-                ratio="4/5"
-                sizes="(min-width: 64rem) 360px, 80vw"
-                class="quote-row__img"
-              />
-            )}
+        <Section divider labelledby="koncept-title">
+          <div class="concept">
+            <div>
+              {s.eyebrow && (
+                <h2 id="koncept-title" class="eyebrow">
+                  {s.eyebrow}
+                </h2>
+              )}
+              <p class="concept__statement">{typo(s.statement)}</p>
+            </div>
+            <div class="concept__body">
+              {paragraphs(s.text).map((p) => (
+                <p>{typo(p)}</p>
+              ))}
+              <p class="concept__sign">
+                {s.signature ? (
+                  <Picture
+                    src={s.signature.src}
+                    alt={s.signature.alt}
+                    formats={['avif', 'webp']}
+                    fallbackFormat="webp"
+                    widths={[s.signature.src.width]}
+                    sizes="180px"
+                    class="concept__signature"
+                  />
+                ) : (
+                  <span>{s.author}</span>
+                )}
+              </p>
+              {s.link && (
+                <a class="arrow-link" href={url(s.link.href)}>
+                  {s.link.label} <span aria-hidden="true">→</span>
+                </a>
+              )}
+            </div>
           </div>
         </Section>
       );
     }
 
+    // Proces vývoje: skutečný postup, tři kroky s fotkou (dávka 2.5b)
+    if (s.type === 'process') {
+      return (
+        <Section divider labelledby="proces-title" reveal={false}>
+          <header class="process__head" data-reveal>
+            {s.eyebrow && <span class="eyebrow">{s.eyebrow}</span>}
+            <h2 id="proces-title">{typo(s.title)}</h2>
+          </header>
+          <ProcessSteps steps={s.steps} />
+          {s.link && (
+            <p class="process__more" data-reveal>
+              <a class="arrow-link" href={url(s.link.href)}>
+                {s.link.label} <span aria-hidden="true">→</span>
+              </a>
+            </p>
+          )}
+        </Section>
+      );
+    }
+
+    if (s.type === 'quote') {
+      return (
+        <Section divider class="quote-section">
+          <Quote text={s.text} author={s.author} link={s.link} />
+        </Section>
+      );
+    }
+
+    // Technologie – jedna fotka + tři sloupce
     if (s.type === 'technology') {
       return (
         <Section divider labelledby="technologie-title" reveal={false}>
@@ -177,7 +217,7 @@ const resolved = await Promise.all(
                     <h3>{typo(t.title)}</h3>
                     <p>{typo(t.text)}</p>
                     {t.href && (
-                      <a class="tech__link" href={url(t.href)}>
+                      <a class="arrow-link" href={url(t.href)}>
                         Víc o řešení <span aria-hidden="true">→</span>
                         <span class="visually-hidden">: {t.title}</span>
                       </a>
@@ -240,58 +280,19 @@ const resolved = await Promise.all(
   })}
 </BaseLayout>
 
-<script>
-  import { onPage } from '../utils/lifecycle';
-
-  // Parallax produktu v hero: pomalejší posun než text (jen desktop, bez omezení pohybu)
-  onPage((signal) => {
-    const product = document.querySelector<HTMLElement>('[data-parallax]');
-    const hero = document.querySelector<HTMLElement>('[data-hero]');
-    if (!product || !hero) return;
-    const motion = window.matchMedia(
-      '(prefers-reduced-motion: no-preference) and (min-width: 64rem)',
-    );
-    let ticking = false;
-    const update = () => {
-      ticking = false;
-      if (!motion.matches) {
-        product.style.removeProperty('--parallax');
-        return;
-      }
-      const y = Math.min(window.scrollY, hero.offsetHeight);
-      product.style.setProperty('--parallax', `${(y * -0.12).toFixed(1)}px`);
-    };
-    window.addEventListener(
-      'scroll',
-      () => {
-        if (!ticking) {
-          ticking = true;
-          requestAnimationFrame(update);
-        }
-      },
-      { passive: true, signal },
-    );
-    update();
-  });
-</script>
-
 <style>
-  /* Hero */
+  /* Hero – světlé, kresba s podpisem, max. jedna obrazovka */
   .hero {
-    position: relative;
-    z-index: 1;
-    padding-top: clamp(var(--space-6), 4vw, var(--space-7));
+    display: grid;
+    align-items: center;
+    min-height: min(calc(100svh - var(--header-top-h)), 52rem);
+    padding-block: var(--space-6) var(--space-7);
   }
 
   .hero__grid {
     display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: var(--grid-gap);
-  }
-
-  .hero__text {
-    grid-column: 1 / -1;
-    padding-bottom: var(--space-7);
+    gap: var(--space-6) var(--grid-gap);
+    align-items: center;
   }
 
   .hero h1 {
@@ -301,26 +302,85 @@ const resolved = await Promise.all(
 
   .hero__lead {
     margin-top: var(--space-5);
-    max-width: 42ch;
+    max-width: 40ch;
   }
 
-  .hero__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
+  /* Výzva ke scrollu – strojopis, ne tlačítko */
+  .hero__scroll {
+    display: inline-flex;
+    gap: var(--space-2);
     margin-top: var(--space-6);
+    padding-block: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--fs-data);
+    color: var(--c-muted);
+    text-decoration: none;
   }
 
-  /* Nástup při načtení: štítek, nadpis, text, tlačítka postupně; produkt se vynoří zespodu.
-     Čisté CSS – bez JS i s omezeným pohybem je vše vidět hned. */
+  .hero__scroll:hover {
+    color: var(--c-grafit);
+  }
+
+  .hero__art {
+    display: grid;
+    justify-items: center;
+  }
+
+  .hero__art :global(.hero__drawing) {
+    width: auto;
+    height: var(--hero-art-h);
+    max-width: 100%;
+    object-fit: contain;
+  }
+
+  /* Podpis menší, mírně vpravo – autorský podpis pod kresbou */
+  .hero__art :global(.hero__signature) {
+    justify-self: end;
+    width: min(55%, 11rem);
+    height: auto;
+    margin-top: var(--space-2);
+    margin-right: 6%;
+  }
+
+  @media (min-width: 64rem) {
+    .hero__grid {
+      grid-template-columns: 7fr 5fr;
+    }
+
+    .hero__art :global(.hero__signature) {
+      width: min(55%, 13rem);
+      margin-right: 0;
+    }
+  }
+
+  /* Nástup textu (fade + posun), kresba se „nakreslí“ zdola, podpis se „napíše“ zleva.
+     Čisté CSS – bez JS je vše vidět; při omezeném pohybu jen prolnutí průhlednosti. */
   @media (prefers-reduced-motion: no-preference) {
     .hero__in {
       animation: hero-in 460ms var(--ease-out) both;
       animation-delay: calc(var(--i) * var(--hero-stagger));
     }
 
-    .hero__visual :global(.hero__img) {
-      animation: hero-rise 700ms var(--ease-out) 120ms both;
+    .hero__art :global(.hero__drawing) {
+      mask-image: linear-gradient(to top, #000 40%, transparent 60%);
+      mask-size: 100% 250%;
+      mask-repeat: no-repeat;
+      animation: draw-up 1.4s var(--ease-out) both;
+    }
+
+    .hero__art :global(.hero__signature) {
+      mask-image: linear-gradient(to right, #000 40%, transparent 60%);
+      mask-size: 250% 100%;
+      mask-repeat: no-repeat;
+      animation: write-right 1.1s var(--ease-out) 0.9s both;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__in,
+    .hero__art :global(.hero__drawing),
+    .hero__art :global(.hero__signature) {
+      animation: fade-in var(--dur-fade) ease both;
     }
   }
 
@@ -331,106 +391,40 @@ const resolved = await Promise.all(
     }
   }
 
-  @keyframes hero-rise {
+  @keyframes draw-up {
     from {
-      opacity: 0;
-      transform: translateY(40px);
+      mask-position: 0 0%;
+    }
+
+    to {
+      mask-position: 0 100%;
     }
   }
 
-  /* Mobil: tmavá plocha pod textem přes celou šířku, produkt přesahuje dolů */
-  .hero__visual {
-    grid-column: 1 / -1;
-    position: relative;
-    isolation: isolate;
-    margin-inline: calc(-1 * var(--gutter));
-    margin-bottom: calc(-1 * var(--space-8));
-    padding: var(--space-5) var(--gutter) 0;
-  }
-
-  .hero__visual :global(.hero__bg) {
-    inset: 0 0 var(--space-8);
-  }
-
-  /* Skleněný štítek s modelem */
-  .hero__caption {
-    display: flex;
-    justify-content: space-between;
-    gap: var(--space-4);
-    padding: var(--space-3) var(--space-4);
-    background: var(--glass-card);
-    border: 1px solid var(--glass-edge);
-    border-radius: var(--radius);
-    backdrop-filter: blur(var(--glass-blur));
-    -webkit-backdrop-filter: blur(var(--glass-blur));
-    font-size: var(--fs-data);
-    color: var(--c-on-dark); /* na skleněné kartě plná barva kvůli kontrastu */
-  }
-
-  .hero__caption a {
-    color: var(--c-on-dark);
-    font-weight: 500;
-    text-decoration: none;
-  }
-
-  .hero__caption a:hover {
-    color: var(--c-dub-light);
-  }
-
-  .hero__product {
-    transform: translate3d(0, var(--parallax, 0), 0);
-    will-change: transform;
-  }
-
-  .hero__visual :global(.hero__img) {
-    width: min(78%, 22rem);
-    height: auto;
-    margin: var(--space-5) auto 0;
-    filter: drop-shadow(0 24px 30px rgb(0 0 0 / 0.28));
-  }
-
-  @media (min-width: 64rem) {
-    .hero__text {
-      grid-column: 1 / span 6;
-      align-self: center;
-      padding-bottom: var(--space-10);
+  @keyframes write-right {
+    from {
+      mask-position: 100% 0;
     }
 
-    /* Na desktopu je pozadí pravá část celé hero sekce */
-    .hero__visual {
-      position: static;
-      grid-column: 8 / span 5;
-      margin: 0 0 calc(-1 * var(--space-9));
-      padding: var(--space-6) 0 0;
-      align-self: end;
-    }
-
-    .hero__visual :global(.hero__bg) {
-      inset: 0 0 0 58%;
-    }
-
-    .hero__visual :global(.hero__img) {
-      width: min(100%, 25rem);
+    to {
+      mask-position: 0 0;
     }
   }
 
-  /* Modely – zhuštěné, dva odlišné bloky vedle sebe */
-  .models {
-    padding-top: calc(var(--section-space) + var(--space-8));
-  }
-
+  /* Modely – dva stejně široké sloupce */
   .models__head {
     margin-bottom: var(--space-7);
   }
 
   .models__head h2,
+  .process__head h2,
   .tech__head h2 {
     margin-top: var(--space-3);
   }
 
   .models__list {
     display: grid;
-    gap: var(--space-8) var(--grid-gap);
+    gap: var(--space-9) var(--space-8);
   }
 
   .models__compare {
@@ -438,44 +432,73 @@ const resolved = await Promise.all(
   }
 
   @media (min-width: 64rem) {
-    .models {
-      padding-top: calc(var(--section-space) + var(--space-9));
-    }
-
     .models__list {
-      grid-template-columns: 7fr 5fr;
+      grid-template-columns: 1fr 1fr;
       align-items: start;
-      column-gap: var(--space-8);
-    }
-
-    /* Kompaktní Reva odsazená dolů – ne dvě stejné karty v řadě */
-    .models__item--b {
-      margin-top: var(--space-7);
-      padding-left: var(--space-7);
-      border-left: var(--border);
     }
   }
 
-  /* Citát s fotkou */
-  .quote-row {
+  /* Odkaz se šipkou */
+  .arrow-link {
+    display: inline-flex;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .arrow-link span[aria-hidden] {
+    transition: transform var(--dur-fast) var(--ease);
+  }
+
+  .arrow-link:hover span[aria-hidden] {
+    transform: translateX(4px);
+  }
+
+  /* Koncept */
+  .concept {
     display: grid;
     gap: var(--space-7) var(--grid-gap);
-    align-items: center;
   }
 
-  .quote-row :global(.quote-row__img) {
-    max-width: 22rem;
+  .concept__statement {
+    margin-top: var(--space-4);
+    max-width: 18ch;
+    font-family: var(--font-heading);
+    font-size: var(--fs-quote);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  .concept__body > * + * {
+    margin-top: var(--space-4);
+  }
+
+  .concept__sign {
+    margin-top: var(--space-5);
+  }
+
+  .concept__sign :global(.concept__signature) {
+    width: 10rem;
+    height: auto;
   }
 
   @media (min-width: 64rem) {
-    .quote-row--image {
-      grid-template-columns: 7fr 4fr;
+    .concept {
+      grid-template-columns: 5fr 6fr;
+      column-gap: var(--space-9);
     }
+  }
 
-    .quote-row :global(.quote-row__img) {
-      justify-self: end;
-      width: 100%;
-    }
+  /* Proces vývoje */
+  .process__head {
+    margin-bottom: var(--space-7);
+  }
+
+  .process__more {
+    margin-top: var(--space-6);
   }
 
   /* Technologie – jedna fotka + tři sloupce */
@@ -511,20 +534,8 @@ const resolved = await Promise.all(
     margin-top: var(--space-3);
   }
 
-  .tech__link {
-    display: inline-flex;
-    gap: var(--space-2);
+  .tech__col .arrow-link {
     margin-top: var(--space-3);
-    font-weight: 500;
-    text-decoration: none;
-  }
-
-  .tech__link span[aria-hidden] {
-    transition: transform var(--dur-fast) var(--ease);
-  }
-
-  .tech__link:hover span[aria-hidden] {
-    transform: translateX(4px);
   }
 
   .tech__more {
@@ -563,7 +574,7 @@ const resolved = await Promise.all(
 
   .listen__text {
     margin-top: var(--space-4);
-    max-width: 44ch;
+    max-width: 52ch;
     color: var(--c-on-dark-muted);
   }
 

@@ -34,17 +34,17 @@ specs:
   trebleControl: ano, −1 / 0 / +1 dB nad 2000 Hz
 highlights: [lowFrequency, sensitivity, dimensions]
 image:
-  src: ../../assets/products/sara/DSC_0776-1.png
-  alt: Pár reprosoustav Sara zepředu, dřevěné bočnice a černá čelní deska
+  src: ../../assets/products/sara/DSC_0800i-1.png
+  alt: Pár reprosoustav Sara šikmo zezadu, dřevěné bočnice a černé podstavce
 gallery:
+  - src: ../../assets/products/sara/DSC_0800i-1.png
+    alt: Pár reprosoustav Sara šikmo zezadu, černé podstavce s přípojkami
   - src: ../../assets/products/sara/DSC_0776-1.png
     alt: Pár reprosoustav Sara zepředu, dřevěné bočnice a černá čelní deska
   - src: ../../assets/products/sara/DSC_0789.png
     alt: Pár reprosoustav Sara z šikmého pohledu, dřevěné bočnice a otevřený rám pod ozvučnicí
   - src: ../../assets/products/sara/DSC_0764-and-resized-1.png
     alt: Reprosoustava Sara z boku a zepředu, profil dřevěné bočnice
-  - src: ../../assets/products/sara/DSC_0800i-1.png
-    alt: Pár reprosoustav Sara šikmo zezadu, černé podstavce s přípojkami
   - src: ../../assets/products/sara/DSC_0834-1.png
     alt: Detail čelní desky Sary – páskový výškový reproduktor ve zvukovodu a středobasový reproduktor
 impedanceChart:

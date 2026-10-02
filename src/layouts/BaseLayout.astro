@@ -125,11 +125,11 @@ const alternates = features.english
       import { onPage } from '../utils/lifecycle';
 
       // Odkrytí při scrollu (jednou): sekce [data-reveal] (opacity + posun) a fotky
-      // [data-reveal-img] (clip-path zdola nahoru). Bez JS / s omezeným pohybem je vše vidět hned.
+      // [data-reveal-img] (clip-path zdola nahoru); při omezeném pohybu jen prolnutí (řeší CSS).
+      // Bez JS je vše vidět hned.
       onPage((signal) => {
         const items = document.querySelectorAll<HTMLElement>('[data-reveal], [data-reveal-img]');
-        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (reduce || !('IntersectionObserver' in window)) {
+        if (!('IntersectionObserver' in window)) {
           items.forEach((el) => el.classList.add('is-revealed'));
           return;
         }

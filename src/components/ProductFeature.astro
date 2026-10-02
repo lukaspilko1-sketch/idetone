@@ -1,7 +1,8 @@
 ---
 /**
  * Produktový blok (úvod, přehled modelů). Záměrně nejsou dvě stejné karty:
- * „tall“ = vysoká sloupová (fotka vedle textu), „compact“ = kompaktní (menší fotka / silueta).
+ * „tall“ = vysoká sloupová (fotka vedle textu), „compact“ = kompaktní (menší fotka / silueta),
+ * „column“ = sloupec na úvodu: fotka nahoře ve stejně vysoké „scéně“ (stejná podlaha), text pod ní.
  * Rozvržení řídí container queries – blok se přizpůsobí šířce sloupce, ve kterém je.
  * Název modelu jako značka (--fs-model), cena jen se showPrice.
  */
@@ -13,14 +14,23 @@ import { url } from '../utils/url';
 
 interface Props {
   product: Product;
-  variant?: 'tall' | 'compact';
+  variant?: 'tall' | 'compact' | 'column';
   level?: 2 | 3;
   /** delší popis místo jedné věty (přehled modelů) */
   long?: boolean;
   showPrice?: boolean;
+  /** klíčové parametry (na úvodu ne – jen detail a srovnání) */
+  showSpecs?: boolean;
 }
 
-const { product, variant = 'tall', level = 3, long = false, showPrice = true } = Astro.props;
+const {
+  product,
+  variant = 'tall',
+  level = 3,
+  long = false,
+  showPrice = true,
+  showSpecs = true,
+} = Astro.props;
 const { data } = product;
 const H = `h${level}` as 'h2' | 'h3';
 const href = url(`/reprosoustavy/${product.id}/`);
@@ -38,9 +48,9 @@ const href = url(`/reprosoustavy/${product.id}/`);
             fallbackFormat="webp"
             widths={[320, 560, 800].filter((w) => w <= data.image!.src.width)}
             sizes={
-              variant === 'tall'
-                ? '(min-width: 64rem) 300px, 60vw'
-                : '(min-width: 64rem) 220px, 50vw'
+              variant === 'compact'
+                ? '(min-width: 64rem) 220px, 50vw'
+                : '(min-width: 64rem) 300px, 60vw'
             }
             class="pf__img"
           />
@@ -64,14 +74,16 @@ const href = url(`/reprosoustavy/${product.id}/`);
       </H>
       <p class="pf__text">{typo(long ? data.intro : data.tagline)}</p>
 
-      <dl class="pf__specs">
-        {data.highlights.map((key) => (
-          <div>
-            <dt>{specLabels[key]}</dt>
-            <dd>{typo(shortSpec(product, key))}</dd>
-          </div>
-        ))}
-      </dl>
+      {showSpecs && (
+        <dl class="pf__specs">
+          {data.highlights.map((key) => (
+            <div>
+              <dt>{specLabels[key]}</dt>
+              <dd>{typo(shortSpec(product, key))}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
 
       {showPrice && (
         <p class="pf__price">
@@ -202,6 +214,59 @@ const href = url(`/reprosoustavy/${product.id}/`);
 
   .pf__link:hover span {
     transform: translateX(4px);
+  }
+
+  /* Sloupec na úvodu: stejně vysoká scéna pro fotku, fotka i silueta stojí na stejné „podlaze“ */
+  .pf--column .pf__layout {
+    align-items: start;
+  }
+
+  .pf--column .pf__media {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    width: 100%;
+    height: var(--pf-stage-h);
+  }
+
+  .pf--column .pf__frame {
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .pf--column .pf__media :global(picture) {
+    display: contents;
+  }
+
+  .pf--column .pf__media :global(.pf__img) {
+    width: auto;
+    height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    object-position: bottom;
+  }
+
+  /* Silueta stojí na stejné podlaze jako fotka, popisek visí pod podlahou */
+  .pf--column .pf__media :global(.silhouette) {
+    position: relative;
+    display: block;
+    height: 92%;
+  }
+
+  .pf--column .pf__media :global(.silhouette svg) {
+    width: auto;
+    height: 100%;
+  }
+
+  .pf--column .pf__media :global(.silhouette__label) {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-top: var(--space-2);
+    white-space: nowrap;
+    transform: translateX(-50%);
   }
 
   @container (max-width: 22rem) {

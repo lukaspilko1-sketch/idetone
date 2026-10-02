@@ -4,18 +4,28 @@ seoTitle: Technologie – zvukovod, regulace výšek, bassreflex
 # NÁVRH: ke schválení (meta popis a perex)
 description: Zvukovod u výškového reproduktoru, regulace výšek −1 / 0 / +1 dB a bassreflex vyvedený dolů. Konstrukční řešení reprosoustav ideTone.
 eyebrow: Technologie
-lead: Tři konstrukční řešení, která společně určují, jak reprosoustavy ideTone hrají v běžném obývacím pokoji.
-# Dočasné AI ilustrace (placeholder: true) – před spuštěním nahradit skutečnými fotkami
-photos:
-  - src: ../../assets/uploads/ai/dilna-vyhybka.png
-    alt: Ilustrační foto – ruce pájí cívky a kondenzátory frekvenční výhybky
-    placeholder: true
-    source: AI ilustrace – nahradit
-  - src: ../../assets/uploads/ai/mereni.png
-    alt: Ilustrační foto – měřicí mikrofon a notebook s grafem frekvenční charakteristiky
-    placeholder: true
-    source: AI ilustrace – nahradit
+lead: Principy, ze kterých vycházím, tři konstrukční řešení a postup, kterým vzniká každý model.
 sections:
+  # Principy konstrukce a Proces vývoje: starý úvod idetone.cz (2. 10. 2026), redakčně učesané
+  - id: principy
+    eyebrow: Přístup
+    title: Principy konstrukce
+    subsections:
+      - title: Měniče
+        text: |-
+          Kvalitní měniče, dobré měření, souběh parametrů, spolehlivost výrobce – to vše je základ. Technicky se zaměřuji na měniče s vynikající linearitou, bez breakupů a s nízkým zkreslením. Po zvukové stránce vybírám měniče spíše neutrálního, ale zároveň příjemného a bohatšího či barevnějšího charakteru. Důraz je kladen na sladění charakterů měničů v reprosoustavě.
+      - title: Frekvenční filtry
+        text: |-
+          Frekvenční výhybka má být jen tak složitá, jak je nezbytně nutné. Strmost filtrů a kompenzace jsou určovány daným měničem, proto volím měniče bez breakupů, které nevyžadují složité kompenzace a umožňují použití filtrů optimálně druhého řádu. Ty poskytují dobré prolnutí charakterů měničů, zvukově působí přirozeně a mají pěkný prostor bez tendence vypichovat detaily. Upřednostňuji kvalitní součástky a především jejich vhodné doplnění se zvukovým charakterem měničů.
+      - title: Ozvučnice a doplňky
+        text: |-
+          Ozvučnice zásadním způsobem ovlivňuje chování měničů, proto je její návrh řešen již v úplném začátku. Kloubí se zde požadavky na akustické chování, ale i estetiku a vizuální dojem. Vhodný návrh podporuje dobré vlastnosti měničů, návrh filtrů a výsledné akustické vlastnosti.
+    image:
+      src: ../../assets/uploads/ai/dilna-vyhybka.png
+      alt: Ilustrační foto – ruce pájí cívky a kondenzátory frekvenční výhybky
+      placeholder: true
+      source: AI ilustrace – nahradit
+
   - id: zvukovod
     eyebrow: Výškový reproduktor
     title: Zvukovod ve spojení s výškovým reproduktorem
@@ -62,4 +72,29 @@ sections:
     imageSlot:
       label: 'Foto: spodní část Sary s vývodem bassreflexu'
       ratio: 4/5
+stepsEyebrow: Proces vývoje
+stepsTitle: Od návrhu po poslech # NÁVRH: ke schválení (nadpis)
+steps:
+  - title: CAD design
+    # TODO(klient): „CT2034A“ je nejspíš norma CTA-2034-A (měření „spinorama“) – ověřit a opravit
+    text: Mechanický design a konstrukce probíhá v CAD systému. V této fázi je třeba vyřešit technické aspekty, ale zároveň i estetické nároky a výrobní postupy. Několik variant prochází důkladným výběrovým procesem a postupnou optimalizací. Akustický design je ovlivněn poznatky a nároky danými CT2034A a zároveň zkušenostmi.
+    image:
+      src: ../../assets/uploads/ai/dilna-hero.png
+      alt: Ilustrační foto – dílna s ponkem, dýhami a ručním hoblíkem
+      placeholder: true
+      source: AI ilustrace – nahradit
+  - title: Akustická měření
+    text: Akustická měření a charakterizace měničů jsou nedílnou součástí procesu, stejně jako získání dat pro návrh frekvenčních filtrů jak v ose, tak i mimo osu. Návrh frekvenčních filtrů zohledňuje i vyzařování reprosoustavy mimo osu, protože to je určující pro zvuk reprosoustavy v reálných poslechových podmínkách.
+    image:
+      src: ../../assets/uploads/ai/mereni.png
+      alt: Ilustrační foto – měřicí mikrofon a notebook s grafem frekvenční charakteristiky
+      placeholder: true
+      source: AI ilustrace – nahradit
+  - title: Poslechové testy
+    text: Každá verze prochází poslechovými testy a je třeba mnoho iterací pro nalezení optima, které vyhovuje pro rozmanité hudební žánry a dlouhodobý poslech.
+    image:
+      src: ../../assets/uploads/ai/hudba-gramofon.png
+      alt: Ilustrační foto – přenoska gramofonu na vinylové desce
+      placeholder: true
+      source: AI ilustrace – nahradit
 ---

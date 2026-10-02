@@ -1,0 +1,83 @@
+---
+/**
+ * Číslované kroky s fotkou (Proces vývoje na úvodu a na Technologiích). Číslování jen u skutečného postupu.
+ */
+import type { ImageMetadata } from 'astro';
+import Photo from './Photo.astro';
+import { typo } from '../utils/format';
+
+interface Step {
+  title: string;
+  text: string;
+  image?: { src: ImageMetadata; alt: string; placeholder?: boolean };
+}
+
+interface Props {
+  steps: Step[];
+}
+
+const { steps } = Astro.props;
+---
+
+<ol role="list" class="process">
+  {steps.map((step, i) => (
+    <li class="process__step">
+      {step.image && (
+        <Photo
+          src={step.image.src}
+          alt={step.image.alt}
+          placeholder={step.image.placeholder}
+          ratio="3/2"
+          sizes="(min-width: 64rem) 380px, (min-width: 48rem) 33vw, 100vw"
+        />
+      )}
+      <div class="process__text" data-reveal>
+        <span class="process__num mono" aria-hidden="true">
+          {i + 1}
+        </span>
+        <h3>{typo(step.title)}</h3>
+        <p>{typo(step.text)}</p>
+      </div>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .process {
+    display: grid;
+    gap: var(--space-7) var(--grid-gap);
+  }
+
+  .process__step {
+    display: grid;
+    gap: var(--space-4);
+    align-content: start;
+    max-width: none;
+  }
+
+  .process__text {
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--c-grafit);
+  }
+
+  .process__num {
+    display: block;
+    margin-bottom: var(--space-2);
+    font-size: var(--fs-data);
+    color: var(--c-dub-text);
+  }
+
+  h3 {
+    font-size: var(--fs-m);
+  }
+
+  p {
+    margin-top: var(--space-2);
+  }
+
+  @media (min-width: 48rem) {
+    .process {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

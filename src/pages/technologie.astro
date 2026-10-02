@@ -8,6 +8,7 @@ import ImageSlot from '../components/ImageSlot.astro';
 import WaveguideFigure from '../components/WaveguideFigure.astro';
 import Button from '../components/Button.astro';
 import Photo from '../components/Photo.astro';
+import ProcessSteps from '../components/ProcessSteps.astro';
 import { getPage } from '../utils/content';
 import { typo } from '../utils/format';
 
@@ -27,25 +28,14 @@ const { data } = await getPage('technologie');
             <a href={`#${s.id}`}>{s.title}</a>
           </li>
         ))}
+        {data.steps.length > 0 && (
+          <li>
+            <a href="#proces">{data.stepsEyebrow ?? data.stepsTitle}</a>
+          </li>
+        )}
       </ul>
     </nav>
   </PageHeader>
-
-  {data.photos.length > 0 && (
-    <Section space="none" reveal={false}>
-      <div class="photo-strip">
-        {data.photos.slice(0, 2).map((p) => (
-          <Photo
-            src={p.src}
-            alt={p.alt}
-            placeholder={p.placeholder}
-            ratio="3/2"
-            sizes="(min-width: 48rem) 600px, 100vw"
-          />
-        ))}
-      </div>
-    </Section>
-  )}
 
   {data.sections.map((s, i) => (
     <Section id={s.id} divider labelledby={`${s.id}-title`}>
@@ -56,7 +46,16 @@ const { data } = await getPage('technologie');
           <TextBlock text={s.text} list={s.list} subsections={s.subsections} />
         </div>
         <div class="chapter__media" data-reveal-img>
-          {s.image ? (
+          {s.image?.placeholder ? (
+            <Photo
+              src={s.image.src}
+              alt={s.image.alt}
+              placeholder
+              ratio="4/5"
+              sizes="(min-width: 60rem) 400px, 80vw"
+              reveal={false}
+            />
+          ) : s.image ? (
             <Picture
               src={s.image.src}
               alt={s.image.alt}
@@ -79,6 +78,17 @@ const { data } = await getPage('technologie');
     </Section>
   ))}
 
+  {/* Proces vývoje – skutečný postup, proto číslované kroky */}
+  {data.steps.length > 0 && (
+    <Section id="proces" divider labelledby="proces-title" reveal={false}>
+      <header class="process__head" data-reveal>
+        {data.stepsEyebrow && <span class="eyebrow">{data.stepsEyebrow}</span>}
+        <h2 id="proces-title">{typo(data.stepsTitle ?? 'Proces vývoje')}</h2>
+      </header>
+      <ProcessSteps steps={data.steps} />
+    </Section>
+  )}
+
   <Section tone="uhel" space="m">
     <div class="cta">
       <h2 class="h3">Rozdíl je nejlepší slyšet</h2>
@@ -91,19 +101,6 @@ const { data } = await getPage('technologie');
 </BaseLayout>
 
 <style>
-  .photo-strip {
-    display: grid;
-    gap: var(--grid-gap);
-    padding-bottom: var(--section-space);
-  }
-
-  @media (min-width: 48rem) {
-    .photo-strip {
-      grid-template-columns: 3fr 2fr;
-      align-items: end;
-    }
-  }
-
   .toc ul {
     display: flex;
     flex-wrap: wrap;
@@ -164,6 +161,14 @@ const { data } = await getPage('technologie');
     .chapter__figure {
       grid-column: 1 / span 10;
     }
+  }
+
+  .process__head {
+    margin-bottom: var(--space-7);
+  }
+
+  .process__head h2 {
+    margin-top: var(--space-3);
   }
 
   .cta {

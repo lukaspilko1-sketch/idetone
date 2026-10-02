@@ -34,7 +34,7 @@ const settings = await getSettings();
 
   <Section divider labelledby="postup-title">
     <h2 id="postup-title" class="title">
-      Postup spolupráce
+      {data.stepsTitle ?? 'Postup spolupráce'}
     </h2>
     <ol role="list" class="steps">
       {data.steps.map((step, i) => (

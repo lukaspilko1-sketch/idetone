@@ -89,6 +89,12 @@
   --header-top-h: 4.5rem; /* výška hlavičky nahoře = rezerva nad obsahem */
   --header-scrolled-h: 3.5rem;
   --order-w: 9rem; /* šířka tlačítka Objednat v hlavičce */
+  --pf-stage-h: clamp(18rem, 32vw, 26rem); /* výška scény fotek modelů na úvodu */
+  --hero-art-h: clamp(
+    12rem,
+    33svh,
+    22rem
+  ); /* výška kresby v hero (mobil) – hero max. jedna obrazovka */
   --dur-header: 320ms;
 
   /* Tvary */
@@ -104,7 +110,7 @@
   --dur-fast: 180ms;
   --dur-reveal: 400ms;
   --dur-img-reveal: 600ms;
-  --dur-kenburns: 28s; /* pomalý pohyb pozadí v hero */
+  --dur-fade: 300ms; /* prolnutí při omezeném pohybu */
   --hero-stagger: 80ms; /* rozestup nástupu prvků v hero */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -116,6 +122,8 @@
     --logo-scrolled-h: 22px;
     --header-top-h: calc(var(--header-pad) + var(--logo-top-h) + 4.75rem);
     --header-scrolled-h: 4.25rem;
+    /* kresba 561 px vysoká – nezvětšovat nad nativní velikost × 1,5 */
+    --hero-art-h: clamp(18rem, calc(100svh - var(--header-top-h) - 13rem), 35rem);
   }
 }
 

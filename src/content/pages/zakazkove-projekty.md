@@ -15,6 +15,7 @@ photos:
     alt: Ilustrační foto – hrana ořechové desky, lněná látka a tužka
     placeholder: true
     source: AI ilustrace – nahradit
+stepsTitle: Postup spolupráce
 steps:
   - title: Konzultace
     text: Probereme místnost, současnou sestavu, hudbu, kterou posloucháte, a vaši představu o vzhledu i rozpočtu.

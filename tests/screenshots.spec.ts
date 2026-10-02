@@ -139,3 +139,39 @@ for (const [width, height] of [
     await page.screenshot({ path: `screenshots/davka1-uvod-cela-${width}.png`, fullPage: true });
   });
 }
+
+// Dávka 2: úvod 375 / 768 / 1280 – hero, modely, koncept, proces; oba režimy pohybu
+for (const [width, height] of [
+  [375, 812],
+  [768, 1024],
+  [1280, 800],
+]) {
+  for (const motion of ['no-preference', 'reduce'] as const) {
+    test(`davka2 uvod @ ${width} ${motion}`, async ({ page }) => {
+      await page.emulateMedia({ reducedMotion: motion });
+      await page.setViewportSize({ width, height });
+      await page.goto('/');
+      await page.evaluate(() => document.fonts.ready);
+      await page.waitForTimeout(2500); // dokončení animace kresby a podpisu
+      const tag = motion === 'reduce' ? '-reduce' : '';
+      await page.screenshot({ path: `screenshots/davka2-hero-${width}${tag}.png` });
+      if (motion === 'reduce') return;
+      for (const [name, sel] of [
+        ['modely', '#modely'],
+        ['koncept', 'section[aria-labelledby="koncept-title"]'],
+        ['proces', 'section[aria-labelledby="proces-title"]'],
+      ]) {
+        const el = page.locator(sel);
+        await el.evaluate(async (node) => {
+          const box = node.getBoundingClientRect();
+          for (let y = 0; y < box.height; y += 300) {
+            window.scrollTo(0, window.scrollY + box.top + y - 200);
+            await new Promise((r) => setTimeout(r, 120));
+          }
+        });
+        await page.waitForTimeout(900);
+        await el.screenshot({ path: `screenshots/davka2-${name}-${width}.png` });
+      }
+    });
+  }
+}

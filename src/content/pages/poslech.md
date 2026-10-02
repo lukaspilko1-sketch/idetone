@@ -12,6 +12,9 @@ photos:
     placeholder: true
     source: AI ilustrace – nahradit
 sections:
+  - id: sestava
+    title: Sestava ve studiu
+    text: Vaše oblíbená CD a SACD s sebou!
   - title: Ve studiu
     text: V poslechovém studiu v Brně si můžete Saru i Revu poslechnout v klidu a s vlastní hudbou.
   # TODO(klient): ověřit, zda je možný poslech u zákazníka doma

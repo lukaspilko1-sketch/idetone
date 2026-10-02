@@ -60,8 +60,22 @@ const models = (await getProducts()).map((p) => ({ id: p.id, name: p.data.name }
     </h2>
     <div class="options">
       {data.sections.map((s) => (
-        <div class="option">
+        <div class:list={['option', { 'option--system': s.id === 'sestava' }]}>
           <h3>{typo(s.title)}</h3>
+          {/* Sestava ve studiu ze settings.yaml (studio.system) jako tabulka strojopisem */}
+          {s.id === 'sestava' && studio.system.length > 0 && (
+            <table class="system">
+              <caption class="visually-hidden">Sestava v poslechovém studiu</caption>
+              <tbody>
+                {studio.system.map((row) => (
+                  <tr>
+                    <th scope="row">{row.label}</th>
+                    <td>{row.value}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
           <TextBlock text={s.text} list={s.list} />
         </div>
       ))}
@@ -135,6 +149,38 @@ const models = (await getProducts()).map((p) => ({ id: p.id, name: p.data.name }
   .options {
     display: grid;
     gap: var(--space-7) var(--grid-gap);
+  }
+
+  .option--system {
+    grid-column: 1 / -1;
+  }
+
+  .system {
+    width: 100%;
+    max-width: 40rem;
+    margin-bottom: var(--space-4);
+    border-collapse: collapse;
+    background: var(--c-papir);
+    border: var(--border);
+    font-family: var(--font-mono);
+    font-size: var(--fs-data);
+  }
+
+  .system th,
+  .system td {
+    padding: var(--space-3) var(--space-4);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .system tr + tr > * {
+    border-top: var(--border);
+  }
+
+  .system th {
+    width: 9rem;
+    font-weight: 400;
+    color: var(--c-muted);
   }
 
   .option h3 {

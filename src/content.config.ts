@@ -122,7 +122,12 @@ const pages = defineCollection({
       eyebrow: z.string().optional(),
       lead: z.string().optional(),
       sections: z.array(pageSection(image)).default([]),
-      steps: z.array(z.object({ title: z.string(), text: z.string() })).default([]),
+      /** číslovaný postup (Zakázkové projekty, Proces vývoje na Technologiích) */
+      stepsEyebrow: z.string().optional(),
+      stepsTitle: z.string().optional(),
+      steps: z
+        .array(z.object({ title: z.string(), text: z.string(), image: photo(image).optional() }))
+        .default([]),
       /** fotky stránky (ilustrační i skutečné), rozmístění řeší šablona stránky */
       photos: z.array(photo(image)).default([]),
       /** podpis pod textem (O ideTone) */
@@ -141,19 +146,12 @@ const homeSection = (image: SchemaContext['image']) =>
       eyebrow: z.string(),
       title: z.string(),
       text: z.string(),
-      primary: link,
-      secondary: link.optional(),
-      product: reference('products'),
-      /** vyříznutá fotka produktu */
-      image: photo(image),
-      /** pozadí za sklem: fotka (rozostřená) nebo krátké video z public/ (webm/mp4) s fotkou jako posterem */
-      background: z
-        .object({
-          image: photo(image),
-          video: z.string().optional(),
-          videoMp4: z.string().optional(),
-        })
-        .optional(),
+      /** kresba vpravo (dávka 2.2), při načtení se „nakreslí“ */
+      drawing: photo(image),
+      /** podpis pod kresbou, „napíše se“ po kresbě */
+      signature: photo(image).optional(),
+      /** jemná výzva ke scrollu místo tlačítek (např. „Modely ↓“ → #modely) */
+      scroll: link.optional(),
     }),
     z.object({
       ...base,
@@ -162,6 +160,28 @@ const homeSection = (image: SchemaContext['image']) =>
       title: z.string(),
       products: z.array(reference('products')).min(1),
       compareLink: link.optional(),
+    }),
+    z.object({
+      ...base,
+      type: z.literal('concept'),
+      eyebrow: z.string().optional(),
+      /** velký výrok vlevo */
+      statement: z.string(),
+      /** odstavce oddělené prázdným řádkem */
+      text: z.string(),
+      author: z.string(),
+      signature: photo(image).optional(),
+      link: link.optional(),
+    }),
+    z.object({
+      ...base,
+      type: z.literal('process'),
+      eyebrow: z.string().optional(),
+      title: z.string(),
+      steps: z
+        .array(z.object({ title: z.string(), text: z.string(), image: photo(image).optional() }))
+        .min(1),
+      link: link.optional(),
     }),
     z.object({
       ...base,
@@ -239,6 +259,8 @@ const settings = defineCollection({
       city: z.string(),
       parking: z.string().default(''),
       hours: z.string().default(''),
+      /** sestava ve studiu (dávka 2.5d), např. { label: Zesilovač, value: Pass Labs INT-25 } */
+      system: z.array(z.object({ label: z.string(), value: z.string() })).default([]),
       mapyCz: z.url(),
       googleMaps: z.url(),
     }),
