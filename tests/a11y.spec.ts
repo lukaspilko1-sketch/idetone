@@ -23,6 +23,8 @@ for (const width of [390, 1440]) {
     test(`axe ${path} @ ${width}`, async ({ page }) => {
       await page.setViewportSize({ width, height: 900 });
       await page.goto(path);
+      // Dev server v CI při prvním načtení někdy stránku obnoví (optimalizace závislostí) – počkat
+      await page.waitForLoadState('networkidle');
       await page.evaluate(() => document.fonts.ready);
       // Kontrast se měří v konečném stavu: bez prolínání a animací, vše odkryté
       // (uprostřed prolnutí je text částečně průhledný a axe by hlásil falešné chyby)
