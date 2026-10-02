@@ -342,13 +342,35 @@ const resolved = await Promise.all(
     margin-right: 6%;
   }
 
+  /* Desktop: hero přes celou výšku pod hlavičkou, větší nadpis i kresba, menší mezery */
   @media (min-width: 64rem) {
+    .hero {
+      min-height: calc(100svh - var(--header-top-h));
+      padding-block: var(--space-5);
+    }
+
     .hero__grid {
-      grid-template-columns: 7fr 5fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      column-gap: var(--space-7);
+    }
+
+    .hero h1 {
+      font-size: var(--fs-hero);
+      max-width: 13ch;
+    }
+
+    .hero__lead {
+      max-width: 36ch;
+    }
+
+    /* Kresba uprostřed pravé poloviny – bez prázdného pruhu mezi textem a kresbou */
+    .hero__art {
+      justify-items: center;
     }
 
     .hero__art :global(.hero__signature) {
-      width: min(55%, 13rem);
+      width: clamp(12rem, 16vw, 17rem);
+      margin-top: 0;
       margin-right: 0;
     }
   }
@@ -357,7 +379,7 @@ const resolved = await Promise.all(
      Čisté CSS – bez JS je vše vidět; při omezeném pohybu jen prolnutí průhlednosti. */
   @media (prefers-reduced-motion: no-preference) {
     .hero__in {
-      animation: hero-in 460ms var(--ease-out) both;
+      animation: hero-in var(--dur-hero-in) var(--ease-out) both;
       animation-delay: calc(var(--i) * var(--hero-stagger));
     }
 
@@ -365,14 +387,14 @@ const resolved = await Promise.all(
       mask-image: linear-gradient(to top, #000 40%, transparent 60%);
       mask-size: 100% 250%;
       mask-repeat: no-repeat;
-      animation: draw-up 1.4s var(--ease-out) both;
+      animation: draw-up var(--dur-draw) var(--ease-draw) both;
     }
 
     .hero__art :global(.hero__signature) {
       mask-image: linear-gradient(to right, #000 40%, transparent 60%);
       mask-size: 250% 100%;
       mask-repeat: no-repeat;
-      animation: write-right 1.1s var(--ease-out) 0.9s both;
+      animation: write-right var(--dur-sign) var(--ease-draw) var(--delay-sign) both;
     }
   }
 

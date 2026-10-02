@@ -108,10 +108,18 @@
   /* Pohyb */
   --ease: cubic-bezier(0.2, 0.6, 0.2, 1);
   --dur-fast: 180ms;
-  --dur-reveal: 400ms;
-  --dur-img-reveal: 600ms;
-  --dur-fade: 300ms; /* prolnutí při omezeném pohybu */
-  --hero-stagger: 80ms; /* rozestup nástupu prvků v hero */
+  --dur-reveal: 700ms; /* odkrytí sekcí při scrollu */
+  --dur-img-reveal: 1000ms; /* odkrytí fotek (clip-path) */
+  --dur-fade: 500ms; /* prolnutí při omezeném pohybu */
+  --dur-hover-img: 700ms; /* zvětšení fotky modelu při najetí */
+  --dur-page: 400ms; /* přechod mezi stránkami */
+  /* Hero: pomalé, efektní „kreslení“ kresby a psaní podpisu */
+  --dur-hero-in: 800ms; /* nástup textu */
+  --hero-stagger: 140ms; /* rozestup nástupu prvků */
+  --dur-draw: 3.2s; /* kresba se odkrývá zdola nahoru */
+  --dur-sign: 2.4s; /* podpis se píše zleva doprava */
+  --delay-sign: 2.6s; /* podpis začne, když kresba končí */
+  --ease-draw: cubic-bezier(0.45, 0, 0.25, 1); /* plynulý tah tužkou */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -123,7 +131,9 @@
     --header-top-h: calc(var(--header-pad) + var(--logo-top-h) + 4.75rem);
     --header-scrolled-h: 4.25rem;
     /* kresba 561 px vysoká – nezvětšovat nad nativní velikost × 1,5 */
-    --hero-art-h: clamp(18rem, calc(100svh - var(--header-top-h) - 13rem), 35rem);
+    /* hero využije celou výšku pod hlavičkou; max. 1,5 × nativní výška kresby (561 px) */
+    --hero-art-h: clamp(22rem, calc(100svh - var(--header-top-h) - 9rem), 52rem);
+    --fs-hero: clamp(3rem, 1.4rem + 3.4vw, 4.75rem); /* nadpis v hero */
   }
 }
 
