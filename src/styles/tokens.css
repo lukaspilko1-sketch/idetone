@@ -99,7 +99,7 @@
 
   /* Tvary */
   --radius: 2px;
-  --radius-btn: 6px; /* CTA tlačítka – mírně zaoblená */
+  --radius-btn: 12px; /* CTA tlačítka – zaoblená */
   --border: 1px solid var(--c-line);
   --focus: 2px solid var(--c-dub);
   --product-shadow: drop-shadow(0 18px 24px rgb(31 36 33 / 0.18));
@@ -134,8 +134,9 @@
     /* kresba 561 px vysoká – nezvětšovat nad nativní velikost × 1,5 */
     /* hero využije celou výšku pod hlavičkou; max. 1,5 × nativní výška kresby (561 px) */
     --hero-art-h: clamp(22rem, calc(100svh - var(--header-top-h) - 9rem), 52rem);
-    /* nadpis v hero – věty na řádek bez zalomení, nejdelší se musí vejít do půlky obsahu */
-    --fs-hero: clamp(2.125rem, 2.85vw, 2.75rem);
+    /* nadpis v hero: max. původní velikost 76 px; skutečnou velikost dorovná šířka sloupce,
+       aby se věta nezalomila (viz .hero h1 v index.astro) */
+    --fs-hero: clamp(3rem, 1.4rem + 3.4vw, 4.75rem);
   }
 }
 

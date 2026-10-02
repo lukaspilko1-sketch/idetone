@@ -355,15 +355,24 @@ const resolved = await Promise.all(
       padding-block: var(--space-5);
     }
 
+    /* Levá část (nadpis) širší, kresba užší */
     .hero__grid {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
       column-gap: var(--space-7);
     }
 
-    /* Na desktopu se věta nezalomí */
+    /* Text začíná nahoře (bez prázdného místa nad ním) */
+    .hero__text {
+      align-self: start;
+      container-type: inline-size;
+    }
+
+    /* Nadpis co největší (max. --fs-hero), ale věta se nezalomí:
+       nejdelší řádek má cca 14 em, proto max. 7 % šířky sloupce na písmeno */
     .hero h1 {
-      font-size: var(--fs-hero);
-      line-height: 1.15;
+      margin-top: var(--space-3);
+      font-size: min(var(--fs-hero), 7cqi);
+      line-height: 1.1;
     }
 
     .hero__line {
@@ -374,9 +383,15 @@ const resolved = await Promise.all(
       max-width: 36ch;
     }
 
-    /* Kresba uprostřed pravé poloviny – bez prázdného pruhu mezi textem a kresbou */
+    /* Kresba vyplní užší pravý sloupec, výšku hlídá --hero-art-h */
     .hero__art {
       justify-items: center;
+    }
+
+    .hero__art :global(.hero__drawing) {
+      width: 100%;
+      height: auto;
+      max-height: var(--hero-art-h);
     }
 
     .hero__art :global(.hero__signature) {
