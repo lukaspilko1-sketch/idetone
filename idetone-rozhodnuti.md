@@ -111,3 +111,4 @@ Tento soubor je jediný zdroj pravdy o stavu projektu. Kopie je v Claude projekt
 - 2. 10. 2026 (dávka 5): druhý řádek hero „Emoce | Klid | Hodiny poslechu bez únavy“ menší a v dubu s větší mezerou; animace mimo hero výrazně zpomalené pro prémiový klidný dojem (sekce 1,4 s, fotky 1,8 s, hover 450 ms, přechody stránek 0,7 s, --ease-calm)
 - 2. 10. 2026 (dávka 6): podpis v hero od 1,9 s; menu 700 ms, CTA 800 ms, fotky modelů hover 1,8 s a odkrytí fotek 2,4 s; Proces vývoje bez čísel a čar (číslování zůstává jen u Postupu spolupráce na Zakázkových projektech)
 - 2. 10. 2026 (dávka 7): druhý řádek hero „Emoce | Klid | Poslech bez únavy“, na mobilu na jednom řádku (písmo se přizpůsobí šířce)
+- 2. 10. 2026 (dávka 8): logo na mobilu 48 px (po scrollu 36 px), omezené šířkou displeje kvůli „Menu“; hlavička na mobilu 5,25 rem

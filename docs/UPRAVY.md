@@ -337,3 +337,14 @@ Na úvodu stačí zkrácené verze (1–2 věty), plné texty na stránce Techno
 - Řádek se nezalamuje ani na mobilu: písmo max. 0,56 × nadpis, zmenší se jen pokud by se nevešel do šířky (`min(0.56em, 5.8cqi)`). Ověřeno na 320 / 375 / 768 / 1536 px (na 375 px plná velikost cca 20 px, na 320 px 17 px).
 - Testy (99) zelené.
 
+---
+
+## Dávka 8 – větší logo na mobilu
+
+**Stav:** HOTOVO (2. 10. 2026) – zadání Lukáše přímo v Claude Code
+**Datum:** 2. 10. 2026
+
+- Logo v hlavičce na mobilu o 50 % větší: nahoře 32 → 48 px, po scrollu 24 → 36 px. Na velmi úzkých displejích se zmenší podle šířky (`min(48px, 13vw)`, na 320 px 42 px), aby nekolidovalo s „Menu“.
+- Hlavička na mobilu úměrně vyšší (5,25 rem, po scrollu 4 rem). Desktop beze změny.
+- Ověřeno na 320 / 375 / 430 px (logo vždy aspoň 8 px od „Menu“), testy (99) zelené.
+

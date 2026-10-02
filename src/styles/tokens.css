@@ -102,11 +102,11 @@
   --gutter: clamp(1rem, 4vw, 2.5rem);
   --grid-gap: clamp(1rem, 2.5vw, 2rem);
   /* Hlavička (dávka 1.1) – mobil; desktop níže v media query */
-  --logo-top-h: 32px; /* velikost písma loga nahoře (mobil) */
-  --logo-scrolled-h: 24px; /* po scrollu */
+  --logo-top-h: min(48px, 13vw); /* logo nahoře (mobil) – na úzkých displejích menší, aby nekolidovalo s Menu */
+  --logo-scrolled-h: min(36px, 10vw); /* po scrollu */
   --header-pad: 1.75rem; /* desktop: odsazení loga shora */
-  --header-top-h: 4.5rem; /* výška hlavičky nahoře = rezerva nad obsahem */
-  --header-scrolled-h: 3.5rem;
+  --header-top-h: 5.25rem; /* výška hlavičky nahoře = rezerva nad obsahem */
+  --header-scrolled-h: 4rem;
   --cta-w: 13rem; /* šířka tlačítka v hlavičce (Domluvit poslech) */
   --pf-stage-h: clamp(18rem, 32vw, 26rem); /* výška scény fotek modelů na úvodu */
   --hero-art-h: clamp(
