@@ -29,7 +29,8 @@
   --glass-card: rgb(255 255 255 / 0.06); /* skleněná karta na tmavé ploše */
   --glass-edge: rgb(255 255 255 / 0.12); /* hrana skla */
   --glass-blur: 18px;
-  --glass-light: rgb(233 230 223 / 0.78); /* světlé sklo (hlavička, lišta s cenou) */
+  --glass-light: rgb(233 230 223 / 0.78); /* světlé sklo (lišta s cenou) */
+  --glass-header: rgb(233 230 223 / 0.88); /* hlavička po scrollu – silnější kvůli čitelnosti */
   --glass-overlay: rgb(38 36 34 / 0.82); /* mobilní menu, lightbox – sklo přes stránku */
 
   /* Typová škála 13 / 16 / 20 / 26 / 35 / 50 (H1 max. 56) */
@@ -73,8 +74,14 @@
   --container: 75rem; /* 1200 px */
   --gutter: clamp(1rem, 4vw, 2.5rem);
   --grid-gap: clamp(1rem, 2.5vw, 2rem);
-  --header-h: 4.5rem;
-  --header-h-scrolled: 3.5rem;
+  /* Hlavička (dávka 1.1) – mobil; desktop níže v media query */
+  --logo-top-h: 28px; /* velikost písma loga nahoře */
+  --logo-scrolled-h: 18px; /* po scrollu */
+  --header-pad: 1.75rem; /* desktop: odsazení loga shora */
+  --header-top-h: 4.5rem; /* výška hlavičky nahoře = rezerva nad obsahem */
+  --header-scrolled-h: 3.5rem;
+  --order-w: 9rem; /* šířka tlačítka Objednat v hlavičce */
+  --dur-header: 320ms;
 
   /* Tvary */
   --radius: 2px;
@@ -86,12 +93,25 @@
   --ease: cubic-bezier(0.2, 0.6, 0.2, 1);
   --dur-fast: 180ms;
   --dur-reveal: 400ms;
+  --dur-img-reveal: 600ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Hlavička na desktopu: velké logo na střed (jako Focal / Dynaudio) */
+@media (min-width: 64rem) {
+  :root {
+    --logo-top-h: clamp(40px, 5.4vw, 68px);
+    --logo-scrolled-h: 22px;
+    --header-top-h: calc(var(--header-pad) + var(--logo-top-h) + 4.75rem);
+    --header-scrolled-h: 4.25rem;
+  }
 }
 
 /* Prohlížeče bez backdrop-filter: sklo nahradí plná barva (kvůli čitelnosti) */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   :root {
     --glass-light: var(--c-len);
+    --glass-header: var(--c-len);
     --glass-overlay: var(--c-uhel);
   }
 }

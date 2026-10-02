@@ -1,5 +1,6 @@
 ---
 import { Font } from 'astro:assets';
+import { ClientRouter } from 'astro:transitions';
 import '../styles/tokens.css';
 import '../styles/base.css';
 import Header from '../components/Header.astro';
@@ -63,7 +64,7 @@ const alternates = features.english
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script is:inline>
+    <script is:inline data-astro-rerun>
       document.documentElement.classList.add('js');
     </script>
     <title>{title}</title>
@@ -105,6 +106,9 @@ const alternates = features.english
     <Font cssVariable="--font-heading" />
     <Font cssVariable="--font-mono" />
 
+    <!-- Plynulé přechody mezi stránkami (View Transitions) -->
+    <ClientRouter />
+
     <!-- Místo pro budoucí analytiku bez cookies (Plausible / Umami) -->
   </head>
   <body>
@@ -118,12 +122,17 @@ const alternates = features.english
     <Footer />
 
     <script>
-      // Jemné odkrytí sekcí při scrollu (jednou). Bez JS nebo s omezeným pohybem je vše vidět hned.
-      const items = document.querySelectorAll<HTMLElement>('[data-reveal]');
-      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduce || !('IntersectionObserver' in window)) {
-        items.forEach((el) => el.classList.add('is-revealed'));
-      } else {
+      import { onPage } from '../utils/lifecycle';
+
+      // Odkrytí při scrollu (jednou): sekce [data-reveal] (opacity + posun) a fotky
+      // [data-reveal-img] (clip-path zdola nahoru). Bez JS / s omezeným pohybem je vše vidět hned.
+      onPage((signal) => {
+        const items = document.querySelectorAll<HTMLElement>('[data-reveal], [data-reveal-img]');
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduce || !('IntersectionObserver' in window)) {
+          items.forEach((el) => el.classList.add('is-revealed'));
+          return;
+        }
         const io = new IntersectionObserver(
           (entries) => {
             for (const entry of entries) {
@@ -136,12 +145,18 @@ const alternates = features.english
           { rootMargin: '0px 0px -8% 0px' },
         );
         items.forEach((el) => io.observe(el));
-      }
+        signal.addEventListener('abort', () => io.disconnect());
+      });
     </script>
   </body>
 </html>
 
 <style>
+  /* Rezerva pro pevnou hlavičku (fixed) – obsah se při jejím zmenšení nehýbe */
+  main {
+    padding-top: var(--header-top-h);
+  }
+
   main:focus {
     outline: none;
   }

@@ -127,7 +127,10 @@ const items = await Promise.all(
 )}
 
 <script>
-  document.querySelectorAll<HTMLElement>('[data-gallery]').forEach((gallery) => {
+  import { onPage } from '../utils/lifecycle';
+
+  onPage(() => {
+    document.querySelectorAll<HTMLElement>('[data-gallery]').forEach((gallery) => {
     const slides = [...gallery.querySelectorAll<HTMLAnchorElement>('[data-slide]')];
     const thumbs = [...gallery.querySelectorAll<HTMLAnchorElement>('[data-thumb]')];
     const count = gallery.querySelector<HTMLElement>('[data-count]');
@@ -192,6 +195,7 @@ const items = await Promise.all(
     gallery.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') show(current - 1);
       if (e.key === 'ArrowRight') show(current + 1);
+    });
     });
   });
 </script>

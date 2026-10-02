@@ -278,12 +278,15 @@ const messages = {
 </section>
 
 <script>
+  import { onPage } from '../utils/lifecycle';
+
   type Messages = Record<string, string>;
 
   const fill = (text: string, vars: Record<string, string>) =>
     text.replace(/\{(\w+)\}/g, (_, key) => vars[key] ?? '');
 
-  document.querySelectorAll<HTMLFormElement>('[data-cf]').forEach((form) => {
+  onPage(() => {
+    document.querySelectorAll<HTMLFormElement>('[data-cf]').forEach((form) => {
     const msg: Messages = JSON.parse(form.dataset.messages ?? '{}');
     const email = form.dataset.email ?? '';
     const status = form.querySelector<HTMLElement>('[data-status]')!;
@@ -431,6 +434,7 @@ const messages = {
         submitLabel.textContent = defaultLabel;
         form.removeAttribute('aria-busy');
       }
+    });
     });
   });
 </script>

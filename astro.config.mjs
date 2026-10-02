@@ -78,7 +78,7 @@ export default defineConfig({
       fallbacks: ['Arial', 'sans-serif'],
     },
     {
-      ...fontsource('ibm-plex-mono', [400, 500]),
+      ...fontsource('ibm-plex-mono', [400, 500, 600]),
       name: 'IBM Plex Mono',
       cssVariable: '--font-mono',
       fallbacks: ['Courier New', 'monospace'],

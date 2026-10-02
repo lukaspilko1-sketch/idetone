@@ -1,12 +1,13 @@
 ---
 /**
- * Wordmark ideTone – převzatý ze staré hlavičky: strojopis, prostrkaný, „ide“ grafit + „Tone“ dub.
+ * Wordmark ideTone – strojopis IBM Plex Mono 600, prostrkání 0,3 em, „ide“ grafit + „Tone“ dub.
  * Provizorní verze do dodání loga od grafika. Výměna loga = přepsání tohoto souboru.
+ * Šířka: 7 znaků × 0,6 em + 6 mezer × 0,3 em = 6 em → viewBox 120 × 20 (písmo 20).
  */
 interface Props {
   /** dark = na lnu/papíru, light = na tmavé ploše */
   variant?: 'dark' | 'light';
-  /** výška wordmarku (CSS délka) */
+  /** výška wordmarku = velikost písma (CSS délka, může být i var()) */
   height?: string;
   class?: string;
 }
@@ -14,32 +15,22 @@ interface Props {
 const { variant = 'dark', height = '1.125rem', class: className } = Astro.props;
 ---
 
-<svg
-  class:list={['logo', `logo--${variant}`, className]}
-  style={`--logo-h: ${height}`}
-  viewBox="0 0 135 20"
-  role="img"
-  aria-label="ideTone"
-  xmlns="http://www.w3.org/2000/svg"
->
-  <text x="0" y="15" textLength="134.4" lengthAdjust="spacing" class="logo__text">
-    <tspan class="logo__ide">ide</tspan>
-    <tspan class="logo__tone">Tone</tspan>
-  </text>
-</svg>
+<!-- prettier-ignore -->
+<svg class:list={['logo', `logo--${variant}`, className]} style={`--logo-h: ${height}`} viewBox="0 0 120 20" role="img" aria-label="ideTone" xmlns="http://www.w3.org/2000/svg"><text x="0" y="15.5" textLength="120" lengthAdjust="spacing" class="logo__text"><tspan class="logo__ide">ide</tspan><tspan class="logo__tone">Tone</tspan></text></svg>
 
 <style>
   .logo {
+    display: block;
     height: var(--logo-h);
     width: auto;
-    aspect-ratio: 135 / 20;
+    aspect-ratio: 120 / 20;
     overflow: visible;
   }
 
   .logo__text {
     font-family: var(--font-mono);
     font-size: 20px;
-    font-weight: 500;
+    font-weight: 600;
   }
 
   .logo--dark .logo__ide {

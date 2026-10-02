@@ -121,3 +121,21 @@ test.describe('formular stavy', () => {
     await shot(page, 'chyba');
   });
 });
+
+// Dávka 1 (docs/UPRAVY.md): úvod 375 / 768 / 1280 – nahoře a po scrollu (hlavička v obou stavech)
+for (const [width, height] of [
+  [375, 812],
+  [768, 1024],
+  [1280, 800],
+]) {
+  test(`davka1 uvod @ ${width}`, async ({ page }) => {
+    await page.setViewportSize({ width, height });
+    await page.goto('/');
+    await ready(page);
+    await page.screenshot({ path: `screenshots/davka1-uvod-nahore-${width}.png` });
+    await page.mouse.wheel(0, 700);
+    await page.waitForTimeout(500);
+    await page.screenshot({ path: `screenshots/davka1-uvod-scroll-${width}.png` });
+    await page.screenshot({ path: `screenshots/davka1-uvod-cela-${width}.png`, fullPage: true });
+  });
+}
