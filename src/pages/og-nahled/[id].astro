@@ -43,10 +43,10 @@ const image = product ? product.data.image : { src: sara, alt: '' };
       <div class="og__text">
         <Logo height="30px" />
         <div>
-          <span class="eyebrow og__eyebrow">{product ? product.data.type : site.claim}</span>
-          <p class="og__title">
-            {product ? product.data.name : 'Ručně laděné reprosoustavy z Brna'}
-          </p>
+          <span class="eyebrow og__eyebrow">
+            {product ? product.data.type : 'Ručně laděné reprosoustavy'}
+          </span>
+          <p class="og__title">{product ? product.data.name : site.claim}</p>
           {product && (
             <ul class="og__specs mono">
               {product.data.highlights.map((key) => (

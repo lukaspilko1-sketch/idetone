@@ -8,7 +8,7 @@
  */
 import Logo from './Logo.astro';
 import Button from './Button.astro';
-import { nav, orderLink } from '../config/site';
+import { nav, orderLink, showHeaderOrder } from '../config/site';
 import { cs } from '../i18n/cs';
 import { url } from '../utils/url';
 
@@ -17,7 +17,7 @@ const isCurrent = (href: string) => current === url(href);
 const isSection = (href: string) => current.startsWith(url(href)) && href !== '/';
 ---
 
-<header class="header" data-header>
+<header class:list={['header', { 'header--no-order': !showHeaderOrder }]} data-header>
   <div class="container header__inner">
     <a href={url('/')} class="header__logo" aria-label={cs.nav.home}>
       <Logo height="var(--header-logo-h)" />
@@ -53,16 +53,20 @@ const isSection = (href: string) => current.startsWith(url(href)) && href !== '/
           </li>
         ))}
       </ul>
-      <!-- Objednat v mobilním menu -->
-      <Button href={orderLink} variant="secondary" class="nav__order">
-        {cs.nav.order}
-      </Button>
+      {/* Objednat v mobilním menu */}
+      {showHeaderOrder && (
+        <Button href={orderLink} variant="secondary" class="nav__order">
+          {cs.nav.order}
+        </Button>
+      )}
     </nav>
 
-    <!-- Objednat v hlavičce na desktopu -->
-    <Button href={orderLink} variant="secondary" class="header__order">
-      {cs.nav.order}
-    </Button>
+    {/* Objednat v hlavičce na desktopu */}
+    {showHeaderOrder && (
+      <Button href={orderLink} variant="secondary" class="header__order">
+        {cs.nav.order}
+      </Button>
+    )}
 
     <!-- Bez JS vede „Menu“ na navigaci v patičce, s JS otevírá menu přes celou obrazovku -->
     <a href="#navigace-paticka" class="header__toggle header__toggle--nojs">
@@ -191,9 +195,15 @@ const isSection = (href: string) => current.startsWith(url(href)) && href !== '/
 
   .header__inner {
     --header-logo-h: var(--logo-top-h);
+    /* místo pro Objednat vpravo (bez tlačítka 0) */
+    --order-space: calc(var(--order-w) + var(--space-6));
     position: relative;
     height: var(--header-top-h);
     transition: height var(--dur-header) var(--ease);
+  }
+
+  .header--no-order .header__inner {
+    --order-space: 0px;
   }
 
   .header.is-scrolled .header__inner {
@@ -284,7 +294,7 @@ const isSection = (href: string) => current.startsWith(url(href)) && href !== '/
 
     .header.is-scrolled .nav {
       bottom: 50%;
-      left: calc(100% - var(--gutter) - var(--order-w) - var(--space-6));
+      left: calc(100% - var(--gutter) - var(--order-space));
       transform: translate(-100%, 50%);
     }
 
