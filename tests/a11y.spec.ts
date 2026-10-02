@@ -24,6 +24,17 @@ for (const width of [390, 1440]) {
       await page.setViewportSize({ width, height: 900 });
       await page.goto(path);
       await page.evaluate(() => document.fonts.ready);
+      // Kontrast se měří v konečném stavu: bez prolínání a animací, vše odkryté
+      // (uprostřed prolnutí je text částečně průhledný a axe by hlásil falešné chyby)
+      await page.addStyleTag({
+        content:
+          '*, *::before, *::after { transition: none !important; animation: none !important; }',
+      });
+      await page.evaluate(() =>
+        document
+          .querySelectorAll('[data-reveal], [data-reveal-img]')
+          .forEach((el) => el.classList.add('is-revealed')),
+      );
       const results = await new AxeBuilder({ page })
         .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'])
         .analyze();
