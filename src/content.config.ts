@@ -6,11 +6,16 @@ import { defineCollection, reference, type SchemaContext } from 'astro:content';
 import { glob, file } from 'astro/loaders';
 import { z } from 'astro/zod';
 
-/** Fotka s alt textem (alt je povinný, kvůli přístupnosti). */
+/**
+ * Fotka s alt textem (alt je povinný, kvůli přístupnosti).
+ * placeholder: true = dočasná ilustrace (AI), před spuštěním nahradit – vypíše ji npm run todo.
+ */
 const photo = (image: SchemaContext['image']) =>
   z.object({
     src: image(),
     alt: z.string().min(1, 'Doplňte popis fotky (alt).'),
+    placeholder: z.boolean().default(false),
+    source: z.string().optional(),
   });
 
 /** Místo pro fotku, která zatím chybí (ImageSlot). */
@@ -121,6 +126,8 @@ const pages = defineCollection({
       lead: z.string().optional(),
       sections: z.array(pageSection(image)).default([]),
       steps: z.array(z.object({ title: z.string(), text: z.string() })).default([]),
+      /** fotky stránky (ilustrační i skutečné), rozmístění řeší šablona stránky */
+      photos: z.array(photo(image)).default([]),
       /** podpis pod textem (O ideTone) */
       signature: z.object({ greeting: z.string(), name: z.string() }).optional(),
     }),
@@ -140,7 +147,16 @@ const homeSection = (image: SchemaContext['image']) =>
       primary: link,
       secondary: link.optional(),
       product: reference('products'),
+      /** vyříznutá fotka produktu */
       image: photo(image),
+      /** pozadí za sklem: fotka (rozostřená) nebo krátké video z public/ (webm/mp4) s fotkou jako posterem */
+      background: z
+        .object({
+          image: photo(image),
+          video: z.string().optional(),
+          videoMp4: z.string().optional(),
+        })
+        .optional(),
     }),
     z.object({
       ...base,
@@ -156,16 +172,21 @@ const homeSection = (image: SchemaContext['image']) =>
       text: z.string(),
       author: z.string(),
       link: link.optional(),
+      image: photo(image).optional(),
     }),
     z.object({
       ...base,
       type: z.literal('technology'),
       eyebrow: z.string().optional(),
       title: z.string(),
+      /** jedna fotka sekce */
+      image: photo(image).optional(),
       items: z.array(
         z.object({
           title: z.string(),
           text: z.string(),
+          /** odkaz „víc“ u sloupce */
+          href: z.string().optional(),
           image: photo(image).optional(),
           imageSlot: z.object({ label: z.string(), ratio: slotRatio.default('4/5') }).optional(),
         }),
@@ -179,6 +200,8 @@ const homeSection = (image: SchemaContext['image']) =>
       title: z.string(),
       text: z.string().optional(),
       button: link,
+      /** fotka prosvítající za sklem (rozostřená) */
+      background: photo(image).optional(),
     }),
     z.object({
       ...base,
@@ -189,7 +212,12 @@ const homeSection = (image: SchemaContext['image']) =>
 
 const home = defineCollection({
   loader: file('src/content/home.yaml'),
-  schema: ({ image }) => z.object({ sections: z.array(homeSection(image)) }),
+  schema: ({ image }) =>
+    z.object({
+      /** ceny na úvodní stránce (sekce Modely a štítek v hero) */
+      showPrices: z.boolean().default(true),
+      sections: z.array(homeSection(image)),
+    }),
 });
 
 // Nastavení (kontakty, adresa, sociální sítě) ----------------------------------
