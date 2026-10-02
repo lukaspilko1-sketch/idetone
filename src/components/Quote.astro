@@ -33,12 +33,13 @@ const { text, author, link } = Astro.props;
 
   blockquote p {
     position: relative;
-    max-width: 30ch;
-    font-family: var(--font-heading);
-    font-size: var(--fs-xl);
-    font-weight: 500;
-    line-height: 1.25;
-    letter-spacing: -0.01em;
+    max-width: 28ch;
+    /* Citát se liší od nadpisů: textové písmo v lehčím řezu, větší řádkování */
+    font-family: var(--font-text);
+    font-size: var(--fs-quote);
+    font-weight: 400;
+    line-height: 1.35;
+    letter-spacing: -0.015em;
     text-wrap: balance;
     text-indent: -0.42em;
   }
@@ -59,7 +60,7 @@ const { text, author, link } = Astro.props;
     align-items: baseline;
     gap: var(--space-3) var(--space-6);
     font-family: var(--font-mono);
-    font-size: var(--fs-xs);
+    font-size: var(--fs-label);
     text-transform: uppercase;
     letter-spacing: var(--tracking-eyebrow);
   }

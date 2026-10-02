@@ -68,14 +68,14 @@ const { Content } = await render(page);
 
   .about__prose {
     margin-top: var(--space-6);
-    font-size: var(--fs-m);
+    font-size: var(--fs-body);
     line-height: 1.6;
   }
 
+  /* První odstavec jako perex */
   .about__prose :global(p:first-child) {
-    font-family: var(--font-heading);
-    font-size: var(--fs-l);
-    line-height: 1.35;
+    font-size: var(--fs-lead);
+    line-height: 1.5;
   }
 
   .signature {
