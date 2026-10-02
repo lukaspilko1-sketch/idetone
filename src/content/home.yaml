@@ -25,7 +25,7 @@ home:
         grain: true
         light: true
         grid: true
-        dimensions: true
+        dimensions: false
       dimensionsFrom: sara
 
     - type: models

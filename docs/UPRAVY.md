@@ -208,7 +208,7 @@ Na úvodu stačí zkrácené verze (1–2 věty), plné texty na stránce Techno
 - 3.1 V hlavičce primární tlačítko „Domluvit poslech →“ (`/poslech/#formular`), desktop vpravo v obou stavech, na mobilu první položka menu. Řídí `headerCta` v `site.ts` (`showHeaderOrder` zrušeno).
 - 3.2 Text v hero svisle na střed vůči kresbě; hero max. jedna obrazovka, kresba se neořízne (1280 × 800, 1536 × 864, 375 × 812, 768 × 1024).
 - 3.3 Druhý řádek: „Emoce i klid. Hodiny poslechu bez únavy.“ (`home.yaml`).
-- 3.4 Varianta A+B: zrnitost papíru (jen hero), teplé světlo za kresbou, jemná mřížka 32 px v oválu a kóty 1000 mm / 240 mm z `sara.md` (`dimensions`), kóty se objeví po dokreslení (600 ms od 3,2 s). Každou vrstvu lze vypnout v `home.yaml` (`decor`). Na mobilu menší kóty.
+- 3.4 Varianta A+B: zrnitost papíru (jen hero), teplé světlo za kresbou, jemná mřížka 32 px v oválu a kóty 1000 mm / 240 mm z `sara.md` (`dimensions`), kóty se objeví po dokreslení (600 ms od 3,2 s). Každou vrstvu lze vypnout v `home.yaml` (`decor`). Na mobilu menší kóty. **Kóty následně na pokyn Lukáše vypnuté** (`decor.dimensions: false`), mřížka zůstává.
 - 3.5 Tokeny `--radius-m` 12 px a `--radius-s` 6 px (+ `--radius-xs` 4 px pro checkboxy) na celém webu, `--radius` a `--radius-btn` odstraněny. Produkty a kresba bez zaoblení.
 - 3.6 Sklo hlavičky po scrollu 0,94 a blur 20 px.
 - Lighthouse mobil úvod: 100 / 100 / 100 / 100 (Technologie 98 / 100 / 100 / 100); 99 funkčních testů zelených.
