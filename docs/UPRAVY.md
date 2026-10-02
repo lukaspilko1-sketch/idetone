@@ -103,8 +103,17 @@ Pravidla (platí pro celý web, nastavit v tokenech):
 
 ## Dávka 2 – logo, nové hero s kresbou, modely bez specifikací, texty ze starého úvodu, animace
 
-**Stav:** SCHVÁLENO
+**Stav:** HOTOVO (2. 10. 2026)
 **Datum:** 2. 10. 2026
+
+**Výsledek:**
+- 2.1 Logo vcelku (bez prostrkání), desktop `clamp(32px, 3.4vw, 48px)`, po scrollu 22 px, mobil 26 → 20 px; OG obrázky přegenerované.
+- 2.2 Světlé hero bez tlačítek: štítek, H1, věta, „Modely ↓“; vpravo kresba Sary (nativní velikost, nezvětšená) a podpis. Tmavý panel, štítek a Ken Burns zrušené (komponenta `HeroMedia` odstraněna). Hero se vejde na 1280 × 800 i 375 × 812.
+- 2.3 Kresba se „nakreslí“ maskou zdola (1,4 s), podpis se „napíše“ zleva (1,1 s od 0,9 s), text nastupuje postupně. Čisté CSS.
+- 2.4 Modely ve dvou stejných sloupcích, fotka i silueta na stejné podlaze, názvy ve stejné výšce, bez specifikací (i v přehledu modelů – srovnávací tabulka je hned pod tím). Sara = fotka z hero (DSC_0800i), v galerii detailu první. Rezerva pod hero zrušena.
+- 2.5 Nové sekce Koncept a Proces vývoje (nové pořadí úvodu), Principy konstrukce a plný Proces vývoje na Technologiích, sestava studia v `settings.yaml` (`studio.system`) a jako tabulka na Poslechu, tlačítko „Zarezervujte si poslech“.
+- 2.6 Při `prefers-reduced-motion: reduce` jen prolnutí průhlednosti (300 ms) a hover, bez posunů a masek; ověřeno testy v obou režimech.
+- Lighthouse mobil: úvod 99 / 100 / 100 / 100, Technologie 99 / 100 / 100 / 100; 99 funkčních testů zelených.
 **Podklady:** `podklady/obrazky/` (připraveno v Cowork):
 - `kresba-sara-podpis-original.png` – originální screenshot kresby s podpisem (488 × 732 px, pozadí #EAE2DA)
 - `kresba-sara.png` – kresba Sary s průhledným pozadím, tah v barvě grafit (378 × 561 px)

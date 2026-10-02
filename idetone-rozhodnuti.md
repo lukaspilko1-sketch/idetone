@@ -1,7 +1,7 @@
 # ideTone – stav projektu a rozhodnutí
 
 Poslední aktualizace: 1. 10. 2026
-Fáze: **Ladění designu – dávka 1 (docs/UPRAVY.md) hotová, čeká na kontrolu**. Web běží na testovací adrese https://lukaspilko1-sketch.github.io/idetone/ (noindex). F5 – Admin panel odložena. Úpravy se zadávají po dávkách v docs/UPRAVY.md.
+Fáze: **Ladění designu – dávka 2 (docs/UPRAVY.md) hotová, čeká na kontrolu**. Web běží na testovací adrese https://lukaspilko1-sketch.github.io/idetone/ (noindex). F5 – Admin panel odložena. Úpravy se zadávají po dávkách v docs/UPRAVY.md.
 
 Tento soubor je jediný zdroj pravdy o stavu projektu. Kopie je v Claude projektu „WEB - ideTone“ (claude/idetone-rozhodnuti.md) a ve složce webu na PC. Při změně aktualizovat obě.
 
@@ -78,6 +78,9 @@ Tento soubor je jediný zdroj pravdy o stavu projektu. Kopie je v Claude projekt
 - Obchodní podmínky, zásady ochrany osobních údajů
 - Fotky Revy (žádné nejsou – všechny fotky ze starého webu jsou Sara), fotka přepínače výšek (na starém webu ideTone-technologie-urovne-vysek.png, v podkladech chybí), portrét Petra, dílna, studio, spodní část Sary s bassreflexem
 - Kreslené ilustrace (tužkové skici) v podkladech nejsou – 01.png a 02.png jsou screenshoty starého webu
+- Kresba Sary a podpis Petra jen jako výřez ze starého webu (nízké rozlišení) → originál ve vysokém rozlišení / vektor (klient)
+- „CT2034A“ v textu Proces vývoje – nejspíš norma CTA-2034-A (spinorama), ověřit (klient)
+- Sestava studia: přesné názvy modelů, Accuphase PS-1200 („pračka“ na starém webu – síťový zdroj / regenerátor?) (klient)
 - Ke schválení (NÁVRH): texty úvodu (hero, nadpisy sekcí, zkrácené texty technologií, pruh Poslech), meta popisy všech stránek, perexy, „Který model pro mě?“, celá stránka Zakázkové projekty, možnosti poslechu (studio / u zákazníka), GDPR text, doplnění „během let“ v O ideTone
 - Kdy je možné domluvit poslech (dny, časy) → settings.yaml studio.hours
 - Formspree: ověřit podmínky a přenos dat do USA pro text GDPR (Lukáš)
@@ -97,3 +100,4 @@ Tento soubor je jediný zdroj pravdy o stavu projektu. Kopie je v Claude projekt
 - 1. 10. 2026 (F4): axe – čísla kroků Zakázkových projektů na mobilu v --c-dub-text (dub neměl kontrast); kontrast textu na skle změřen z pixelů pozadí → --glass-tint 0,66 a --c-on-dark-muted #C8C2B8 (nejhorší místo 4,7 : 1), malý text na skleněných kartách v plné barvě; Lighthouse přes Chromium z Playwrightu (chrome-launcher na Windows nespustí prohlížeč); CI: actions v7/v5, samostatný job s testy, deploy až po buildu i testech; Formspree free tarif (Lukáš: stačí)
 - 1. 10. 2026: glass v aktuální podobě schválen („zatím ok“); F5 (admin panel) odložena – nejdřív ladění designu podle oblíbených webů klienta
 - 2. 10. 2026 (dávka 1): hlavička fixed s rezervou nad obsahem (žádné skákání), velké logo na střed jako Focal/Dynaudio, po scrollu logo vlevo; logo Plex Mono 600, prostrkání 0,3 em (bylo 500 / 0,42 em); šipka u podmenu kreslená v CSS; View Transitions (ClientRouter) – skripty přes onPage() v src/utils/lifecycle.ts; ceny na úvodu vypnuté přepínačem showPrices v home.yaml; Reva do dodání fotek jako obrysová kresba (ProductSilhouette); bloky modelů přes container queries; typografie jen přes sémantické tokeny, citát textovým písmem 400; ilustrační AI fotky s placeholder: true a filtrem saturate(.85); hero pozadí = rozostřená ilustrace dílny s Ken Burns (připraveno na video); opravena chyba nezlomitelných mezer u jednotek (regulární výraz od F2); kontrast textu na skle po změně pozadí přeměřen (min. 4,67 : 1); design tokeny verze 0.5
+- 2. 10. 2026 (dávka 2): logo vcelku bez prostrkání a menší; hero světlé s kresbou a podpisem (animace maskou, čisté CSS), bez tlačítek a bez tmavého panelu – HeroMedia a Ken Burns odstraněny; modely ve dvou stejných sloupcích bez specifikací (specifikace jen na detailu a ve srovnání, i přehled modelů je bez nich), Sara s fotkou DSC_0800i i jako první v galerii (kvůli plynulému přechodu); nové sekce Koncept a Proces vývoje s texty ze starého úvodu idetone.cz (redakčně jen interpunkce a jedno „je“ → „jsou“), Principy konstrukce a plný Proces vývoje na Technologiích, sestava studia v settings.yaml; citát o složitém celku na úvodu skrytý (visible: false), zůstává v textu O ideTone; při omezeném pohybu jen prolnutí místo vypnutí všeho (WCAG); komponenta ProcessSteps pro úvod i Technologie

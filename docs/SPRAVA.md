@@ -59,10 +59,13 @@ Web fotky sám zmenší a převede na AVIF/WebP, originál velikost nehraje roli
 Na stránkách (`src/content/pages/*.md`, `home.yaml`) vyměňte `imageSlot: { label, ratio }` za `image: { src, alt }`. Portrét Petra, dílna a studio jsou zatím přímo v šablonách (`src/pages/o-idetone.astro`, `poslech.astro`) – po dodání fotek je převedu do obsahu.
 
 ### Ceny na úvodní stránce
-V `src/content/home.yaml` přepínač `showPrices` (teď `false`). Cena je vždy na detailu modelu, v přehledu a ve srovnávací tabulce.
+V `src/content/home.yaml` přepínač `showPrices` (teď `false`). Cena je vždy na detailu modelu, v přehledu a ve srovnávací tabulce. Technické parametry jsou jen na detailu a ve srovnávací tabulce.
 
-### Video v hero místo fotky
-Krátké video z dílny (5–15 s, bez zvuku, ideálně do 3 MB) uložte do `public/video/` (např. `dilna.webm`, případně i `dilna.mp4`) a v `home.yaml` u hero doplňte do `background` řádek `video: /video/dilna.webm` (a `videoMp4: /video/dilna.mp4`). Fotka v `background.image` zůstane jako náhled, než se video načte.
+### Kresba a podpis v hero
+Soubory jsou v `src/assets/uploads/kresby/`, cesty a popisy v `home.yaml` u hero (`drawing`, `signature`). Až klient dodá originál ve vyšším rozlišení, stačí soubor vyměnit (stejný název) nebo upravit cestu.
+
+### Sestava v poslechovém studiu
+`src/content/settings.yaml` → `studio.system` (dvojice `label` / `value`). Zobrazí se jako tabulka na stránce Poslech. Text v tmavém pruhu na úvodu je zvlášť v `home.yaml` (sekce `listening`).
 
 ### Vyměnit ilustrační (AI) fotky za skutečné
 `npm run todo` vypíše všechny fotky s `placeholder: true`. Nový soubor uložte (např. do `src/assets/uploads/`), v datech změňte `src`, upravte `alt` a smažte řádky `placeholder` a `source`.

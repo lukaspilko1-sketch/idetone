@@ -83,3 +83,25 @@ test('srovnávací tabulka: první sloupec zůstává při posunu na mobilu', as
   const after = await firstCell.boundingBox();
   expect(after?.x).toBeCloseTo(before?.x ?? 0, 0);
 });
+
+// Dávka 2.6: při omezeném pohybu bez posunů a masek, ale s prolnutím; obsah musí být vidět
+for (const motion of ['no-preference', 'reduce'] as const) {
+  test(`pohyb ${motion}: hero a sekce se zobrazí`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: motion });
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto('/');
+    const drawing = page.locator('.hero__drawing');
+    await expect(drawing).toBeVisible();
+    const animation = await drawing.evaluate((el) => getComputedStyle(el).animationName);
+    expect(animation).toBe(motion === 'reduce' ? 'fade-in' : 'draw-up');
+    await page.waitForTimeout(2200);
+    expect(await drawing.evaluate((el) => getComputedStyle(el).opacity)).toBe('1');
+
+    const step = page.locator('.process__text').first();
+    await step.scrollIntoViewIfNeeded();
+    await expect(step).toHaveCSS('opacity', '1', { timeout: 3000 });
+    if (motion === 'reduce') {
+      expect(await step.evaluate((el) => getComputedStyle(el).transform)).toBe('none');
+    }
+  });
+}
