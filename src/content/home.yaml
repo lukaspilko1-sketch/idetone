@@ -18,9 +18,6 @@ home:
       signature:
         src: ../assets/uploads/kresby/podpis-petr-kocourek.png
         alt: Podpis Petr Kocourek
-      scroll:
-        label: Modely
-        href: '#modely'
 
     - type: models
       visible: true

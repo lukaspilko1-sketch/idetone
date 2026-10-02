@@ -93,7 +93,7 @@ const resolved = await Promise.all(
     // Modely: dva stejně široké sloupce, fotky na stejné podlaze, bez specifikací (dávka 2.4)
     if (s.type === 'models' && 'products' in item && item.products) {
       return (
-        <Section id="modely" labelledby="modely-title" reveal={false} class="models">
+        <Section id="modely" divider labelledby="modely-title" reveal={false} class="models">
           <header class="models__head" data-reveal>
             {s.eyebrow && <span class="eyebrow">{s.eyebrow}</span>}
             <h2 id="modely-title">{typo(s.title)}</h2>
