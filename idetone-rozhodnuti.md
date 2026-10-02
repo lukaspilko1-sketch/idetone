@@ -1,7 +1,7 @@
 # ideTone – stav projektu a rozhodnutí
 
 Poslední aktualizace: 1. 10. 2026
-Fáze: **Ladění designu – dávka 2 (docs/UPRAVY.md) hotová, čeká na kontrolu**. Web běží na testovací adrese https://lukaspilko1-sketch.github.io/idetone/ (noindex). F5 – Admin panel odložena. Úpravy se zadávají po dávkách v docs/UPRAVY.md.
+Fáze: **Ladění designu – dávka 3 (docs/UPRAVY.md) hotová, čeká na kontrolu**. Další dávka: podstránky (detail modelů, Technologie, Poslech, Kontakt) po zpětné vazbě klienta. Web běží na testovací adrese https://lukaspilko1-sketch.github.io/idetone/ (noindex). F5 – Admin panel odložena.
 
 Tento soubor je jediný zdroj pravdy o stavu projektu. Kopie je v Claude projektu „WEB - ideTone“ (claude/idetone-rozhodnuti.md) a ve složce webu na PC. Při změně aktualizovat obě.
 
@@ -105,3 +105,4 @@ Tento soubor je jediný zdroj pravdy o stavu projektu. Kopie je v Claude projekt
 - 2. 10. 2026 (pokyny Lukáše): hero – štítek „Ručně laděné reprosoustavy“, nadpis „Reprosoustavy s citem pro hudbu. / Emoce i klid. / Na celý život.“ (věta na řádek, na desktopu bez zalomení, --fs-hero 34–44 px), z věty vypuštěno „dvoupásmové“; odkaz „Modely ↓“ zrušen, pod hero dělicí linka; tlačítko Objednat v hlavičce skryté (showHeaderOrder = false v site.ts); názvy modelů na úvodu o 20 % menší; logo na mobilu 32 → 24 px; bez dělicích čar u textů v Procesu vývoje, Technologiích na úvodu a v Konstrukci na detailu; CTA tlačítka zaoblená 6 px (--radius-btn)
 - 2. 10. 2026 (pokyny Lukáše): hero – text začíná nahoře, levý sloupec 2/3 a kresba 1/3, nadpis na dvou řádcích („Reprosoustavy s citem pro hudbu.“ / „Emoce i klid. Na celý život.“), velikost max. 76 px, ale omezená šířkou sloupce (7cqi), aby se věta nezalomila – na obsahu 1200 px vychází 54 px; názvy modelů na úvodu 0,64 × --fs-model; CTA tlačítka zaoblená 12 px
 - 2. 10. 2026 (pokyn Lukáše): v hero druhý řádek nadpisu („Emoce i klid. Na celý život.“) 0,8 velikosti hlavní věty; levá část hero na desktopu odsazená shora 48 px (cca polovina původního odsazení)
+- 2. 10. 2026 (dávka 3): v hlavičce místo Objednat „Domluvit poslech“ (headerCta v site.ts); text hero svisle na střed; druhý řádek „Emoce i klid. Hodiny poslechu bez únavy.“ (varianta a); pozadí hero A+B – zrnitost papíru, světlo, mřížka v oválu a kóty z dat Sary (vypínatelné v home.yaml → decor); zaoblení jen dvěma tokeny --radius-m 12 px a --radius-s 6 px (checkbox 4 px); sklo hlavičky 0,94 + blur 20 px; design tokeny verze 0.6

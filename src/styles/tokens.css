@@ -19,6 +19,11 @@
   --c-on-dark: #edeae3; /* text na tmavé ploše */
   --c-on-dark-muted: #c8c2b8; /* sekundární text na tmavé ploše */
   --c-line-dark: #45413c; /* linky na tmavé ploše */
+  --c-light-warm: rgb(255 251 243); /* teplé světlo za kresbou v hero */
+  --grid-line: rgb(31 36 33 / 0.06); /* mřížka technického výkresu (6 % grafit) */
+  /* zrnitost papíru v hero (SVG šum) */
+  --paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.12 0 0 0 0 0.11 0 0 0 0 0.1 0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --paper-grain-opacity: 0.2;
   --c-chart: #ffffff; /* podklad grafů měření (mají bílé pozadí) */
   --c-field: #fdfcf9; /* pozadí polí formuláře na papíru */
   --c-error: #9e3b2b; /* chyby ve formuláři (cihlová, AA na papíru) */
@@ -89,7 +94,7 @@
   --header-pad: 1.75rem; /* desktop: odsazení loga shora */
   --header-top-h: 4.5rem; /* výška hlavičky nahoře = rezerva nad obsahem */
   --header-scrolled-h: 3.5rem;
-  --order-w: 9rem; /* šířka tlačítka Objednat v hlavičce */
+  --cta-w: 13rem; /* šířka tlačítka v hlavičce (Domluvit poslech) */
   --pf-stage-h: clamp(18rem, 32vw, 26rem); /* výška scény fotek modelů na úvodu */
   --hero-art-h: clamp(
     12rem,
@@ -124,7 +129,16 @@
   --dur-sign: 2.4s; /* podpis se píše zleva doprava */
   --delay-sign: 2.6s; /* podpis začne, když kresba končí */
   --ease-draw: cubic-bezier(0.45, 0, 0.25, 1); /* plynulý tah tužkou */
+  --dur-dims: 600ms; /* kóty se objeví… */
+  --delay-dims: 3.2s; /* …po dokreslení kresby */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Tablet: kresba v hero větší (víc výšky obrazovky) */
+@media (min-width: 48rem) {
+  :root {
+    --hero-art-h: clamp(18rem, 42svh, 30rem);
+  }
 }
 
 /* Hlavička na desktopu: velké logo na střed (jako Focal / Dynaudio) */

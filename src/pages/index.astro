@@ -3,7 +3,7 @@
  * Úvodní stránka – sekce a jejich pořadí se berou ze src/content/home.yaml.
  */
 import { Picture } from 'astro:assets';
-import { getEntries } from 'astro:content';
+import { getEntries, getEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/Section.astro';
 import Button from '../components/Button.astro';
@@ -29,6 +29,17 @@ const resolved = await Promise.all(
       : { section },
   ),
 );
+
+// Kóty v hero: rozměry z dat produktu („š 240 × v 1000 × h 383 mm“), ne natvrdo
+const heroSection = sections.find((s) => s.type === 'hero');
+let heroDims: { width: string; height: string } | undefined;
+if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.dimensionsFrom) {
+  const product = await getEntry(heroSection.dimensionsFrom);
+  const dims = product?.data.specs.dimensions ?? '';
+  const width = dims.match(/š\s*(\d+)/)?.[1];
+  const height = dims.match(/v\s*(\d+)/)?.[1];
+  if (width && height) heroDims = { width, height };
+}
 ---
 
 <BaseLayout
@@ -42,7 +53,17 @@ const resolved = await Promise.all(
     // Hero: text vlevo, kresba s podpisem vpravo (dávka 2.2)
     if (s.type === 'hero') {
       return (
-        <section class="hero" aria-labelledby="hero-title">
+        <section
+          class:list={[
+            'hero',
+            {
+              'hero--grain': s.decor.grain,
+              'hero--light': s.decor.light,
+              'hero--grid': s.decor.grid,
+            },
+          ]}
+          aria-labelledby="hero-title"
+        >
           <div class="container hero__grid">
             <div class="hero__text">
               <span class="eyebrow hero__in" style="--i: 0">
@@ -64,17 +85,30 @@ const resolved = await Promise.all(
               )}
             </div>
             <figure class="hero__art">
-              <Picture
-                src={s.drawing.src}
-                alt={s.drawing.alt}
-                formats={['avif', 'webp']}
-                fallbackFormat="webp"
-                widths={[s.drawing.src.width]}
-                sizes={`${s.drawing.src.width}px`}
-                loading="eager"
-                fetchpriority="high"
-                class="hero__drawing"
-              />
+              <div class="hero__drawing-wrap">
+                <Picture
+                  src={s.drawing.src}
+                  alt={s.drawing.alt}
+                  formats={['avif', 'webp']}
+                  fallbackFormat="webp"
+                  widths={[s.drawing.src.width]}
+                  sizes={`${s.drawing.src.width}px`}
+                  loading="eager"
+                  fetchpriority="high"
+                  class="hero__drawing"
+                />
+                {/* Kóty – objeví se po dokreslení kresby */}
+                {heroDims && (
+                  <div class="hero__dims" aria-hidden="true">
+                    <span class="dim dim--v">
+                      <span class="dim__label">{heroDims.height}&nbsp;mm</span>
+                    </span>
+                    <span class="dim dim--h">
+                      <span class="dim__label">{heroDims.width}&nbsp;mm</span>
+                    </span>
+                  </div>
+                )}
+              </div>
               {s.signature && (
                 <Picture
                   src={s.signature.src}
@@ -286,10 +320,26 @@ const resolved = await Promise.all(
 <style>
   /* Hero – světlé, kresba s podpisem, max. jedna obrazovka */
   .hero {
+    position: relative;
+    isolation: isolate;
+    overflow-x: clip; /* světlo a mřížka za kresbou nesmí přetéct do strany */
     display: grid;
     align-items: center;
     min-height: min(calc(100svh - var(--header-top-h)), 52rem);
     padding-block: var(--space-6) var(--space-7);
+  }
+
+  /* Pozadí hero (dávka 3.4): zrnitost papíru – jen v hero, vypínatelné v home.yaml */
+  .hero--grain::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image: var(--paper-grain);
+    background-size: 220px 220px;
+    mix-blend-mode: multiply;
+    opacity: var(--paper-grain-opacity);
+    pointer-events: none;
   }
 
   .hero__grid {
@@ -333,8 +383,114 @@ const resolved = await Promise.all(
   }
 
   .hero__art {
+    position: relative;
+    isolation: isolate;
     display: grid;
     justify-items: center;
+    container-type: inline-size;
+  }
+
+  /* Teplé světlo za kresbou */
+  .hero--light .hero__art::before {
+    content: '';
+    position: absolute;
+    inset: -12% -18%;
+    z-index: -2;
+    background: radial-gradient(closest-side, var(--c-light-warm), transparent);
+    pointer-events: none;
+  }
+
+  /* Jemná mřížka (technický výkres) v oválu za kresbou */
+  .hero--grid .hero__art::after {
+    content: '';
+    position: absolute;
+    inset: -6% -14%;
+    z-index: -1;
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 32px 32px;
+    background-position: center;
+    mask-image: radial-gradient(closest-side, #000 35%, transparent 100%);
+    pointer-events: none;
+  }
+
+  .hero__drawing-wrap {
+    position: relative;
+    width: fit-content;
+    margin-inline: auto;
+  }
+
+  /* Kóty se skutečnými rozměry (z dat produktu) */
+  .hero__dims {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    color: var(--c-dub-text);
+    font-family: var(--font-mono);
+    font-size: var(--fs-label);
+  }
+
+  .dim {
+    position: absolute;
+    display: grid;
+    place-items: center;
+  }
+
+  /* svislá kóta vlevo od kresby: výška */
+  .dim--v {
+    top: 1%;
+    bottom: 4%;
+    left: -1.75rem;
+    width: 1rem;
+    border-block: 1px solid currentColor;
+  }
+
+  .dim--v::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 50%;
+    border-left: 1px solid currentColor;
+  }
+
+  .dim--v .dim__label {
+    position: relative;
+    padding-block: var(--space-2);
+    background: var(--c-len);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+
+  /* vodorovná kóta nad levou reprosoustavou: šířka */
+  .dim--h {
+    top: -1.75rem;
+    left: 3%;
+    width: 37%;
+    height: 1rem;
+    border-inline: 1px solid currentColor;
+  }
+
+  .dim--h::before {
+    content: '';
+    position: absolute;
+    inset: 50% 0 auto;
+    border-top: 1px solid currentColor;
+  }
+
+  .dim--h .dim__label {
+    position: relative;
+    padding-inline: var(--space-2);
+    background: var(--c-len);
+  }
+
+  @media (max-width: 47.99rem) {
+    .hero__dims {
+      font-size: 0.6875rem;
+    }
+
+    .dim--v {
+      left: -1.25rem;
+    }
   }
 
   .hero__art :global(.hero__drawing) {
@@ -366,10 +522,9 @@ const resolved = await Promise.all(
       column-gap: var(--space-7);
     }
 
-    /* Text začíná nahoře s menším odsazením od hlavičky (cca polovina původního) */
+    /* Text svisle na střed vůči kresbě (dávka 3.2) */
     .hero__text {
-      align-self: start;
-      padding-top: var(--space-7);
+      align-self: center;
       container-type: inline-size;
     }
 
@@ -394,10 +549,11 @@ const resolved = await Promise.all(
       justify-items: center;
     }
 
+    /* výška podle obrazovky, ale nepřeteče šířku sloupce (kresba 378 × 561 → 1,48 × šířka) */
     .hero__art :global(.hero__drawing) {
-      width: 100%;
-      height: auto;
-      max-height: var(--hero-art-h);
+      width: auto;
+      height: min(var(--hero-art-h), 140cqi);
+      max-width: none;
     }
 
     .hero__art :global(.hero__signature) {
@@ -430,7 +586,14 @@ const resolved = await Promise.all(
     }
   }
 
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__dims {
+      animation: fade-in var(--dur-dims) ease var(--delay-dims) both;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
+    .hero__dims,
     .hero__in,
     .hero__art :global(.hero__drawing),
     .hero__art :global(.hero__signature) {

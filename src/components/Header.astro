@@ -8,7 +8,7 @@
  */
 import Logo from './Logo.astro';
 import Button from './Button.astro';
-import { nav, orderLink, showHeaderOrder } from '../config/site';
+import { nav, headerCta } from '../config/site';
 import { cs } from '../i18n/cs';
 import { url } from '../utils/url';
 
@@ -17,13 +17,19 @@ const isCurrent = (href: string) => current === url(href);
 const isSection = (href: string) => current.startsWith(url(href)) && href !== '/';
 ---
 
-<header class:list={['header', { 'header--no-order': !showHeaderOrder }]} data-header>
+<header class:list={['header', { 'header--no-cta': !headerCta }]} data-header>
   <div class="container header__inner">
     <a href={url('/')} class="header__logo" aria-label={cs.nav.home}>
       <Logo height="var(--header-logo-h)" />
     </a>
 
     <nav class="nav" id="hlavni-navigace" aria-label={cs.nav.label} data-nav>
+      {/* Mobilní menu: tlačítko jako první položka */}
+      {headerCta && (
+        <Button href={headerCta.href} tone="dark" class="nav__cta">
+          {headerCta.label}
+        </Button>
+      )}
       <ul role="list" class="nav__list">
         {nav.map((item) => (
           <li class:list={['nav__item', { 'nav__item--parent': item.children }]}>
@@ -53,18 +59,12 @@ const isSection = (href: string) => current.startsWith(url(href)) && href !== '/
           </li>
         ))}
       </ul>
-      {/* Objednat v mobilním menu */}
-      {showHeaderOrder && (
-        <Button href={orderLink} variant="secondary" class="nav__order">
-          {cs.nav.order}
-        </Button>
-      )}
     </nav>
 
-    {/* Objednat v hlavičce na desktopu */}
-    {showHeaderOrder && (
-      <Button href={orderLink} variant="secondary" class="header__order">
-        {cs.nav.order}
+    {/* Tlačítko v hlavičce na desktopu (primární) */}
+    {headerCta && (
+      <Button href={headerCta.href} class="header__cta">
+        {headerCta.label}
       </Button>
     )}
 
@@ -196,14 +196,14 @@ const isSection = (href: string) => current.startsWith(url(href)) && href !== '/
   .header__inner {
     --header-logo-h: var(--logo-top-h);
     /* místo pro Objednat vpravo (bez tlačítka 0) */
-    --order-space: calc(var(--order-w) + var(--space-6));
+    --cta-space: calc(var(--cta-w) + var(--space-6));
     position: relative;
     height: var(--header-top-h);
     transition: height var(--dur-header) var(--ease);
   }
 
-  .header--no-order .header__inner {
-    --order-space: 0px;
+  .header--no-cta .header__inner {
+    --cta-space: 0px;
   }
 
   .header.is-scrolled .header__inner {
@@ -248,7 +248,7 @@ const isSection = (href: string) => current.startsWith(url(href)) && href !== '/
   }
 
   /* „Objednat“ v hlavičce jen na desktopu */
-  .header :global(.header__order) {
+  .header :global(.header__cta) {
     display: none;
   }
 
@@ -258,7 +258,7 @@ const isSection = (href: string) => current.startsWith(url(href)) && href !== '/
     .header__logo,
     .header__logo :global(.logo),
     .nav,
-    .header :global(.header__order) {
+    .header :global(.header__cta) {
       transition: none;
     }
   }
@@ -294,11 +294,11 @@ const isSection = (href: string) => current.startsWith(url(href)) && href !== '/
 
     .header.is-scrolled .nav {
       bottom: 50%;
-      left: calc(100% - var(--gutter) - var(--order-space));
+      left: calc(100% - var(--gutter) - var(--cta-space));
       transform: translate(-100%, 50%);
     }
 
-    .nav :global(.nav__order) {
+    .nav :global(.nav__cta) {
       display: none;
     }
 
@@ -328,18 +328,18 @@ const isSection = (href: string) => current.startsWith(url(href)) && href !== '/
       border-bottom-color: var(--c-dub);
     }
 
-    .header :global(.header__order) {
+    .header :global(.header__cta) {
       position: absolute;
       top: calc(var(--header-pad) + (var(--logo-top-h) - 2.875rem) / 2);
       right: var(--gutter);
       display: inline-flex;
-      width: var(--order-w);
+      width: var(--cta-w);
       transition:
         top var(--dur-header) var(--ease),
         transform var(--dur-header) var(--ease);
     }
 
-    .header.is-scrolled :global(.header__order) {
+    .header.is-scrolled :global(.header__cta) {
       top: 50%;
       transform: translateY(-50%);
     }
@@ -421,7 +421,7 @@ const isSection = (href: string) => current.startsWith(url(href)) && href !== '/
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      justify-content: space-between;
+      justify-content: flex-start;
       gap: var(--space-7);
       padding: calc(var(--header-top-h) + var(--space-6)) var(--gutter) var(--space-7);
       overflow-y: auto;
@@ -489,14 +489,8 @@ const isSection = (href: string) => current.startsWith(url(href)) && href !== '/
       color: var(--c-on-dark);
     }
 
-    .nav :global(.nav__order) {
-      border-color: var(--c-on-dark);
-      color: var(--c-on-dark);
-    }
-
-    .nav :global(.nav__order:hover) {
-      background: var(--c-uhel-hover);
-      color: var(--c-on-dark);
+    .nav :global(.nav__cta) {
+      order: -1;
     }
   }
 </style>

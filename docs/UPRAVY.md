@@ -197,3 +197,62 @@ Na úvodu stačí zkrácené verze (1–2 věty), plné texty na stránce Techno
 2. Záznam nebo popis animace kresby a podpisu.
 3. Seznam nových `TODO(klient)`.
 4. Lighthouse mobil pro úvod a Technologie.
+
+---
+
+## Dávka 3 – doladění úvodu (CTA, hero, zaoblení, sklo)
+
+**Stav:** HOTOVO (2. 10. 2026) – varianty vybral Lukáš: 3.3 a), 3.4 A+B
+
+**Výsledek:**
+- 3.1 V hlavičce primární tlačítko „Domluvit poslech →“ (`/poslech/#formular`), desktop vpravo v obou stavech, na mobilu první položka menu. Řídí `headerCta` v `site.ts` (`showHeaderOrder` zrušeno).
+- 3.2 Text v hero svisle na střed vůči kresbě; hero max. jedna obrazovka, kresba se neořízne (1280 × 800, 1536 × 864, 375 × 812, 768 × 1024).
+- 3.3 Druhý řádek: „Emoce i klid. Hodiny poslechu bez únavy.“ (`home.yaml`).
+- 3.4 Varianta A+B: zrnitost papíru (jen hero), teplé světlo za kresbou, jemná mřížka 32 px v oválu a kóty 1000 mm / 240 mm z `sara.md` (`dimensions`), kóty se objeví po dokreslení (600 ms od 3,2 s). Každou vrstvu lze vypnout v `home.yaml` (`decor`). Na mobilu menší kóty.
+- 3.5 Tokeny `--radius-m` 12 px a `--radius-s` 6 px (+ `--radius-xs` 4 px pro checkboxy) na celém webu, `--radius` a `--radius-btn` odstraněny. Produkty a kresba bez zaoblení.
+- 3.6 Sklo hlavičky po scrollu 0,94 a blur 20 px.
+- Lighthouse mobil úvod: 100 / 100 / 100 / 100 (Technologie 98 / 100 / 100 / 100); 99 funkčních testů zelených.
+**Datum:** 2. 10. 2026
+**Poznámka:** podstránky (detail modelů, Technologie, Poslech, Kontakt) budou až v další dávce, po zpětné vazbě klienta na prototyp.
+
+### 3.1 CTA v hlavičce „Domluvit poslech“ (priorita: vysoká, schváleno)
+- Místo skrytého „Objednat“ zobrazit v hlavičce tlačítko **„Domluvit poslech →“** (primární styl, plná barva `--c-uhel`), odkaz na `/poslech/#formular`.
+- Desktop: vpravo v obou stavech hlavičky (nahoře i po scrollu). Mobil: v hlavičce jen „Menu“, tlačítko „Domluvit poslech“ jako první položka v mobilním menu.
+- Řídit v `site.ts` (`headerCta: { label, href }`), `showHeaderOrder` nahradit.
+
+### 3.2 Hero: text svisle na střed (priorita: vysoká, schváleno)
+- Levý sloupec (štítek, nadpis, věta) **svisle vycentrovat** vůči kresbě. Žádný další výplňový text.
+- Výška hero: na desktopu max. jedna obrazovka pod hlavičkou, kresba se nesmí oříznout.
+
+### 3.3 Druhý řádek nadpisu místo „Na celý život.“ (priorita: vysoká)
+- Varianty (vybere Lukáš, případně klient):
+  - a) „Emoce i klid. Hodiny poslechu bez únavy.“ (doporučeno – vychází z Petrova textu „neunavující pro dlouhodobý poslech“)
+  - b) „Emoce i klid.“
+  - c) „Emoce i klid. Navrženo a laděno v Brně.“
+  - d) „Emoce i klid. Hudba, která neunaví.“
+- Vybraná varianta: **a)**. Text v `home.yaml`.
+
+### 3.4 Decentní pozadí hero (priorita: střední)
+- Varianty v náhledu:
+  - 0 – bez pozadí (současný stav)
+  - A – **papír a světlo**: jemná zrnitost papíru (SVG šum, `mix-blend-mode: multiply`, opacity cca 0,2) + teplé světlo za kresbou (radiální gradient `rgb(255 251 243)`)
+  - B – **technický výkres**: jemná mřížka 32 px (6 % grafit) maskovaná do oválu za kresbou + kóty se skutečnými rozměry Sary (výška 1000 mm, šířka 240 mm) strojopisem v `--c-dub-text`
+  - C – **A + kóty** (doporučeno): papír, světlo a kóty bez mřížky
+- Vybraná varianta: **A+B** (papír, světlo, mřížka i kóty).
+- Kóty brát z dat produktu (`dimensions` v `sara.md`), ne natvrdo. Kóty se objeví až po dokreslení kresby (fade 600 ms, od cca 3 s).
+- Zrnitost jen v hero (ne na celém webu), musí jít vypnout v `home.yaml`.
+- Na mobilu světlo a kóty pod textem u kresby; kóty zmenšit nebo skrýt, pokud by překážely.
+
+### 3.5 Sjednocené zaoblení (priorita: střední, schváleno)
+- Manufaktura = měkčí, přátelštější dojem (zaoblené hrany dřeva Sary). Dvě hodnoty pro celý web:
+  - `--radius-m: 12px` – tlačítka, karty, fotky (i AI ilustrace a zástupná místa), galerie, lightbox, srovnávací tabulka (obal)
+  - `--radius-s: 6px` – štítky, pole formuláře, checkboxy (4 px), drobné prvky
+- Vyříznuté produkty na průhledném pozadí a kresba **bez** zaoblení. Linky a oddělovače beze změny.
+- Odstranit `--radius: 2px` a `--radius-btn`, nahradit novými tokeny všude.
+
+### 3.6 Zesílit sklo hlavičky (priorita: nízká, schváleno)
+- Po scrollu `--glass-light` z 0,88 na cca 0,94 a blur 20 px, aby přes hlavičku neprosvítal obsah (např. podpis z hero na tabletu). Spodní linka zůstává.
+
+### Výstup dávky 3
+1. Screenshoty úvodu na 375 / 768 / 1280 px.
+2. Lighthouse mobil úvodu.

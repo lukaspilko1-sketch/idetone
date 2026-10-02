@@ -47,8 +47,14 @@ export const nav: NavItem[] = [
 
 export const orderLink = '/kontakt/#objednavka';
 
-/** Tlačítko „Objednat“ v hlavičce (desktop i mobilní menu). Zatím skryté, později se možná vrátí. */
-export const showHeaderOrder = false;
+/**
+ * Tlačítko v hlavičce (dávka 3.1): desktop vpravo, na mobilu první položka menu.
+ * null = bez tlačítka. Dřív „Objednat“ → orderLink.
+ */
+export const headerCta: { label: string; href: string } | null = {
+  label: 'Domluvit poslech',
+  href: '/poslech/#formular',
+};
 
 export const legalNav: NavItem[] = [
   { label: 'Obchodní podmínky', href: '/obchodni-podminky/' },

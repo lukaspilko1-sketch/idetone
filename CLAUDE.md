@@ -26,10 +26,10 @@ Web českého výrobce high-end reprosoustav ideTone (Petr Kocourek, Brno). Spra
 - `robots.txt` generuje `src/pages/robots.txt.ts` podle `PUBLIC_INDEXING`
 - Nasazení na Pages se zapne proměnnou repozitáře `PAGES_DEPLOY=true`; workflow: build + `check` + `links` a testy, deploy jen z `main` po úspěchu obou
 
-## Design tokeny (verze 0.5, mění se jen v `src/styles/tokens.css`)
+## Design tokeny (verze 0.6, mění se jen v `src/styles/tokens.css`)
 - Len `#E9E6DF` (pozadí) · Papír `#F5F3EE` (karty) · Uhel `#262422` (teplý antracit; těžké plochy, CTA, patička; token `--c-uhel`, `Section tone="uhel"`)
 - Dub `#A8743F` (akcent, „Tone“ v logu; text v odkazech `#8A5C2E`) · Grafit `#1F2421` (text) · Šalvěj `#8E9B88`
-- Zaoblení 0–2 px, bez gradientů, bez emoji, bez stínů všude, jen světlý režim
+- Zaoblení jen dvěma tokeny (dávka 3.5): `--radius-m` 12 px (tlačítka, karty, fotky, zástupná místa, obal srovnávací tabulky), `--radius-s` 6 px (štítky, pole formuláře, drobnosti), `--radius-xs` 4 px checkboxy; vyříznuté produkty a kresba bez zaoblení. Bez emoji, bez stínů všude, jen světlý režim; gradienty jen funkčně (světlo a mřížka v hero, masky animací)
 - Sklo (glass, od 1. 10. 2026 na přání Lukáše, ruší zákaz glassmorphismu ze zadání): tmavé plochy (hero panel, `Section tone="uhel"`, patička) = `GlassBackdrop` (rozostřená fotka dřeva pod průsvitným Uhlem); skleněné karty `--glass-card` + `--glass-edge` + `backdrop-filter`; mobilní menu a lightbox `--glass-overlay`; hlavička po scrollu a lišta s cenou `--glass-light`. Tokeny `--glass-*` v `tokens.css`, bez podpory backdrop-filter plné barvy
 - Logo: „ideTone“ IBM Plex Mono 600, vcelku bez prostrkání (dávka 2.1), „ide“ grafit + „Tone“ dub; komponenta `Logo.astro` (inline SVG na jednom řádku kvůli mezerám – `prettier-ignore`, varianty `dark` / `light`, `height` = velikost písma). Výměna loga = přepsat jen `Logo.astro`
 - Typografie jen přes sémantické tokeny: `--fs-body` (odstavce 17/18), `--fs-lead` (perex, jen první odstavec), `--fs-data` (strojopis min. 14), `--fs-small` (poznámky min. 14), `--fs-label` (štítky 13, 1–3 slova), `--fs-legal` (copyright 13), `--fs-quote`, `--fs-model` (název modelu 48–96); nadpisy `--fs-xxl…--fs-m`
@@ -49,13 +49,13 @@ Web českého výrobce high-end reprosoustav ideTone (Petr Kocourek, Brno). Spra
 
 ## Kde co je
 - Schémata obsahu (Zod): `src/content.config.ts`
-- Úvodní stránka – sekce (hero s kresbou a podpisem, models, concept, process, technology, listening), pořadí, `visible`, `showPrices`: `src/content/home.yaml`
+- Úvodní stránka – sekce (hero s kresbou a podpisem, models, concept, process, technology, listening), pořadí, `visible`, `showPrices`, pozadí hero `decor` (grain, light, grid, dimensions) a `dimensionsFrom` (produkt pro kóty): `src/content/home.yaml`
 - Sestava v poslechovém studiu: `studio.system` v `src/content/settings.yaml`; kresba a podpis: `src/assets/uploads/kresby/` (originály `podklady/obrazky/`)
 - Dočasné AI ilustrace: `src/assets/uploads/ai/`, v datech `placeholder: true` + `source` (originály `podklady/ai-obrazky/`); `npm run todo` je vypíše. Na produktových místech (modely, přepínač, bassreflex, portrét) je nepoužívat
 - Kontakty, adresa studia, firemní údaje, sociální sítě: `src/content/settings.yaml` (čte `getSettings()` z `src/utils/content.ts`; prázdné hodnoty se nezobrazí)
 - Produkty (ceny, specifikace, galerie, texty Konstrukce jako `### bloky` v těle): `src/content/products/*.md`
 - Stránky (texty, sekce, kroky): `src/content/pages/*.md`; šablony v `src/pages/`
-- Feature flagy, navigace, Formspree ID: `src/config/site.ts`
+- Feature flagy, navigace, Formspree ID, tlačítko v hlavičce (`headerCta`, `null` = bez tlačítka): `src/config/site.ts`
 - UI texty CZ/EN: `src/i18n/`
 - Feature flagy: `journal`, `references`, `english` (vše zatím `false`); deník `src/pages/denik/` se při `false` negeneruje
 - Pomocné funkce: `formatPrice()`, `typo()` (nezlomitelné mezery u jednotek a předložek), `paragraphs()`, `headedBlocks()` v `src/utils/format.ts`

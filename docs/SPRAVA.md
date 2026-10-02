@@ -61,6 +61,12 @@ Na stránkách (`src/content/pages/*.md`, `home.yaml`) vyměňte `imageSlot: { l
 ### Ceny na úvodní stránce
 V `src/content/home.yaml` přepínač `showPrices` (teď `false`). Cena je vždy na detailu modelu, v přehledu a ve srovnávací tabulce. Technické parametry jsou jen na detailu a ve srovnávací tabulce.
 
+### Tlačítko v hlavičce
+`src/config/site.ts` → `headerCta` (`label`, `href`). Teď „Domluvit poslech“ → `/poslech/#formular`. Pro „Objednat“ nastavte `href: '/kontakt/#objednavka'`, `null` tlačítko skryje.
+
+### Pozadí hero (papír, světlo, mřížka, kóty)
+`home.yaml` u hero → `decor` (`grain`, `light`, `grid`, `dimensions`: `true` / `false`). Kóty berou rozměry z `specs.dimensions` produktu v `dimensionsFrom` (teď `sara`).
+
 ### Kresba a podpis v hero
 Soubory jsou v `src/assets/uploads/kresby/`, cesty a popisy v `home.yaml` u hero (`drawing`, `signature`). Až klient dodá originál ve vyšším rozlišení, stačí soubor vyměnit (stejný název) nebo upravit cestu.
 

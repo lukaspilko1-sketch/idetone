@@ -152,6 +152,17 @@ const homeSection = (image: SchemaContext['image']) =>
       signature: photo(image).optional(),
       /** jemná výzva ke scrollu místo tlačítek (např. „Modely ↓“ → #modely) */
       scroll: link.optional(),
+      /** decentní pozadí hero (dávka 3.4) – jednotlivé vrstvy jdou vypnout */
+      decor: z
+        .object({
+          grain: z.boolean().default(true), // zrnitost papíru (jen v hero)
+          light: z.boolean().default(true), // teplé světlo za kresbou
+          grid: z.boolean().default(true), // jemná mřížka v oválu za kresbou
+          dimensions: z.boolean().default(true), // kóty (rozměry z produktu)
+        })
+        .prefault({}),
+      /** produkt, jehož rozměry (specs.dimensions) se ukážou v kótách u kresby */
+      dimensionsFrom: reference('products').optional(),
     }),
     z.object({
       ...base,
