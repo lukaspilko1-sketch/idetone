@@ -154,6 +154,7 @@ a:hover {
   font-family: var(--font-mono);
   font-size: var(--fs-label);
   text-decoration: none;
+  border-radius: var(--radius-s);
   transform: translateY(-200%);
 }
 

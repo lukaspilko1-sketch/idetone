@@ -444,7 +444,7 @@ const messages = {
     padding: clamp(var(--space-5), 4vw, var(--space-7));
     background: var(--c-papir);
     border: var(--border);
-    border-radius: var(--radius);
+    border-radius: var(--radius-m);
   }
 
   .cf__title {
@@ -455,6 +455,7 @@ const messages = {
     margin-top: var(--space-4);
     padding: var(--space-3) var(--space-4);
     border: 1px dashed var(--c-dub);
+    border-radius: var(--radius-s);
     font-size: var(--fs-small);
     color: var(--c-dub-text);
   }
@@ -523,7 +524,7 @@ const messages = {
     padding: var(--space-3) var(--space-4);
     background: var(--c-field);
     border: 1px solid var(--c-line);
-    border-radius: var(--radius);
+    border-radius: var(--radius-s);
     font-size: var(--fs-body);
     line-height: 1.4;
     transition: border-color var(--dur-fast) var(--ease);
@@ -557,6 +558,10 @@ const messages = {
     gap: var(--space-3);
     font-weight: 400;
     min-height: 2rem;
+  }
+
+  input[type='checkbox'] {
+    border-radius: var(--radius-xs);
   }
 
   input[type='radio'],
@@ -596,6 +601,7 @@ const messages = {
     padding: var(--space-3) var(--space-4);
     border-left: 2px solid var(--c-error);
     background: var(--c-len);
+    border-radius: var(--radius-s);
     font-size: var(--fs-small);
     color: var(--c-grafit);
   }
@@ -609,7 +615,7 @@ const messages = {
     padding: var(--space-3) var(--space-6);
     background: var(--c-uhel);
     border: 0;
-    border-radius: var(--radius-btn);
+    border-radius: var(--radius-m);
     color: var(--c-on-dark);
     font-weight: 500;
     cursor: pointer;
@@ -647,7 +653,7 @@ const messages = {
     padding: var(--space-6);
     background: var(--c-uhel);
     color: var(--c-on-dark);
-    border-radius: var(--radius);
+    border-radius: var(--radius-m);
   }
 
   .cf__success:focus {

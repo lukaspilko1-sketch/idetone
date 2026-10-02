@@ -30,7 +30,8 @@
   --glass-edge: rgb(255 255 255 / 0.12); /* hrana skla */
   --glass-blur: 18px;
   --glass-light: rgb(233 230 223 / 0.78); /* světlé sklo (lišta s cenou) */
-  --glass-header: rgb(233 230 223 / 0.88); /* hlavička po scrollu – silnější kvůli čitelnosti */
+  --glass-header: rgb(233 230 223 / 0.94); /* hlavička po scrollu – obsah pod ní neprosvítá */
+  --glass-header-blur: 20px;
   --glass-overlay: rgb(38 36 34 / 0.82); /* mobilní menu, lightbox – sklo přes stránku */
 
   /* Typová škála 13 / 16 / 20 / 26 / 35 / 50 (H1 max. 56) */
@@ -98,8 +99,10 @@
   --dur-header: 320ms;
 
   /* Tvary */
-  --radius: 2px;
-  --radius-btn: 12px; /* CTA tlačítka – zaoblená */
+  /* Zaoblení (dávka 3.5): manufaktura = měkčí hrany. Vyříznuté produkty a kresba bez zaoblení. */
+  --radius-m: 12px; /* tlačítka, karty, fotky, zástupná místa, srovnávací tabulka */
+  --radius-s: 6px; /* štítky, pole formuláře, drobné prvky */
+  --radius-xs: 4px; /* checkboxy */
   --border: 1px solid var(--c-line);
   --focus: 2px solid var(--c-dub);
   --product-shadow: drop-shadow(0 18px 24px rgb(31 36 33 / 0.18));

@@ -189,8 +189,8 @@ const isSection = (href: string) => current.startsWith(url(href)) && href !== '/
   /* Po odscrollování světlé sklo (čitelnost: vysoká neprůhlednost + linka) */
   .header.is-scrolled {
     background: var(--glass-header);
-    backdrop-filter: blur(16px) saturate(1.1);
-    -webkit-backdrop-filter: blur(16px) saturate(1.1);
+    backdrop-filter: blur(var(--glass-header-blur)) saturate(1.1);
+    -webkit-backdrop-filter: blur(var(--glass-header-blur)) saturate(1.1);
   }
 
   .header__inner {
@@ -353,7 +353,7 @@ const isSection = (href: string) => current.startsWith(url(href)) && href !== '/
       padding: var(--space-2) var(--space-4);
       background: var(--c-papir);
       border: var(--border);
-      border-radius: var(--radius);
+      border-radius: var(--radius-m);
       opacity: 0;
       visibility: hidden;
       transform: translateY(4px);
