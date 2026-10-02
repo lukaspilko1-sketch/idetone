@@ -119,11 +119,6 @@ home:
       button:
         label: Zarezervujte si poslech
         href: /poslech/#formular
-      background:
-        src: ../assets/uploads/ai/poslech-mistnost.png
-        alt: Ilustrační foto – poslechová místnost s křeslem a gramofonem
-        placeholder: true
-        source: AI ilustrace – nahradit
 
     # Citát (zatím nepoužitý – zvýrazněním úvodu je výrok v sekci Koncept)
     - type: quote

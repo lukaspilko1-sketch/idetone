@@ -9,7 +9,8 @@ import { url } from '../utils/url';
 type Props = {
   href?: string;
   variant?: 'primary' | 'secondary';
-  tone?: 'light' | 'dark';
+  /** light = na lnu, dark = na antracitu, wood = na dubovém pruhu */
+  tone?: 'light' | 'dark' | 'wood';
   arrow?: boolean;
   type?: 'button' | 'submit';
   class?: string;
@@ -87,14 +88,26 @@ const classes = ['btn', `btn--${variant}`, `btn--on-${tone}`, className];
   }
 
   /* Na světlé ploše */
+  /* Primární CTA v dubu (dávka 4.1) */
   .btn--primary.btn--on-light {
-    background: var(--c-uhel);
-    color: var(--c-on-dark);
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
   }
 
   .btn--primary.btn--on-light:hover {
-    background: var(--c-uhel-hover);
-    color: var(--c-on-dark);
+    background: var(--btn-primary-hover);
+    color: var(--btn-primary-text);
+  }
+
+  /* Na dubovém pruhu světlé tlačítko s tmavým dubovým textem */
+  .btn--primary.btn--on-wood {
+    background: var(--c-on-wood);
+    color: var(--c-dub-deep);
+  }
+
+  .btn--primary.btn--on-wood:hover {
+    background: var(--c-papir);
+    color: var(--c-dub-deep);
   }
 
   .btn--secondary.btn--on-light {

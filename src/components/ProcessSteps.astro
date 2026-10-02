@@ -32,7 +32,7 @@ const { steps } = Astro.props;
         />
       )}
       <div class="process__text" data-reveal>
-        <span class="process__num mono" aria-hidden="true">
+        <span class="process__num" aria-hidden="true">
           {i + 1}
         </span>
         <h3>{typo(step.title)}</h3>
@@ -55,15 +55,21 @@ const { steps } = Astro.props;
     max-width: none;
   }
 
+  /* Linka nad krokem v namíchané barvě dub/linka (dávka 4.3) */
   .process__text {
-    padding-top: var(--space-1);
+    padding-top: var(--space-4);
+    border-top: 2px solid var(--c-step-line);
   }
 
+  /* Velké dubové číslo kroku */
   .process__num {
     display: block;
-    margin-bottom: var(--space-2);
-    font-size: var(--fs-data);
-    color: var(--c-dub-text);
+    margin-bottom: var(--space-3);
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--c-dub);
   }
 
   h3 {

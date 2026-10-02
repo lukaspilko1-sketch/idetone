@@ -26,9 +26,9 @@ Web českého výrobce high-end reprosoustav ideTone (Petr Kocourek, Brno). Spra
 - `robots.txt` generuje `src/pages/robots.txt.ts` podle `PUBLIC_INDEXING`
 - Nasazení na Pages se zapne proměnnou repozitáře `PAGES_DEPLOY=true`; workflow: build + `check` + `links` a testy, deploy jen z `main` po úspěchu obou
 
-## Design tokeny (verze 0.6, mění se jen v `src/styles/tokens.css`)
+## Design tokeny (verze 0.7, mění se jen v `src/styles/tokens.css`)
 - Len `#E9E6DF` (pozadí) · Papír `#F5F3EE` (karty) · Uhel `#262422` (teplý antracit; těžké plochy, CTA, patička; token `--c-uhel`, `Section tone="uhel"`)
-- Dub `#A8743F` (akcent, „Tone“ v logu; text v odkazech `#8A5C2E`) · Grafit `#1F2421` (text) · Šalvěj `#8E9B88`
+- Dub `#A8743F` (akcent, „Tone“ v logu; text v odkazech `#8A5C2E`). Výraznější dub (dávka 4): primární tlačítka `--btn-primary-*` (#8A5C2E, hover #6E4826, text #F5F0E8), štítky `--c-eyebrow`, dubový pruh `Section tone="dub"` (`--wood-gradient`, max. jedna dubová plocha na stránku, malý text jen `--c-on-wood`), tlačítko na dubu `Button tone="wood"` · Grafit `#1F2421` (text) · Šalvěj `#8E9B88`
 - Zaoblení jen dvěma tokeny (dávka 3.5): `--radius-m` 12 px (tlačítka, karty, fotky, zástupná místa, obal srovnávací tabulky), `--radius-s` 6 px (štítky, pole formuláře, drobnosti), `--radius-xs` 4 px checkboxy; vyříznuté produkty a kresba bez zaoblení. Bez emoji, bez stínů všude, jen světlý režim; gradienty jen funkčně (světlo a mřížka v hero, masky animací)
 - Sklo (glass, od 1. 10. 2026 na přání Lukáše, ruší zákaz glassmorphismu ze zadání): tmavé plochy (hero panel, `Section tone="uhel"`, patička) = `GlassBackdrop` (rozostřená fotka dřeva pod průsvitným Uhlem); skleněné karty `--glass-card` + `--glass-edge` + `backdrop-filter`; mobilní menu a lightbox `--glass-overlay`; hlavička po scrollu a lišta s cenou `--glass-light`. Tokeny `--glass-*` v `tokens.css`, bez podpory backdrop-filter plné barvy
 - Logo: „ideTone“ IBM Plex Mono 600, vcelku bez prostrkání (dávka 2.1), „ide“ grafit + „Tone“ dub; komponenta `Logo.astro` (inline SVG na jednom řádku kvůli mezerám – `prettier-ignore`, varianty `dark` / `light`, `height` = velikost písma). Výměna loga = přepsat jen `Logo.astro`

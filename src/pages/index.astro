@@ -277,13 +277,7 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
 
     if (s.type === 'listening') {
       return (
-        <Section
-          tone="uhel"
-          labelledby="poslech-title"
-          space="m"
-          glass="30% 60%"
-          glassImage={s.background?.src}
-        >
+        <Section tone="dub" labelledby="poslech-title" space="m">
           <div class="listen">
             <div>
               {s.eyebrow && <span class="eyebrow">{s.eyebrow}</span>}
@@ -299,7 +293,7 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
                 {settings.studio.city}
               </address>
               {settings.studio.parking && <p class="small">{typo(settings.studio.parking)}</p>}
-              <Button href={s.button.href} tone="dark">
+              <Button href={s.button.href} tone="wood">
                 {s.button.label}
               </Button>
             </div>
@@ -790,7 +784,7 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
   .listen__text {
     margin-top: var(--space-4);
     max-width: 52ch;
-    color: var(--c-on-dark-muted);
+    color: var(--c-on-wood);
   }
 
   /* Skleněná karta s adresou; malý text v plné barvě (kontrast AA na skle) */
@@ -799,8 +793,8 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
     gap: var(--space-4);
     justify-items: start;
     padding: var(--space-6);
-    background: var(--glass-card);
-    border: 1px solid var(--glass-edge);
+    background: var(--glass-card-wood);
+    border: 1px solid var(--glass-edge-wood);
     border-radius: var(--radius-m);
     backdrop-filter: blur(var(--glass-blur));
     -webkit-backdrop-filter: blur(var(--glass-blur));

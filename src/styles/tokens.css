@@ -12,6 +12,20 @@
   --c-dub: #a8743f; /* akcent – jen velký text a dekorace, ne plochy */
   --c-dub-text: #8a5c2e; /* odkazy v textu (AA na lnu i papíru) */
   --c-dub-light: #c99560; /* akcent na tmavé ploše */
+  /* Dub výrazněji (dávka 4) – jen přes tyto tokeny, ať jde dub snadno ztlumit */
+  --c-dub-deep: #6e4826; /* hover primárních tlačítek, text tlačítka na dubu */
+  --c-on-wood: #f5f0e8; /* text na dubu */
+  --c-on-wood-muted: #e3d3bf; /* jen velký nebo dekorativní text na dubu (malý text nesplní AA) */
+  /* ořechové dřevo – světlý konec ztmavený na #8A5C2E, aby text #F5F0E8 měl i tam ≥ 4,5 : 1 */
+  --wood-gradient: linear-gradient(135deg, #8a5c2e 0%, #74492a 55%, #5e3d22 100%);
+  --glass-card-wood: rgb(255 255 255 / 0.07); /* skleněná karta na dubu */
+  --glass-edge-wood: rgb(255 255 255 / 0.18);
+  --btn-primary-bg: var(--c-dub-text); /* primární CTA v dubu (#8A5C2E, s #F5F0E8 cca 5 : 1) */
+  --btn-primary-hover: var(--c-dub-deep);
+  --btn-primary-text: var(--c-on-wood);
+  --c-eyebrow: var(--c-dub-text); /* štítky sekcí a typy modelů */
+  --c-link-underline: var(--c-dub); /* podtržení odkazů */
+  --c-step-line: color-mix(in srgb, var(--c-dub) 45%, var(--c-line)); /* linka nad krokem procesu */
   --c-grafit: #1f2421; /* text */
   --c-salvej: #8e9b88; /* štítky, linky grafů */
   --c-line: #cfcac0; /* linky, rámečky */

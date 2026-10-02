@@ -10,7 +10,8 @@ import GlassBackdrop from './GlassBackdrop.astro';
 interface Props {
   as?: 'section' | 'div' | 'aside' | 'article';
   id?: string;
-  tone?: 'len' | 'papir' | 'uhel';
+  /** dub = pruh z ořechového dřeva (dávka 4.2), max. jedna dubová plocha na stránce */
+  tone?: 'len' | 'papir' | 'uhel' | 'dub';
   divider?: boolean;
   space?: 'none' | 's' | 'm' | 'l';
   /** šířka obsahu: container = 1200 px, narrow = šířka odstavce, full = bez kontejneru */
@@ -86,6 +87,18 @@ const {
 
   .section--uhel :global(a:not(.btn)) {
     color: var(--c-on-dark);
+  }
+
+  /* Ořechové dřevo: text v plné světlé barvě (malý text v --c-on-wood-muted by nesplnil AA) */
+  .section--dub {
+    background: var(--wood-gradient);
+    color: var(--c-on-wood);
+  }
+
+  .section--dub :global(.eyebrow),
+  .section--dub :global(.muted),
+  .section--dub :global(a:not(.btn)) {
+    color: var(--c-on-wood);
   }
 
   .section--space-s {

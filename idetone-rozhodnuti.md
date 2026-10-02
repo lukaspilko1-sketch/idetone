@@ -1,7 +1,7 @@
 # ideTone – stav projektu a rozhodnutí
 
 Poslední aktualizace: 1. 10. 2026
-Fáze: **Ladění designu – dávka 3 (docs/UPRAVY.md) hotová, čeká na kontrolu**. Další dávka: podstránky (detail modelů, Technologie, Poslech, Kontakt) po zpětné vazbě klienta. Web běží na testovací adrese https://lukaspilko1-sketch.github.io/idetone/ (noindex). F5 – Admin panel odložena.
+Fáze: **Ladění designu – dávka 4 (výraznější dub) hotová, čeká na kontrolu**. Další dávka: podstránky po zpětné vazbě klienta. Web běží na testovací adrese https://lukaspilko1-sketch.github.io/idetone/ (noindex). F5 – Admin panel odložena.
 
 Tento soubor je jediný zdroj pravdy o stavu projektu. Kopie je v Claude projektu „WEB - ideTone“ (claude/idetone-rozhodnuti.md) a ve složce webu na PC. Při změně aktualizovat obě.
 
@@ -107,3 +107,4 @@ Tento soubor je jediný zdroj pravdy o stavu projektu. Kopie je v Claude projekt
 - 2. 10. 2026 (pokyn Lukáše): v hero druhý řádek nadpisu („Emoce i klid. Na celý život.“) 0,8 velikosti hlavní věty; levá část hero na desktopu odsazená shora 48 px (cca polovina původního odsazení)
 - 2. 10. 2026 (dávka 3): v hlavičce místo Objednat „Domluvit poslech“ (headerCta v site.ts); text hero svisle na střed; druhý řádek „Emoce i klid. Hodiny poslechu bez únavy.“ (varianta a); pozadí hero A+B – zrnitost papíru, světlo, mřížka v oválu a kóty z dat Sary (vypínatelné v home.yaml → decor); zaoblení jen dvěma tokeny --radius-m 12 px a --radius-s 6 px (checkbox 4 px); sklo hlavičky 0,94 + blur 20 px; design tokeny verze 0.6
 - 2. 10. 2026 (pokyn Lukáše): kóty v hero vypnuté (decor.dimensions: false), mřížka, světlo a papír zůstávají
+- 2. 10. 2026 (dávka 4): výraznější dub – primární CTA v #8A5C2E (hover #6E4826), pruh Poslech (úvod) a pruh s adresou (Poslech) jako ořechové dřevo s gradientem ztmaveným na #8A5C2E kvůli AA (text #F5F0E8 ≥ 5,07 : 1), štítky a typy modelů v dubu, velká dubová čísla kroků s linkou 2 px, dubové podtržení odkazů; patička zůstává antracit; v Procesu vývoje se vrátila linka nad krokem (nyní dubová 2 px – dle dávky 4, dříve odstraněná šedá); design tokeny verze 0.7

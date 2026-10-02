@@ -256,3 +256,43 @@ Na úvodu stačí zkrácené verze (1–2 věty), plné texty na stránce Techno
 ### Výstup dávky 3
 1. Screenshoty úvodu na 375 / 768 / 1280 px.
 2. Lighthouse mobil úvodu.
+
+---
+
+## Dávka 4 – výraznější dubový akcent
+
+**Stav:** HOTOVO (2. 10. 2026) – schváleno pokynem Lukáše „proveď dávku 4“
+
+**Výsledek:**
+- 4.1 Primární tlačítka (hlavička „Domluvit poslech“, odeslání formulářů, hlavní CTA) v `--c-dub-text` #8A5C2E s textem #F5F0E8 (5,07 : 1), hover `--c-dub-deep` (7,07 : 1). Sekundární beze změny.
+- 4.2 Pruh Poslech na úvodu a pruh s adresou na stránce Poslech z ořechového dřeva (`Section tone="dub"`). **Odchylka:** světlý konec gradientu ztmaven z #9C6A3A na #8A5C2E – s #9C6A3A měl text #F5F0E8 jen 3,95 : 1 (AA vyžaduje 4,5). Nový gradient `#8A5C2E → #74492A → #5E3D22`, text 5,07–6,78 : 1. Malý text na dubu v plné #F5F0E8 (`--c-on-wood-muted` #E3D3BF má na dubu jen 3,93 : 1 – jen pro velký text). Tlačítko na dubu #F5F0E8 / #6E4826 (7,07 : 1), skleněná karta 7 % / hrana 18 %. Patička zůstává antracit. Ilustrace poslechové místnosti za sklem pruhu odstraněna.
+- 4.3 Štítky sekcí a typy modelů v `--c-dub-text` (4,61 : 1 na lnu), čísla kroků Procesu 40 px Familjen v `--c-dub`, nad krokem linka 2 px `color-mix(dub 45 %, linka)`, šipky u názvů modelů a podtržení odkazů v dubu. Teplé světlo v hero nechané beze změny (do dubu působilo žlutě).
+- 4.4 Tokeny `--c-dub-deep`, `--c-on-wood`, `--c-on-wood-muted`, `--wood-gradient`, `--btn-primary-*`, `--c-eyebrow`, `--c-link-underline`, `--c-step-line`, `--glass-*-wood` – dub jde ztlumit jen v `tokens.css`.
+- axe (WCAG 2.2 AA) bez nálezů na všech stránkách (390 i 1440 px); 99 testů zelených.
+**Datum:** 2. 10. 2026
+**Cíl:** víc teplé hnědé barvy z loga („Tone“), web živější a víc „dřevěný“. Dub zůstává akcentem, ne hlavní barvou: max. **jedna dubová plocha na stránce**, kotvou zůstává antracit (patička).
+
+### 4.1 Primární tlačítka v dubu
+- Primární CTA (hlavička „Domluvit poslech“, odeslat formulář, hlavní tlačítka sekcí): pozadí `--c-dub-text` #8A5C2E, text `#F5F0E8`, hover `--c-dub-deep` #6E4826.
+- Pozor na kontrast: světlý dub #A8743F s bílým textem **nesplňuje** AA (cca 3,3 : 1), proto tmavší #8A5C2E (cca 5,3 : 1). Ověřit axe.
+- Sekundární tlačítka (obrys grafitem) beze změny.
+
+### 4.2 Pruh Poslech jako ořechové dřevo
+- Pozadí pruhu Poslech na úvodu (a hero/pruh na stránce Poslech): gradient `linear-gradient(135deg, #9C6A3A 0%, #7C522D 55%, #5E3D22 100%)` místo antracitu.
+- Text `#F5F0E8`, sekundární text `#E3D3BF`, skleněná karta s adresou zůstává (bílá 7 %, hrana 18 %). Tlačítko na dubu světlé (`#F5F0E8`) s textem `#6E4826`.
+- Kontrast textu změřit v nejsvětlejším místě gradientu (min. 4,5 : 1 pro běžný text).
+- Patička zůstává antracit `--c-uhel` (tmavá kotva pod dubovým pruhem).
+
+### 4.3 Drobné dubové detaily
+- Štítky sekcí (eyebrow: „Modely“, „Proces vývoje“…) a typy modelů v `--c-dub-text`.
+- Čísla kroků v Procesu vývoje velká (cca 40 px Familjen) v `--c-dub`; nad krokem linka 2 px v namíchané barvě dub/linka (`color-mix(in srgb, var(--c-dub) 45%, var(--c-line))`).
+- Šipky u názvů modelů a odkazy „Detail modelu“ v dubu (už jsou), podtržení odkazů v dubu.
+- Volitelně: teplé světlo v hero lehce do dubu (jen pokud nebude působit žlutě).
+
+### 4.4 Tokeny
+- Nové tokeny: `--c-dub-deep: #6E4826`, `--c-on-wood: #F5F0E8`, `--c-on-wood-muted: #E3D3BF`, `--wood-gradient`.
+- Vše jen přes tokeny, ať jde dub snadno ztlumit, pokud klient řekne, že je ho moc.
+
+### Výstup dávky 4
+1. Screenshoty úvodu a stránky Poslech (375 / 1280 px).
+2. Výsledky axe (kontrast tlačítek a textu na dubu).
