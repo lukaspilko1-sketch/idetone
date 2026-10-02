@@ -25,7 +25,6 @@
   --btn-primary-text: var(--c-on-wood);
   --c-eyebrow: var(--c-dub-text); /* štítky sekcí a typy modelů */
   --c-link-underline: var(--c-dub); /* podtržení odkazů */
-  --c-step-line: color-mix(in srgb, var(--c-dub) 45%, var(--c-line)); /* linka nad krokem procesu */
   --c-grafit: #1f2421; /* text */
   --c-salvej: #8e9b88; /* štítky, linky grafů */
   --c-line: #cfcac0; /* linky, rámečky */
@@ -133,9 +132,11 @@
   /* Animace mimo hero – pomalé a klidné (prémiový dojem) */
   --dur-fast: 450ms; /* hover tlačítek, odkazů, šipek */
   --dur-reveal: 1400ms; /* odkrytí sekcí při scrollu */
-  --dur-img-reveal: 1800ms; /* odkrytí fotek (clip-path) */
+  --dur-img-reveal: 2400ms; /* odkrytí fotek (clip-path) – i fotky modelů */
   --dur-fade: 900ms; /* prolnutí při omezeném pohybu */
-  --dur-hover-img: 1200ms; /* zvětšení fotky modelu při najetí */
+  --dur-hover-img: 1800ms; /* zvětšení fotky modelu při najetí */
+  --dur-cta: 800ms; /* CTA tlačítka – barva a posun šipky */
+  --dur-menu: 700ms; /* horní menu – podtržení, barva, podmenu */
   --dur-page: 700ms; /* přechod mezi stránkami */
   --reveal-shift: 24px; /* posun sekcí při odkrytí */
   --ease-calm: cubic-bezier(0.22, 1, 0.36, 1); /* dlouhý, měkký dojezd */
@@ -144,7 +145,7 @@
   --hero-stagger: 140ms; /* rozestup nástupu prvků */
   --dur-draw: 3.2s; /* kresba se odkrývá zdola nahoru */
   --dur-sign: 2.4s; /* podpis se píše zleva doprava */
-  --delay-sign: 2.6s; /* podpis začne, když kresba končí */
+  --delay-sign: 1.9s; /* podpis začne, když kresba dobíhá (plynulé navázání) */
   --ease-draw: cubic-bezier(0.45, 0, 0.25, 1); /* plynulý tah tužkou */
   --dur-dims: 600ms; /* kóty se objeví… */
   --delay-dims: 3.2s; /* …po dokreslení kresby */

@@ -234,6 +234,7 @@ const isSection = (href: string) => current.startsWith(url(href)) && href !== '/
   .nav__sublink {
     color: var(--c-grafit);
     text-decoration: none;
+    transition: color var(--dur-menu) var(--ease-calm);
   }
 
   /* Šipka u položky s podmenu (CSS, nezávislá na písmu) */
@@ -320,6 +321,9 @@ const isSection = (href: string) => current.startsWith(url(href)) && href !== '/
       letter-spacing: 0.09em;
       white-space: nowrap;
       border-bottom: 1px solid transparent;
+      transition:
+        border-color var(--dur-menu) var(--ease-calm),
+        color var(--dur-menu) var(--ease-calm);
     }
 
     .nav__link:hover,
@@ -358,9 +362,9 @@ const isSection = (href: string) => current.startsWith(url(href)) && href !== '/
       visibility: hidden;
       transform: translateY(4px);
       transition:
-        opacity var(--dur-fast) var(--ease),
-        transform var(--dur-fast) var(--ease),
-        visibility var(--dur-fast);
+        opacity var(--dur-menu) var(--ease-calm),
+        transform var(--dur-menu) var(--ease-calm),
+        visibility var(--dur-menu);
     }
 
     .nav__sub .nav__sublink {

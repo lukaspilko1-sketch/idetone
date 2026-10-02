@@ -314,3 +314,15 @@ Na úvodu stačí zkrácené verze (1–2 věty), plné texty na stránce Techno
 - Měkčí dojezd `--ease-calm`. Animace v hero beze změny.
 - Vše v tokenech (`tokens.css`), testy (99) zelené.
 
+---
+
+## Dávka 6 – navázání podpisu, pomalejší menu a CTA, Proces vývoje bez čísel
+
+**Stav:** HOTOVO (2. 10. 2026) – zadání Lukáše přímo v Claude Code
+**Datum:** 2. 10. 2026
+
+- 6.1 Podpis v hero začíná dřív (`--delay-sign` 2,6 → 1,9 s), aby navázal na dokreslování kresby (3,2 s).
+- 6.2 Pomalejší přechody: horní menu – podtržení, barva a podmenu 700 ms (`--dur-menu`); všechna CTA tlačítka včetně odeslání formuláře a posunu šipky 800 ms (`--dur-cta`); fotky v sekci Modely – zvětšení při najetí 1,8 s a odkrytí fotek 2,4 s. Měkký dojezd `--ease-calm`.
+- 6.3 Proces vývoje (úvod i Technologie, komponenta `ProcessSteps`) bez číslování a bez oddělovacích čar. Číslovaný „Postup spolupráce“ na Zakázkových projektech ponechán (není to Proces vývoje).
+- Testy (99) zelené.
+
