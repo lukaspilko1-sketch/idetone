@@ -326,3 +326,14 @@ Na úvodu stačí zkrácené verze (1–2 věty), plné texty na stránce Techno
 - 6.3 Proces vývoje (úvod i Technologie, komponenta `ProcessSteps`) bez číslování a bez oddělovacích čar. Číslovaný „Postup spolupráce“ na Zakázkových projektech ponechán (není to Proces vývoje).
 - Testy (99) zelené.
 
+---
+
+## Dávka 7 – zkrácený druhý řádek hero
+
+**Stav:** HOTOVO (2. 10. 2026) – zadání Lukáše přímo v Claude Code
+**Datum:** 2. 10. 2026
+
+- „Hodiny poslechu bez únavy“ → **„Poslech bez únavy“** – druhý řádek hero je teď „Emoce | Klid | Poslech bez únavy“ (`home.yaml`).
+- Řádek se nezalamuje ani na mobilu: písmo max. 0,56 × nadpis, zmenší se jen pokud by se nevešel do šířky (`min(0.56em, 5.8cqi)`). Ověřeno na 320 / 375 / 768 / 1536 px (na 375 px plná velikost cca 20 px, na 320 px 17 px).
+- Testy (99) zelené.
+

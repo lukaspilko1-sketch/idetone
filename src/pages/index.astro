@@ -364,6 +364,10 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
     margin-top: var(--space-4);
   }
 
+  .hero__text {
+    container-type: inline-size;
+  }
+
   .hero__line {
     display: block;
   }
@@ -372,7 +376,9 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
   /* Druhý řádek („Emoce | Klid | Hodiny poslechu bez únavy“): menší, v dubu, s větší mezerou */
   .hero__line + .hero__line {
     margin-top: var(--space-4);
-    font-size: 0.56em;
+    /* i na mobilu na jeden řádek: písmo max. 0,56 nadpisu, ale nepřesáhne šířku sloupce */
+    font-size: min(0.56em, 5.8cqi);
+    white-space: nowrap;
     letter-spacing: 0;
     color: var(--c-dub-text);
   }
