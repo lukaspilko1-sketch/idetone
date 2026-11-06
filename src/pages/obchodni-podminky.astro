@@ -1,5 +1,17 @@
 ---
 import ProsePage from '../layouts/ProsePage.astro';
+import { getPage } from '../utils/content';
+import { indexing } from '../config/site';
+
+// Pojistka (dávka 9b.4): na ostrém webu nesmí zůstat nedokončený text s „[doplnit …]“
+const page = await getPage('obchodni-podminky');
+const missing = (page.body ?? '').match(/\[doplnit[^\]]*\]/g) ?? [];
+if (indexing && missing.length > 0) {
+  throw new Error(
+    `Obchodní podmínky obsahují nedoplněné údaje (${missing.length}×), např. ${missing[0]}. ` +
+      'Doplňte je v src/content/pages/obchodni-podminky.md, nebo build bez PUBLIC_INDEXING=true.',
+  );
+}
 ---
 
 <ProsePage id="obchodni-podminky" />

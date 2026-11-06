@@ -1,8 +1,8 @@
 ---
 title: Poslech
-seoTitle: Poslechové studio Brno – domluvte si poslech
+seoTitle: Poslech hi-fi reprosoustav v Brně – poslechové studio ideTone
 # NÁVRH: ke schválení (meta popis, perex a možnosti poslechu)
-description: Poslechněte si reprosoustavy Sara a Reva v poslechovém studiu v Brně, Filipínského 59. Termín domluvíme individuálně.
+description: Poslechněte si reprosoustavy Sara a Reva v poslechovém studiu v Brně na sestavě Pass Labs, Esoteric a Ansuz. Termín domluvíme individuálně, vezměte s sebou vlastní CD a SACD.
 eyebrow: Poslechové studio Brno
 lead: Reprosoustavy je nejlepší slyšet. Domluvte si poslech v poslechovém studiu v Brně.
 # Dočasné AI ilustrace (placeholder: true) – před spuštěním nahradit skutečnými fotkami

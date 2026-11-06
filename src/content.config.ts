@@ -40,7 +40,7 @@ const products = defineCollection({
       closing: z.string().optional(),
       price: z.number().int().positive(),
       seo: z
-        .object({ title: z.string().optional(), description: z.string().max(155).optional() })
+        .object({ title: z.string().optional(), description: z.string().max(180).optional() })
         .prefault({}),
       specs: z.object({
         concept: z.string(),
@@ -118,7 +118,7 @@ const pages = defineCollection({
       title: z.string(),
       /** titulek do <title>, když se liší od nadpisu */
       seoTitle: z.string().optional(),
-      description: z.string().max(155),
+      description: z.string().max(180),
       eyebrow: z.string().optional(),
       lead: z.string().optional(),
       sections: z.array(pageSection(image)).default([]),

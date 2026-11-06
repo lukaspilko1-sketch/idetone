@@ -1,8 +1,8 @@
 ---
 title: O ideTone
-seoTitle: O ideTone – Petr Kocourek
+seoTitle: O ideTone – Petr Kocourek, konstruktér reprosoustav z Brna
 # NÁVRH: ke schválení (meta popis)
-description: ideTone navazuje na léta vývoje pod DIY značkou PKAudio. Petr Kocourek navrhuje a ladí reprosoustavy, které nechají vyniknout hudbě.
+description: Od DIY značky PKAudio k ideTone. Petr Kocourek navrhuje a ručně ladí hi-fi reprosoustavy v Brně s důrazem na přirozený zvuk a dlouhodobý poslech.
 eyebrow: O ideTone
 # Dočasné AI ilustrace (placeholder: true) – před spuštěním nahradit skutečnými fotkami
 photos:

@@ -12,7 +12,7 @@ home:
       title: |-
         Reprosoustavy s citem pro hudbu.
         Emoce | Klid | Poslech bez únavy
-      text: Navrhuji, ladím a vyrábím reprosoustavy, které nechají vyniknout hudbě i s jejím emočním nábojem.
+      text: Navrhuji, ručně ladím a v Brně vyrábím hi-fi reprosoustavy, které nechají vyniknout hudbě i s jejím emočním nábojem.
       # TODO(klient): originál kresby a podpisu ve vysokém rozlišení / vektor (teď výřez ze starého webu)
       drawing:
         src: ../assets/uploads/kresby/kresba-sara.png
@@ -97,7 +97,7 @@ home:
       # NÁVRH: ke schválení (zkrácené texty z podstránky Technologie)
       items:
         - title: Zvukovod u výškového reproduktoru
-          text: Formuje vyzařování v kritickém pásmu 2000–6000 Hz. Lehkost a přirozenost bez náznaku ostrosti.
+          text: Zvukovod (waveguide) formuje vyzařování v kritickém pásmu 2000–6000 Hz. Lehkost a přirozenost bez náznaku ostrosti.
           href: /technologie/#zvukovod
         - title: Regulace výšek −1 / 0 / +1 dB
           text: U Sary otočným přepínačem vzadu, mimo přímou signálovou cestu.

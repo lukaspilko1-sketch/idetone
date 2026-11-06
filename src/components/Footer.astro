@@ -207,7 +207,29 @@ const pages = nav.flatMap((item) => [item, ...(item.children ?? [])]);
 
   @media (max-width: 47.99rem) {
     .footer {
-      padding-block: var(--space-8) var(--space-5);
+      padding-block: var(--space-7) var(--space-5);
+    }
+
+    .footer__grid {
+      gap: var(--space-5);
+    }
+
+    .footer__bottom {
+      margin-top: var(--space-6);
+    }
+
+    /* 9b.1: Kontakt a Poslechové studio vedle sebe (úzký sloupec, dlouhý e-mail se zalomí) */
+    .footer__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .footer__brand,
+    .footer__grid > nav {
+      grid-column: 1 / -1;
+    }
+
+    .footer__col {
+      overflow-wrap: anywhere;
     }
   }
 </style>

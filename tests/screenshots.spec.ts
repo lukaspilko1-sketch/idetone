@@ -183,6 +183,7 @@ for (const width of [375, 1280]) {
     ['uvod', '/'],
     ['o-idetone', '/o-idetone/'],
     ['kontakt', '/kontakt/'],
+    ['obchodni-podminky', '/obchodni-podminky/'],
   ]) {
     test(`davka9 ${name} @ ${width}`, async ({ page }) => {
       await page.setViewportSize({ width, height: 900 });

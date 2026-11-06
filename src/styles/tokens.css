@@ -122,7 +122,7 @@
   --pf-stage-h: clamp(18rem, 32vw, 26rem); /* výška scény fotek modelů na úvodu */
   --hero-art-h: clamp(
     12rem,
-    33svh,
+    29svh,
     22rem
   ); /* výška kresby v hero (mobil) – hero max. jedna obrazovka */
   --dur-header: 500ms;
@@ -202,6 +202,8 @@
     --head-space: 1.75rem;
     --block-space: 2.5rem;
     --block-space-l: 2.75rem;
-    --pf-stage-h: 15rem;
+    --pf-stage-h: 12rem;
+    --section-space: 2.5rem;
+    --m-gap: var(--space-5); /* 9b.1: mezera uvnitř sloupců na mobilu */
   }
 }

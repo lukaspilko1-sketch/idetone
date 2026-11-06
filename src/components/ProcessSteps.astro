@@ -67,7 +67,11 @@ const { steps } = Astro.props;
   /* Dávka 9.7: na mobilu nižší fotky kroků (méně rolování, text beze změny) */
   @media (max-width: 47.99rem) {
     .process__step :global(.photo--ratio) {
-      aspect-ratio: 16 / 9;
+      aspect-ratio: 2 / 1;
+    }
+
+    .process__step {
+      gap: var(--space-3);
     }
   }
 

@@ -1,10 +1,10 @@
 ---
 title: Reprosoustavy
-seoTitle: Reprosoustavy Sara a Reva – přehled a srovnání
+seoTitle: Hi-fi reprosoustavy Sara a Reva – srovnání modelů
 # NÁVRH: ke schválení (meta popis, perex a doporučení „Který model pro mě?“)
-description: Dvoupásmové reprosoustavy ideTone – sloupová Sara a kompaktní Reva. Srovnání parametrů, cen a doporučení podle místnosti.
+description: "Sloupová Sara a kompaktní Reva na stojanu: dvoupásmové high-end reprosoustavy ideTone. Srovnání parametrů a doporučení podle velikosti místnosti."
 eyebrow: Modely
-lead: Dvoupásmové reprosoustavy se zvukovodem u výškového reproduktoru. Obě vznikají a ladí se v Brně.
+lead: Dvoupásmové reprosoustavy se zvukovodem u výškového reproduktoru. Obě navrhuji, ručně ladím a vyrábím v Brně.
 sections:
   - id: ktery-model
     title: Který model pro mě?

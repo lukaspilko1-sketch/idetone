@@ -1,6 +1,6 @@
 ---
 title: Zakázkové projekty
-seoTitle: Zakázkové projekty – reprosoustava na míru
+seoTitle: Reprosoustavy na míru – zakázková výroba
 # NÁVRH: ke schválení (celá stránka)
 description: Reprosoustava navržená a naladěná na míru vašemu prostoru, sestavě a interiéru. Postup spolupráce a nezávazná poptávka.
 eyebrow: Na míru

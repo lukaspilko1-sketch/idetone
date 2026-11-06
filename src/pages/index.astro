@@ -43,8 +43,8 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
 ---
 
 <BaseLayout
-  title="ideTone – reprosoustavy s citem pro hudbu"
-  description="Ručně laděné dvoupásmové reprosoustavy Sara a Reva od Petra Kocourka z Brna. Poslech ve studiu v Brně, objednávka a zakázkové projekty."
+  title="ideTone – ručně laděné hi-fi reprosoustavy z Brna"
+  description="Hi-fi reprosoustavy Sara a Reva, navržené a ručně laděné v Brně. Zvukovod u výškového reproduktoru, přirozený zvuk pro dlouhý poslech a vlastní poslechové studio."
   jsonLd={[localBusiness(settings, Astro.site)]}
 >
   {resolved.map((item) => {
@@ -346,7 +346,25 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
     .hero {
       align-items: start;
       min-height: 0;
-      padding-block: var(--space-4) var(--space-7);
+      padding-block: var(--space-4) var(--space-6);
+    }
+
+    .hero__grid {
+      gap: var(--space-5);
+    }
+
+    .models__list {
+      gap: var(--space-6);
+    }
+
+    .models__list :global(.pf__layout) {
+      gap: var(--space-4);
+    }
+
+    .concept,
+    .listen,
+    .tech {
+      gap: var(--space-5);
     }
   }
 
@@ -775,7 +793,7 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
   @media (max-width: 47.99rem) {
     .tech :global(.tech__photo.photo--ratio) {
       max-width: none;
-      aspect-ratio: 3 / 2;
+      aspect-ratio: 2 / 1;
     }
   }
 

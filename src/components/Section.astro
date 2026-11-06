@@ -110,6 +110,13 @@ const {
     padding-block: max(var(--space-7), calc(var(--section-space) * 0.75));
   }
 
+  /* 9b.1: mobil – pás střední velikosti o 16 px nižší (desktop beze změny) */
+  @media (max-width: 47.99rem) {
+    .section--space-m {
+      padding-block: var(--space-6);
+    }
+  }
+
   .section--space-l {
     padding-block: var(--section-space);
   }

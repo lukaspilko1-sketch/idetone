@@ -1,8 +1,8 @@
 ---
 title: Technologie
-seoTitle: Technologie – zvukovod, regulace výšek, bassreflex
+seoTitle: Technologie reprosoustav – zvukovod, výhybka a měření
 # NÁVRH: ke schválení (meta popis a perex)
-description: Zvukovod u výškového reproduktoru, regulace výšek −1 / 0 / +1 dB a bassreflex vyvedený dolů. Konstrukční řešení reprosoustav ideTone.
+description: "Jak vznikají reprosoustavy ideTone: zvukovod (waveguide) u výškového reproduktoru, výhybky druhého řádu, měření v ose i mimo osu a poslechové testy."
 eyebrow: Technologie
 lead: Principy, ze kterých vycházím, tři konstrukční řešení a postup, kterým vzniká každý model.
 sections:

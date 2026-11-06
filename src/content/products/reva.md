@@ -14,12 +14,12 @@ closing: >-
   Výsledkem je reprosoustava, která umožňuje hudbě přirozeně plynout, má neunavující, ale
   zároveň detailní projev a umí naplnit prostor hudbou.
 price: 132000
-# NÁVRH: ke schválení (meta popis)
+# SEO texty schváleny (docs/SEO-TEXTY.md V1–V2, 6. 11. 2026); V3 (vlastní úvod Revy) čeká na schválení Petra
 seo:
-  title: Reva – kompaktní reprosoustava na stojan
+  title: Reva – kompaktní hi-fi reprosoustava na stojan
   description: >-
-    Reva: dvoupásmová reprosoustava s textilní kalotou ve zvukovodu a sedmipalcovým
-    středobasovým reproduktorem. Ručně laděná v Brně. Cena 132 000 Kč za pár.
+    Reva je kompaktní dvoupásmová reprosoustava se sedmipalcovým středobasovým reproduktorem
+    a textilní kalotou ve zvukovodu. Volitelně s vlastními stojany. Ručně laděná v Brně.
 specs:
   concept: reprosoustava se zvukovodem, bassreflex
   ways: 2

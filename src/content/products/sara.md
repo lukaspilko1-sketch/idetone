@@ -5,19 +5,19 @@ type: sloupová reprosoustava
 tagline: Uchvátí čistotou, lehkostí, plností a transparentností zvukového projevu.
 intro: >-
   Dvoupásmová sloupová reprosoustava, která uchvátí čistotou, lehkostí, plností
-  a transparentností zvukového projevu. Bylo tak dosaženo vhodným sladěním zvukových
-  charakterů středobasového a výškového reproduktoru, volbou vhodných komponentů
-  a topologie výhybky, a především pečlivou prací při ladění frekvenční výhybky.
+  a transparentností zvukového projevu. Dosáhl jsem toho sladěním zvukových
+  charakterů středobasového a páskového výškového reproduktoru, volbou komponentů
+  a topologie výhybky – a především pečlivým laděním frekvenční výhybky.
 closing: >-
   Výsledkem je reprosoustava, která umožňuje hudbě přirozeně plynout, má neunavující, ale
   zároveň otevřený a detailní projev a umí naplnit prostor hudbou.
 price: 227000
-# NÁVRH: ke schválení (meta popis)
+# SEO texty schváleny (docs/SEO-TEXTY.md S1–S2, 6. 11. 2026)
 seo:
-  title: Sara – sloupová reprosoustava
+  title: Sara – sloupová hi-fi reprosoustava s páskovým výškovým reproduktorem
   description: >-
-    Sara: dvoupásmová sloupová reprosoustava s páskovým výškovým reproduktorem ve zvukovodu.
-    Ručně laděná v Brně. Cena 227 000 Kč za pár.
+    Sara je dvoupásmová sloupová reprosoustava s páskovým výškovým reproduktorem ve zvukovodu
+    a bassreflexem vyvedeným dolů. Navržená a ručně laděná v Brně.
 specs:
   concept: sloupová reprosoustava se zvukovodem, bassreflex
   ways: 2

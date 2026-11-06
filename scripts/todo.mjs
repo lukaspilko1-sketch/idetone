@@ -4,7 +4,7 @@ import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('../src', import.meta.url));
-const pattern = /TODO\((klient|lukas)\)|NÁVRH/;
+const pattern = /TODO\((klient|lukas)\)|NÁVRH|\[doplnit/;
 const hits = [];
 const photos = [];
 

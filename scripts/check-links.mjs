@@ -52,7 +52,13 @@ for (const page of pages) {
           external.add(raw);
         continue;
       }
-      const [pathPart, hash] = raw.split('#');
+      const [rawPath, hash] = raw.split('#');
+      // Relativní odkaz (např. z Markdownu) se vyhodnotí vůči adrese stránky
+      const pageUrl = `${base}${from.replaceAll('\\', '/').replace(/index\.html$/, '')}`;
+      const pathPart =
+        rawPath && !rawPath.startsWith('/')
+          ? new URL(rawPath, `http://x${pageUrl}`).pathname
+          : rawPath;
       // Odkaz jen na kotvu na stejné stránce
       if (!pathPart) {
         if (hash && !getIds(page).has(hash))

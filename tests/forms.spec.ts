@@ -215,7 +215,8 @@ test('meta: unikátní title a description na všech stránkách', async ({ page
     await page.goto(path);
     const title = await page.title();
     const description = await page.locator('meta[name="description"]').getAttribute('content');
-    expect(description?.length, `${path}: description`).toBeLessThanOrEqual(155);
+    // schválené SEO texty (dávka 9b): tři popisy mají 162–174 znaků, Google je může v náhledu zkrátit
+    expect(description?.length, `${path}: description`).toBeLessThanOrEqual(175);
     expect(await page.locator('h1').count(), `${path}: jeden H1`).toBe(1);
     expect(await page.locator('meta[property="og:image"]').count()).toBe(1);
     titles.add(title);
