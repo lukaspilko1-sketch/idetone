@@ -1,8 +1,8 @@
 ---
 title: Kontakt
-seoTitle: Kontakt a objednávka
-# NÁVRH: ke schválení (meta popis a perex)
-description: Kontakt na ideTone – Petr Kocourek, pkocourek@idetone.cz. Poslechové studio Filipínského 59, Brno. Objednávka reprosoustav Sara a Reva.
+seoTitle: Kontakt – Petr Kocourek, ideTone Brno
+# Titulek a popis: docs/SEO-TEXTY.md K1–K2 (dávka 9.5, obecný formulář místo objednávky)
+description: Napište mi dotaz k reprosoustavám Sara a Reva, poslechu nebo zakázce. Petr Kocourek, pkocourek@idetone.cz, poslechové studio Filipínského 59, Brno.
 eyebrow: Kontakt
 lead: Napište mi, rád odpovím na dotazy k modelům, poslechu i objednávce.
 ---

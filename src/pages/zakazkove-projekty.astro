@@ -1,4 +1,5 @@
 ---
+import { pageTitle } from '../utils/seo';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/Section.astro';
 import PageHeader from '../components/PageHeader.astro';
@@ -12,7 +13,7 @@ const settings = await getSettings();
 ---
 
 <BaseLayout
-  title={`${data.seoTitle ?? data.title} | ideTone`}
+  title={pageTitle(data.seoTitle ?? data.title)}
   description={data.description}
   crumbs={[{ name: 'Zakázkové projekty', href: '/zakazkove-projekty/' }]}
 >
@@ -75,12 +76,12 @@ const settings = await getSettings();
 
 <style>
   .title {
-    margin-bottom: var(--space-7);
+    margin-bottom: var(--head-space);
   }
 
   .steps {
     display: grid;
-    gap: var(--space-7) var(--grid-gap);
+    gap: var(--block-space) var(--grid-gap);
     counter-reset: step;
   }
 
@@ -123,7 +124,7 @@ const settings = await getSettings();
 
   .form-row {
     display: grid;
-    gap: var(--space-7) var(--grid-gap);
+    gap: var(--block-space) var(--grid-gap);
     align-items: start;
   }
 

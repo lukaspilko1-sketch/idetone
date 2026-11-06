@@ -57,7 +57,7 @@ export default defineConfig({
     '/index.php/o-idetone/': withBase('/o-idetone/'),
     '/index.php/technologie/': withBase('/technologie/'),
     '/index.php/kontakty/': withBase('/kontakt/'),
-    '/index.php/objednat/': withBase('/kontakt/#objednavka'),
+    '/index.php/objednat/': withBase('/kontakt/#formular'),
   },
   i18n: {
     defaultLocale: 'cs',

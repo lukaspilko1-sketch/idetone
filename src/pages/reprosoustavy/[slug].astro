@@ -12,7 +12,7 @@ import ImageSlot from '../../components/ImageSlot.astro';
 import { getProducts, type Product } from '../../utils/content';
 import { formatPrice, headedBlocks, typo } from '../../utils/format';
 import { url } from '../../utils/url';
-import { product as productSchema } from '../../utils/seo';
+import { product as productSchema, pageTitle } from '../../utils/seo';
 
 export async function getStaticPaths() {
   const products = await getProducts();
@@ -30,11 +30,11 @@ interface Props {
 const { product, others } = Astro.props;
 const { data } = product;
 const blocks = headedBlocks(product.body);
-const orderHref = `/kontakt/?model=${product.id}#objednavka`;
+const orderHref = `/kontakt/?model=${product.id}#formular`;
 const chartFull = data.impedanceChart
   ? await getImage({ src: data.impedanceChart.src, format: 'webp' })
   : undefined;
-const title = `${data.seo.title ?? `${data.name} – ${data.type}`} | ideTone`;
+const title = pageTitle(data.seo.title ?? `${data.name} – ${data.type}`);
 const schemaImage = data.image
   ? new URL((await getImage({ src: data.image.src, width: 1200, format: 'webp' })).src, Astro.site)
       .href
@@ -209,7 +209,7 @@ const description = data.seo.description ?? data.tagline;
   .product {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: var(--space-7) var(--grid-gap);
+    gap: var(--block-space) var(--grid-gap);
     padding-top: var(--space-6);
     padding-bottom: var(--section-space);
   }
@@ -294,7 +294,7 @@ const description = data.seo.description ?? data.tagline;
 
   .blocks {
     display: grid;
-    gap: var(--space-7) var(--grid-gap);
+    gap: var(--block-space) var(--grid-gap);
   }
 
   .block h3 {
@@ -344,7 +344,7 @@ const description = data.seo.description ?? data.tagline;
 
   .acc {
     display: grid;
-    gap: var(--space-7) var(--grid-gap);
+    gap: var(--block-space) var(--grid-gap);
     align-items: end;
   }
 

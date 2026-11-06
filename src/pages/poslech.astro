@@ -6,18 +6,17 @@ import TextBlock from '../components/TextBlock.astro';
 import ImageSlot from '../components/ImageSlot.astro';
 import ContactForm from '../components/ContactForm.astro';
 import Photo from '../components/Photo.astro';
-import { getPage, getProducts, getSettings } from '../utils/content';
+import { getPage, getSettings } from '../utils/content';
 import { typo } from '../utils/format';
-import { localBusiness } from '../utils/seo';
+import { localBusiness, pageTitle } from '../utils/seo';
 
 const { data } = await getPage('poslech');
 const settings = await getSettings();
 const { studio } = settings;
-const models = (await getProducts()).map((p) => ({ id: p.id, name: p.data.name }));
 ---
 
 <BaseLayout
-  title={`${data.seoTitle ?? data.title} | ideTone`}
+  title={pageTitle(data.seoTitle ?? data.title)}
   description={data.description}
   crumbs={[{ name: 'Poslech', href: '/poslech/' }]}
   jsonLd={[localBusiness(settings, Astro.site)]}
@@ -101,7 +100,6 @@ const models = (await getProducts()).map((p) => ({ id: p.id, name: p.data.name }
         id="formular"
         title="Domluvit poslech"
         email={settings.contact.email}
-        models={models}
       />
     </div>
   </Section>
@@ -148,7 +146,7 @@ const models = (await getProducts()).map((p) => ({ id: p.id, name: p.data.name }
 
   .options {
     display: grid;
-    gap: var(--space-7) var(--grid-gap);
+    gap: var(--block-space) var(--grid-gap);
   }
 
   .option--system {

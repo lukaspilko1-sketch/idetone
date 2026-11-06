@@ -5,7 +5,7 @@ import PageHeader from '../components/PageHeader.astro';
 import ContactForm from '../components/ContactForm.astro';
 import { getPage, getProducts, getSettings } from '../utils/content';
 import { typo } from '../utils/format';
-import { localBusiness } from '../utils/seo';
+import { localBusiness, pageTitle } from '../utils/seo';
 
 const { data } = await getPage('kontakt');
 const settings = await getSettings();
@@ -22,7 +22,7 @@ const models = (await getProducts()).map((p) => ({ id: p.id, name: p.data.name }
 ---
 
 <BaseLayout
-  title={`${data.seoTitle ?? data.title} | ideTone`}
+  title={pageTitle(data.seoTitle ?? data.title)}
   description={data.description}
   crumbs={[{ name: 'Kontakt', href: '/kontakt/' }]}
   jsonLd={[localBusiness(settings, Astro.site)]}
@@ -96,10 +96,11 @@ const models = (await getProducts()).map((p) => ({ id: p.id, name: p.data.name }
 
   <Section divider>
     <div class="form-wrap">
+      {/* NÁVRH: ke schválení (nadpis formuláře) */}
       <ContactForm
-        type="order"
-        id="objednavka"
-        title="Objednávka"
+        type="contact"
+        id="formular"
+        title="Napište mi"
         email={contact.email}
         models={models}
       />
@@ -110,7 +111,7 @@ const models = (await getProducts()).map((p) => ({ id: p.id, name: p.data.name }
 <style>
   .contact {
     display: grid;
-    gap: var(--space-7) var(--grid-gap);
+    gap: var(--block-space) var(--grid-gap);
   }
 
   .contact__block > * + * {

@@ -16,8 +16,9 @@ export const site = {
 };
 // Kontakty, adresa studia a sociální sítě: src/content/settings.yaml (getSettings() v utils/content.ts)
 
+// Jedno ID může být u všech tří (stránky se rozliší předmětem e-mailu)
 export const formspree = {
-  order: '', // TODO(lukas): Formspree ID
+  contact: '', // TODO(lukas): Formspree ID
   listening: '', // TODO(lukas): Formspree ID
   custom: '', // TODO(lukas): Formspree ID
 };
@@ -45,7 +46,8 @@ export const nav: NavItem[] = [
   { label: 'Kontakt', href: '/kontakt/' },
 ];
 
-export const orderLink = '/kontakt/#objednavka';
+/** Odkaz „Objednat“ z detailu modelu: Kontakt s ?model=… (předvyplní zprávu) */
+export const orderLink = '/kontakt/#formular';
 
 /**
  * Tlačítko v hlavičce (dávka 3.1): desktop vpravo, na mobilu první položka menu.

@@ -1,7 +1,9 @@
 ---
 /**
- * Formulář přes Formspree – jedna komponenta pro tři typy:
- * order (objednávka), listening (poslech), custom (zakázka).
+ * Formulář přes Formspree – jedna komponenta a stejná pole pro tři stránky (dávka 9.5 / 9.10):
+ * contact (Kontakt – obecný dotaz), listening (Poslech), custom (Zakázkové projekty).
+ * Pole: jméno*, e-mail*, telefon, zpráva*, souhlas*. Liší se jen nadpis, tlačítko, předmět a nápověda.
+ * ?model=sara předvyplní zprávu a doplní model do předmětu (jen contact).
  * S JS: validace s českými hláškami, odeslání přes fetch (JSON), stavy odesílám / úspěch / chyba.
  * Bez JS: klasický POST na Formspree (+ _next na /dekujeme/, funguje jen v placeném tarifu Formspree).
  */
@@ -9,20 +11,22 @@ import { formspree } from '../config/site';
 import { cs } from '../i18n/cs';
 import { url } from '../utils/url';
 
-type FormType = 'order' | 'listening' | 'custom';
+type FormType = 'contact' | 'listening' | 'custom';
 
 interface Props {
   type: FormType;
-  /** kotva sekce (#objednavka, #formular, #poptavka) */
+  /** kotva sekce (#formular, #poptavka) */
   id: string;
   title: string;
   email: string;
+  /** modely pro předvyplnění zprávy z ?model= (id → název) */
   models?: { id: string; name: string }[];
 }
 
 const { type, id, title, email, models = [] } = Astro.props;
 const t = cs.form;
 const f = t.fields;
+const hint = f.messageHint[type];
 
 const formId = formspree[type];
 const endpoint = formId ? `https://formspree.io/f/${formId}` : '';
@@ -34,6 +38,7 @@ const messages = {
   success: t.success,
   sending: t.sending,
   subject: t.subject[type],
+  modelMessage: t.modelMessage,
 };
 ---
 
@@ -67,120 +72,6 @@ const messages = {
       <span aria-hidden="true">*</span> {t.required}
     </p>
 
-    {type === 'order' && (
-      <>
-        <div class="cf__field" data-field>
-          <label for={p('model')}>
-            {f.model} <span aria-hidden="true">*</span>
-          </label>
-          <select id={p('model')} name="Model" required data-model>
-            {models.map((m) => (
-              <option value={m.name} data-id={m.id}>
-                {m.name}
-              </option>
-            ))}
-          </select>
-          <p class="cf__error" id={`${p('model')}-error`} hidden />
-        </div>
-
-        <fieldset class="cf__field cf__choice" data-stands>
-          <legend>{f.stands}</legend>
-          <p class="cf__hint small muted">{f.standsNote}</p>
-          <label>
-            <input type="radio" name="Stojany" value="ano" /> {f.standsYes}
-          </label>
-          <label>
-            <input type="radio" name="Stojany" value="ne" checked /> {f.standsNo}
-          </label>
-        </fieldset>
-
-        <div class="cf__field" data-field>
-          {/* TODO(klient): nabídka povrchů / dýh, až budou varianty (pak select místo textu) */}
-          <label for={p('finish')}>
-            {f.finish} <span class="muted small">({t.optional})</span>
-          </label>
-          <input
-            type="text"
-            id={p('finish')}
-            name="Povrch"
-            aria-describedby={`${p('finish')}-hint`}
-          />
-          <p class="cf__hint small muted" id={`${p('finish')}-hint`}>
-            {f.finishHint}
-          </p>
-        </div>
-      </>
-    )}
-
-    {type === 'listening' && (
-      <>
-        <div class="cf__field" data-field>
-          <label for={p('model')}>{f.model}</label>
-          <select id={p('model')} name="Model" data-model>
-            <option value={f.modelBoth}>{f.modelBoth}</option>
-            {models.map((m) => (
-              <option value={m.name} data-id={m.id}>
-                {m.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <fieldset class="cf__field cf__choice">
-          <legend>{f.where}</legend>
-          <label>
-            <input type="radio" name="Kde" value={f.whereStudio} checked /> {f.whereStudio}
-          </label>
-          <label>
-            <input type="radio" name="Kde" value={f.whereHome} /> {f.whereHome}
-          </label>
-        </fieldset>
-
-        <div class="cf__field" data-field>
-          <label for={p('date')}>
-            {f.date} <span class="muted small">({t.optional})</span>
-          </label>
-          <input type="text" id={p('date')} name="Termín" aria-describedby={`${p('date')}-hint`} />
-          <p class="cf__hint small muted" id={`${p('date')}-hint`}>
-            {f.dateHint}
-          </p>
-        </div>
-      </>
-    )}
-
-    {type === 'custom' && (
-      <>
-        <div class="cf__field" data-field>
-          <label for={p('room')}>{f.room}</label>
-          <textarea
-            id={p('room')}
-            name="Místnost"
-            rows="3"
-            aria-describedby={`${p('room')}-hint`}
-          />
-          <p class="cf__hint small muted" id={`${p('room')}-hint`}>
-            {f.roomHint}
-          </p>
-        </div>
-        <div class="cf__field" data-field>
-          <label for={p('system')}>{f.system}</label>
-          <textarea
-            id={p('system')}
-            name="Sestava"
-            rows="3"
-            aria-describedby={`${p('system')}-hint`}
-          />
-          <p class="cf__hint small muted" id={`${p('system')}-hint`}>
-            {f.systemHint}
-          </p>
-        </div>
-        <div class="cf__field" data-field>
-          <label for={p('budget')}>{f.budget}</label>
-          <textarea id={p('budget')} name="Představa a rozpočet" rows="3" />
-        </div>
-      </>
-    )}
-
     <div class="cf__row">
       <div class="cf__field" data-field>
         <label for={p('name')}>
@@ -212,12 +103,7 @@ const messages = {
       </div>
       <div class="cf__field" data-field>
         <label for={p('phone')}>
-          {f.phone}{' '}
-          {type === 'order' ? (
-            <span aria-hidden="true">*</span>
-          ) : (
-            <span class="muted small">({t.optional})</span>
-          )}
+          {f.phone} <span class="muted small">({t.optional})</span>
         </label>
         <input
           type="tel"
@@ -226,7 +112,6 @@ const messages = {
           autocomplete="tel"
           inputmode="tel"
           pattern="[+]?[0-9 ]{9,17}"
-          required={type === 'order'}
           data-label={f.phone}
         />
         <p class="cf__error" id={`${p('phone')}-error`} hidden></p>
@@ -235,13 +120,24 @@ const messages = {
 
     <div class="cf__field" data-field>
       <label for={p('message')}>
-        {type === 'order' ? f.note : f.message} <span class="muted small">({t.optional})</span>
+        {f.message} <span aria-hidden="true">*</span>
       </label>
+      {hint && (
+        <p class="cf__hint small muted" id={`${p('message')}-hint`}>
+          {hint}
+        </p>
+      )}
       <textarea
         id={p('message')}
-        name={type === 'order' ? 'Poznámka' : 'Zpráva'}
-        rows="4"
+        name="Zpráva"
+        rows="5"
+        required
+        data-label={f.message}
+        data-message
+        data-models={JSON.stringify(models)}
+        aria-describedby={hint ? `${p('message')}-hint` : undefined}
       ></textarea>
+      <p class="cf__error" id={`${p('message')}-error`} hidden></p>
     </div>
 
     <div class="cf__field cf__consent" data-field>
@@ -294,35 +190,21 @@ const messages = {
       const submitLabel = form.querySelector<HTMLElement>('[data-submit-label]')!;
       const defaultLabel = submitLabel.textContent ?? '';
       const success = form.parentElement?.querySelector<HTMLElement>('[data-success]');
-      const model = form.querySelector<HTMLSelectElement>('[data-model]');
-      const stands = form.querySelector<HTMLFieldSetElement>('[data-stands]');
+      const message = form.querySelector<HTMLTextAreaElement>('[data-message]');
       const subject = form.querySelector<HTMLInputElement>('[data-subject]');
       let attempted = false;
 
       // Vlastní validace (bez JS platí validace prohlížeče)
       form.noValidate = true;
 
-      // Předvyplnění modelu z URL (?model=sara)
+      // ?model=sara → předvyplněná zpráva (lze upravit) a model v předmětu
       const wanted = new URLSearchParams(location.search).get('model');
-      if (model && wanted) {
-        const option = [...model.options].find((o) => o.dataset.id === wanted);
-        if (option) model.value = option.value;
+      const models: { id: string; name: string }[] = JSON.parse(message?.dataset.models ?? '[]');
+      const picked = models.find((m) => m.id === wanted);
+      if (picked && message && subject) {
+        if (!message.value) message.value = fill(msg.modelMessage, { model: picked.name });
+        subject.value = `${msg.subject} (${picked.name})`;
       }
-
-      // Stojany jen u Revy, předmět e-mailu podle modelu
-      const syncModel = () => {
-        const id = model?.selectedOptions[0]?.dataset.id;
-        if (stands) {
-          const isReva = id === 'reva';
-          stands.hidden = !isReva;
-          stands.disabled = !isReva;
-        }
-        if (subject && form.dataset.type === 'order' && model) {
-          subject.value = `${msg.subject} ${model.value}`;
-        }
-      };
-      model?.addEventListener('change', syncModel);
-      syncModel();
 
       const fieldError = (input: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement) => {
         const v = input.validity;
@@ -342,18 +224,17 @@ const messages = {
         if (!box) return;
         box.textContent = text;
         box.hidden = !text;
-        if (text) {
-          input.setAttribute('aria-invalid', 'true');
-          input.setAttribute('aria-describedby', box.id);
-        } else {
-          input.removeAttribute('aria-invalid');
-          input.removeAttribute('aria-describedby');
-        }
+        const hintId = form.querySelector(`#${CSS.escape(input.id)}-hint`)?.id;
+        const describedBy = [hintId, text ? box.id : ''].filter(Boolean).join(' ');
+        if (describedBy) input.setAttribute('aria-describedby', describedBy);
+        else input.removeAttribute('aria-describedby');
+        if (text) input.setAttribute('aria-invalid', 'true');
+        else input.removeAttribute('aria-invalid');
       };
 
       const validate = () => {
         const inputs = [
-          ...form.querySelectorAll<HTMLInputElement>('input[required], select[required]'),
+          ...form.querySelectorAll<HTMLInputElement>('input[required], textarea[required]'),
           ...form.querySelectorAll<HTMLInputElement>('input[type="email"], input[type="tel"]'),
         ];
         let first: HTMLElement | null = null;
@@ -504,20 +385,13 @@ const messages = {
     display: none;
   }
 
-  label,
-  legend {
+  label {
     font-weight: 500;
-  }
-
-  legend {
-    padding: 0;
-    margin-bottom: var(--space-2);
   }
 
   input[type='text'],
   input[type='email'],
   input[type='tel'],
-  select,
   textarea {
     width: 100%;
     min-height: 2.875rem;
@@ -535,13 +409,11 @@ const messages = {
   }
 
   input:hover,
-  select:hover,
   textarea:hover {
     border-color: var(--c-muted);
   }
 
   input:focus-visible,
-  select:focus-visible,
   textarea:focus-visible {
     outline: var(--focus);
     outline-offset: 0;
@@ -552,20 +424,8 @@ const messages = {
     border-color: var(--c-error);
   }
 
-  .cf__choice label {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    font-weight: 400;
-    min-height: 2rem;
-  }
-
   input[type='checkbox'] {
     border-radius: var(--radius-xs);
-  }
-
-  input[type='radio'],
-  input[type='checkbox'] {
     width: 1.125rem;
     height: 1.125rem;
     margin: 0;
