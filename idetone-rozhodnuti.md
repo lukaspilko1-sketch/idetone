@@ -70,9 +70,8 @@ Tento soubor je jediný zdroj pravdy o stavu projektu. Kopie je v Claude projekt
 - Fotky a grafika, logo (klient)
 - Vlastní text Revy (teď skoro stejný jako Sara)
 - Typ Revy: na starém webu „sloupová“, ale výška 440 mm a samostatné stojany → spíš kompaktní na stojan
-- SEO texty: vyplnit sloupec Schváleno v docs/SEO-TEXTY.md (Lukáš), V3 – vlastní text Revy schvaluje Petr Kocourek (dávka 9.8)
-- Obchodní podmínky: doplnit IČO, sídlo, datum účinnosti, záruku do docs/OBCHODNI-PODMINKY-NAVRH.md (klient, dávka 9.9)
-- Úvod na mobilu −13 % místo cílových −20 %: rozhodnout, zda zkrátit texty nebo ubrat fotky (Lukáš)
+- SEO texty nasazeny (dávka 9b); V3 – vlastní úvod Revy schvaluje Petr Kocourek, zatím původní text
+- Obchodní podmínky nasazeny s dočasnými údaji: doplnit v src/content/pages/obchodni-podminky.md všech 9× `[doplnit …]` (IČO, sídlo, živnostenský úřad, plátce DPH / sazba DPH, telefon, datum účinnosti, formulář pro odstoupení) – před ostrým spuštěním; právní kontrola textu (klient)
 - Formspree účet a ID formulářů (Lukáš; může být jedno ID pro všechny tři) → `formspree` v src/config/site.ts. Bez placeného tarifu Formspree nefunguje vlastní děkovací stránka u odeslání bez JS (`_next`), návštěvník bez JS skončí na stránce Formspree; s JS vše funguje na free tarifu
 - Dostupnost / dodací lhůta → schema.org Offer má zatím `PreOrder` (na objednávku)
 - Graf impedance Revy, dostupnost / dodací lhůta
@@ -116,4 +115,5 @@ Tento soubor je jediný zdroj pravdy o stavu projektu. Kopie je v Claude projekt
 - 2. 10. 2026 (dávka 7): druhý řádek hero „Emoce | Klid | Poslech bez únavy“, na mobilu na jednom řádku (písmo se přizpůsobí šířce)
 - 2. 10. 2026 (dávka 8): logo na mobilu 48 px (po scrollu 36 px), omezené šířkou displeje kvůli „Menu“; hlavička na mobilu 5,25 rem
 - 6. 11. 2026 (dávka 9): odkazy modelů a technologií na úvodu na společné lince; patička 4 stejné sloupce (Stránky 2 × 4, odkaz na mapu); podpis Petra i na O ideTone, podpis se „napíše“ při vjetí do obrazovky (i v Konceptu); jeden obecný formulář (jméno, e-mail, telefon, zpráva, souhlas) na Kontaktu, Poslechu i Zakázkových projektech – objednávkový formulář zrušen, Petr doladí vše individuálně, `?model=` předvyplní zprávu; kotva Kontaktu `#formular`; mezery přes tokeny `--section-space`, `--head-space`, `--block-space`, na mobilu menší (úvod 7 618 → 6 597 px); záloha textů (tag `texty-puvodni-2026-11-06`); titulky bez zdvojeného „| ideTone“; SEO texty a obchodní podmínky čekají na schválení
+- 6. 11. 2026 (dávka 9b): úvod na mobilu 6 091 px (cíl ≤ 6 100); nasazeny schválené SEO texty (vše ANO kromě V3 – vlastní úvod Revy čeká na Petra); popisy U2 / V2 / P2 mají 162–174 znaků (limit zvýšen); Obchodní podmínky nasazeny s 9 zvýrazněnými údaji `[doplnit …]`, build s `PUBLIC_INDEXING=true` při nedoplněných údajích selže; test odeslání formuláře neproběhl (chybí Formspree ID)
 

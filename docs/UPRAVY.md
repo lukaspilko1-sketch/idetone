@@ -430,8 +430,125 @@ Na úvodu stačí zkrácené verze (1–2 věty), plné texty na stránce Techno
 - **9.5** Kontakt: obecný formulář „Napište mi“ (NÁVRH nadpisu) – jméno*, e-mail*, telefon (nepovinné), zpráva*, souhlas*, „Odeslat zprávu →“. `?model=sara` předvyplní „Mám zájem o reprosoustavy Sara.“ a předmět „ideTone – dotaz (Sara)“. Kotva `#objednavka` → `#formular` (odkazy Objednat z detailů, přesměrování `/index.php/objednat/`, `orderLink`). Titulek a popis stránky podle K1–K2 (`docs/SEO-TEXTY.md`; nasazeno, protože 9.5 je výslovně odkazuje a starý text mluvil o objednávce), K3 beze změny.
 - **9.6** Audit 1280 a 1536 px (všechny stránky, dočasný test): levý okraj nadpisů a štítků všude na linii kontejneru (40 / 168 px), odskoky nenalezeny (jen skryté nadpisy pro čtečky). Bloky vedle sebe s různou výškou jen tam, kde je záměrně lepivý panel (detail modelu: galerie × informace; Zakázkové projekty: fotka u formuláře). Opraveno: modely a technologie na úvodu (9.1, 9.2), patička (9.3). Mezery sekcí `space="s"` a `space="m"` jsou nově odvozené z `--section-space` (½ a ¾), už ne ručně.
 - **9.7** Nové tokeny `--head-space` (nadpis → obsah: 48 px, mobil 28 px), `--block-space` (bloky: 48 / 40 px), `--block-space-l` (modely: 96 / 44 px); `--section-space` na mobilu 44 px. Mezera mezi obsahem sekcí na 375 px **89–93 px** (dřív 190–225 px s nedokončeným odkrytím, ve skutečnosti ~130 px). Hero na mobilu bez centrování na výšku obrazovky (horní odsazení 16 px). Na mobilu nižší fotky: kroky Procesu 16 : 9, fotka Technologií 3 : 2 (místo 4 : 5), scéna modelů 15 rem. **Výška úvodu na 375 px: 7 618 → 6 597 px (−13 %)**, písmo beze změny. Cíl −20 % (≈ 6 000) by vyžadoval zkrátit texty nebo vyřadit fotky – nechávám na rozhodnutí.
-- **9.8** Záloha hotová: `podklady/texty-puvodni/2026-11-06/content/` (stav před dávkou 9) a git tag `texty-puvodni-2026-11-06`, postup obnovy v `docs/SPRAVA.md`. Titulky: nová funkce `pageTitle()` přidá „| ideTone“ jen tam, kde značka v titulku chybí (opraveno i dřívější „O ideTone – Petr Kocourek | ideTone“). **Texty nenasazeny** – sloupec Schváleno v `docs/SEO-TEXTY.md` je prázdný (kromě K1–K2, viz 9.5).
-- **9.9** Čeká – v návrhu obchodních podmínek chybí údaje klienta (IČO, sídlo, datum, záruka). Stránka zatím ukazuje původní hlášku.
+- **9.8** Záloha hotová (texty nasazeny v dávce 9b): `podklady/texty-puvodni/2026-11-06/content/` (stav před dávkou 9) a git tag `texty-puvodni-2026-11-06`, postup obnovy v `docs/SPRAVA.md`. Titulky: nová funkce `pageTitle()` přidá „| ideTone“ jen tam, kde značka v titulku chybí (opraveno i dřívější „O ideTone – Petr Kocourek | ideTone“). **Texty nenasazeny** – sloupec Schváleno v `docs/SEO-TEXTY.md` je prázdný (kromě K1–K2, viz 9.5).
+- **9.9** Nasazeno s dočasnými údaji v dávce 9b (zvýrazněná `[doplnit …]`, build na ostrém webu selže, dokud nejsou doplněná). Dříve: čekalo na údaje klienta.
 - **9.10** Poslech a Zakázkové projekty: stejná komponenta a pole jako Kontakt; tlačítka „Domluvit poslech →“ / „Odeslat poptávku →“, nápověda u Zprávy (navázaná přes `aria-describedby`), předměty „ideTone – poslech“ / „ideTone – zakázka“. Zrušeny výběr modelu, studio / doma, termín, místnost, sestava, rozpočet. Formspree: klíče `contact` / `listening` / `custom` v `site.ts` (může být jedno ID u všech tří).
 - Ověření: Lighthouse mobil (`dist/`) úvod výkon 99 / přístupnost 100 / best practices 100, Kontakt 100 / 100 / 100 (SEO 66–69 jen kvůli `noindex` v testovacím provozu); axe WCAG 2.2 AA bez chyb (všechny stránky); testy 101 zelené (formuláře přepsané na nová pole); `npm run links` v pořádku. Screenshoty `screenshots/davka9-*` (úvod, O ideTone, Kontakt, patička na 375 / 1280).
 
+
+
+## Dávka 9b – dočištění mobilu, test formuláře, SEO texty a obchodní podmínky
+
+Stav: **HOTOVO** (6. 11. 2026; 9b.2 jen částečně – chybí Formspree ID, viz Výstup). Původně SCHVÁLENO (Lukáš, 6. 11. 2026). Kontrola dávky 9 na živém webu (Cowork) byla v pořádku, zbývá níže uvedené.
+
+### 9b.1 Mobil – výška úvodu
+- Naměřeno na 375 px: výška úvodu **6 597 px** (cíl dávky 9.7 byl ≈ 6 000 px, tedy −20 % z 7 618 px; dosaženo −13 %).
+- Sekce mají `padding-bottom` 44 px, ale mezi obsahem zbývá hodně prázdna. Změřit skutečné mezery mezi koncem obsahu jedné sekce a nadpisem další (cíl 80–96 px) a zkrátit tak, aby výška úvodu byla **≤ 6 100 px**. Texty nezkracovat.
+- Po úpravě znovu změřit výšku a doplnit hodnotu do výsledku. Desktop se změnit nesmí.
+
+### 9b.2 Formuláře – ověřit odesílání
+- Živé `<form>` na Kontaktu nemá atribut `action` (podle DOM). Ověřit, že odeslání jde na Formspree (ID v `site.ts`), že funguje stav „odesláno / chyba“ a že u Poslechu a Zakázek se liší jen předmět.
+- Testovací odeslání dělat **jen s e-mailem Lukáše a textem „TEST“**, ne zákaznický dotaz. Do výsledku napsat, zda e-mail dorazil.
+
+### 9b.3 SEO texty – nasadit
+- Ve `docs/SEO-TEXTY.md` je sloupec Schváleno vyplněn: **ANO** u všech řádků kromě **V3 (úvod Revy)**, které je **ČEKÁ (Petr)** – V3 **nenasazovat**, ponechat původní text.
+- Zálohy a tag `texty-puvodni-2026-11-06` už existují (viz 9.8). Nasadit pouze řádky se Schváleno = ANO, titulky přes `pageTitle()` jak je.
+- Ověřit unikátní `<title>` a description na každé stránce a že žádná description neobsahuje cenu.
+
+### 9b.4 Obchodní podmínky – nasadit rozpracovanou verzi
+- Zdroj: `docs/OBCHODNI-PODMINKY-NAVRH.md` (část od „# Obchodní podmínky“ po „---“, bez poznámek pro Lukáše). Do `src/content/pages/obchodni-podminky.md`.
+- V návrhu jsou už doplněná rozhodnutí: **bez nadstandardní záruky** (jen zákonných 24 měsíců, bod 7.2) a **záloha se u zakázek dohodne ve smlouvě** (bod 4.3).
+- Zůstávají údaje klienta jako `[doplnit …]`: IČO, sídlo, živnostenský úřad, plátce DPH, telefon, datum účinnosti, odkaz na formulář pro odstoupení. Na testovací verzi je zobrazit **viditelně zvýrazněné** (např. `<mark>`) a vypsat je v `npm run todo` jako `TODO(klient)`.
+- **Pojistka:** při `PUBLIC_INDEXING=true` musí build **selhat**, pokud v obchodních podmínkách zůstane `[`. Na ostrém webu se tak neobjeví nedokončený text.
+- Odkaz „Obchodní podmínky“ v patičce a ve formulářích (souhlas) zůstane aktivní.
+- Formulář pro odstoupení od smlouvy je samostatný krok, zatím neřešit.
+
+### Výstup dávky 9b
+1. Výška úvodu na 375 px před a po.
+2. Výsledek testu formuláře (dorazil / nedorazil).
+3. Tabulka `title` / `description` všech stránek po nasazení SEO textů.
+4. Screenshot Obchodních podmínek 375 / 1280 px se zvýrazněnými `[doplnit]`.
+5. Commit včetně `docs/*`; v `docs/UPRAVY.md` označit 9b jako HOTOVO a 9.9 jako „nasazeno s dočasnými údaji“.
+
+### Výsledek dávky 9b (Claude Code, 6. 11. 2026)
+
+**9b.1 Mobil – výška úvodu.** Výška úvodu na 375 px (`scrollHeight`): **6 597 → 6 091 px** (cíl ≤ 6 100 splněn; −20 % z původních 7 618 px by bylo 6 094 px). Mezery mezi obsahem sekcí: 81 px (modely → koncept → proces → technologie), hero → modely 73 px, technologie → pruh Poslech 72 px; kolem pruhu je padding 32 px. Texty se nezkracovaly, písmo se nezměnilo. Změny jen pod 768 px (desktop a tablet beze změny, výška úvodu na 1280 px se změnila jen o 11 px kvůli delší hero větě ze SEO textu U4):
+- `--section-space` 40 px, mezery uvnitř sloupců (hero, modely, koncept, technologie, poslech) 24–32 px, mezery mezi modely 32 px,
+- scéna fotek modelů 12 rem (dřív 15 rem), kresba v hero 29 svh (dřív 33 svh), horní padding hero 16 px, spodní 32 px,
+- fotky kroků Procesu 2 : 1, fotka Technologií 2 : 1 (dřív 4 : 5), pás Poslech padding 32 px,
+- patička: Kontakt a Poslechové studio vedle sebe (výška patičky 771 → 610 px).
+Dřívější změřené „190–225 px“ (9.7) i „130 px“ byly zkreslené nedokončeným odkrytím sekcí (posun 24 px); skutečná mezera byla už po dávce 9 kolem 89 px, zbytek úspory byl proto uvnitř bloků.
+
+**9b.2 Formuláře – NEODESLÁNO, nelze ověřit.** `formspree.contact / listening / custom` v `src/config/site.ts` jsou prázdné (žádné Formspree ID nikde v repozitáři, ani v dokumentaci), proto živé `<form>` nemá `action` a odeslání končí hláškou „Odesílání formuláře zatím není aktivní…“. **Testovací zpráva (e-mail Lukáše + „TEST“) se neodeslala, e-mail nedorazil ani nemohl** – ID jsem si nevymýšlel. Ověřeno proti simulovanému endpointu (Playwright, 101 testů zelených): kód pošle JSON na `https://formspree.io/f/<ID>`, stavy odesílám / úspěch („Děkuji, ozvu se do 2 pracovních dnů.“) / chyba služby / výpadek sítě fungují, a u Kontaktu, Poslechu a Zakázek se liší jen předmět (`ideTone – dotaz` [+ `(Sara)`], `ideTone – poslech`, `ideTone – zakázka`), nadpis, tlačítko a nápověda u Zprávy. **Co udělat (Lukáš):** založit formulář na formspree.io (příjemce pkocourek@idetone.cz), ID vložit do `site.ts` (jedno stačí pro všechny tři klíče), pushnout a odeslat jedno testovací odeslání s vlastním e-mailem a textem „TEST“ na Kontaktu; potom doplnit výsledek sem.
+
+**9b.3 SEO texty.** Nasazeny všechny řádky se Schváleno = ANO (U1, U2, U4, U6, R1–R3, S1–S3, V1, V2, T1, T2, O1, O2, P1, P2, Z1, K1, K2; U3, U5, U7, K3 jsou beze změny). **V3 (vlastní úvod Revy) nenasazen**, původní text zůstal, v `reva.md` je poznámka. Titulky přes `pageTitle()` (přípona „| ideTone“ jen kde chybí). Všechny `<title>` i `description` na webu jsou unikátní (ověřuje test `meta: unikátní title a description`), žádný popis neobsahuje cenu. Poznámky:
+- Popisy U2 (162 znaků), V2 (173) a P2 (174) přesahují původní limit 155 znaků – nasazeno tak, jak je schváleno, limit ve schématu a v testu zvýšen na 180 / 175. Google je v náhledu může zkrátit (hranice ~155–160).
+- Titulek Sary (S1) má s příponou 79 znaků, ostatní ≤ 63 – Google ho zkrátí, hlavní slova jsou na začátku (schváleno).
+- V YAML úvodech jsou popisy s dvojtečkou (R2, T2) v uvozovkách.
+
+**9b.4 Obchodní podmínky.** `src/content/pages/obchodni-podminky.md` obsahuje celý text z návrhu (část od „# Obchodní podmínky“ po „---“, bez nadpisu H1 a bez poznámek pro Lukáše; bod 7.2 jen zákonná záruka, bod 4.3 záloha dle smlouvy). Chybějící údaje jsou jako `[doplnit …]` ve zvýrazněném `<mark class="todo">` (žlutý podklad, čárkovaný rám), celkem 9 míst: datum (2×), IČO, sídlo, živnostenský úřad, plátce DPH, telefon, sazba DPH v bodě 4.1, odkaz na formulář pro odstoupení. `npm run todo` je vypisuje. **Pojistka:** při `PUBLIC_INDEXING=true` build selže (`Obchodní podmínky obsahují nedoplněné údaje (9×)`, ověřeno), běžný build projde. Odkaz na Ochranu osobních údajů v textu je relativní (`../ochrana-osobnich-udaju/`), `npm run links` ho nově umí vyhodnotit. Odkaz v patičce zůstává. Formulář pro odstoupení se neřešil.
+- **9.9 nasazeno s dočasnými údaji** (viz výše).
+
+### Tabulka title / description po nasazení SEO textů (z buildu)
+| Stránka | title (znaků) | description (znaků) |
+|---|---|---|
+| / | ideTone – ručně laděné hi-fi reprosoustavy z Brna (49) | Hi-fi reprosoustavy Sara a Reva, navržené a ručně laděné v Brně. Zvukovod u výškového reproduktoru, přirozený zvuk pro dlouhý poslech a vlastní poslechové studio. (162) |
+| /reprosoustavy/ | Hi-fi reprosoustavy Sara a Reva – srovnání modelů \| ideTone (59) | Sloupová Sara a kompaktní Reva na stojanu: dvoupásmové high-end reprosoustavy ideTone. Srovnání parametrů a doporučení podle velikosti místnosti. (145) |
+| /reprosoustavy/sara/ | Sara – sloupová hi-fi reprosoustava s páskovým výškovým reproduktorem \| ideTone (79) | Sara je dvoupásmová sloupová reprosoustava s páskovým výškovým reproduktorem ve zvukovodu a bassreflexem vyvedeným dolů. Navržená a ručně laděná v Brně. (152) |
+| /reprosoustavy/reva/ | Reva – kompaktní hi-fi reprosoustava na stojan \| ideTone (56) | Reva je kompaktní dvoupásmová reprosoustava se sedmipalcovým středobasovým reproduktorem a textilní kalotou ve zvukovodu. Volitelně s vlastními stojany. Ručně laděná v Brně. (173) |
+| /technologie/ | Technologie reprosoustav – zvukovod, výhybka a měření \| ideTone (63) | Jak vznikají reprosoustavy ideTone: zvukovod (waveguide) u výškového reproduktoru, výhybky druhého řádu, měření v ose i mimo osu a poslechové testy. (148) |
+| /poslech/ | Poslech hi-fi reprosoustav v Brně – poslechové studio ideTone (61) | Poslechněte si reprosoustavy Sara a Reva v poslechovém studiu v Brně na sestavě Pass Labs, Esoteric a Ansuz. Termín domluvíme individuálně, vezměte s sebou vlastní CD a SACD. (174) |
+| /zakazkove-projekty/ | Reprosoustavy na míru – zakázková výroba \| ideTone (50) | Reprosoustava navržená a naladěná na míru vašemu prostoru, sestavě a interiéru. Postup spolupráce a nezávazná poptávka. (119) |
+| /o-idetone/ | O ideTone – Petr Kocourek, konstruktér reprosoustav z Brna (58) | Od DIY značky PKAudio k ideTone. Petr Kocourek navrhuje a ručně ladí hi-fi reprosoustavy v Brně s důrazem na přirozený zvuk a dlouhodobý poslech. (145) |
+| /kontakt/ | Kontakt – Petr Kocourek, ideTone Brno (37) | Napište mi dotaz k reprosoustavám Sara a Reva, poslechu nebo zakázce. Petr Kocourek, pkocourek@idetone.cz, poslechové studio Filipínského 59, Brno. (147) |
+| /obchodni-podminky/ | Obchodní podmínky \| ideTone (27) | Obchodní podmínky ideTone – prodej reprosoustav Sara a Reva a zakázková výroba. Cena, dodání, odstoupení od smlouvy, reklamace. (127) |
+| /ochrana-osobnich-udaju/ | Ochrana osobních údajů \| ideTone (32) | Jak ideTone zpracovává osobní údaje z formulářů a e-mailové komunikace. (71) |
+(Počty znaků titulků včetně přípony „| ideTone“ – u řádků bez ní ji titulek už obsahuje.)
+
+### Ověření dávky 9b
+- `npm run check` bez chyb a varování, Prettier v pořádku; 101 Playwright testů (layout, formuláře, axe WCAG 2.2 AA na všech stránkách včetně Obchodních podmínek) zelených; `npm run links` v pořádku.
+- Screenshoty: `screenshots/davka9-obchodni-podminky-375.png` / `-1280.png` (zvýrazněná `[doplnit …]`), `davka9-uvod-375.png`.
+
+
+## Dávka 10 – jemné barevné pásy sekcí a sklo na kartách
+
+Stav: **SCHVÁLENO** (Lukáš, 6. 11. 2026). Výběr v náhledu „ideTone – barvy sekcí“ (Cowork): varianta **Pískový dub**, sklo **Jemné**. Dřevěné fotografické pozadí se **nepoužije** (Lukáš zamítl). Jde jen o změnu barevných tokenů a pozadí pásů; texty, rozvržení ani obrázky se nemění. Dávka 9b má přednost, dělat až po ní.
+
+### 10.1 Tokeny barev (light, `src/styles/tokens.css`)
+| Token | Dnes | Nově | Použití |
+|---|---|---|---|
+| pozadí stránky (`--bg` / podklad pod pásy) | #E9E6DF (Len) | **#EADFCB** | pozadí `body` |
+| pás 1 (`--band-1`) | #F5F3EE (Papír) | **#F3EBDD** | světlejší pásy sekcí (`section--len` lichá) |
+| pás 2 (`--band-2`) | #EFE3D3 (dub-soft) | **#E7D8BE** | sudé pásy sekcí |
+- Pásy v sekcích na úvodu i podstránkách se střídají 1 / 2 / 1 / 2 podle pořadí, pruh **Poslech zůstává ořechový** (gradient beze změny), hero ponechat jak je (papír + perokresba + zrno). Zkontrolovat přechod hero → první pás, aby nevznikla ostrá hrana.
+- Nepřidávat obrázek dřeva ani texturu. Jen barvy a záře níže.
+
+### 10.2 Záře na pozadí pásů (aby měl sklo co rozostřit)
+Na každém pásu 1 / 2 (nikoli Poslech) pseudoelement `::before` (`position:absolute; inset:0; z-index:-1; pointer-events:none`), rodič `position:relative; overflow:hidden; isolation:isolate`:
+```
+background:
+  radial-gradient(480px 340px at 10% 35%, rgba(168,116,63,var(--glow)), transparent 70%),
+  radial-gradient(560px 380px at 88% 75%, rgba(255,255,255,calc(var(--glow)*2.4)), transparent 70%),
+  radial-gradient(300px 220px at 55% 10%, rgba(138,92,46,calc(var(--glow)*.7)), transparent 70%);
+```
+Token `--glow: .14` (Jemné).
+
+### 10.3 Sklo na kartách (modely, Technologie, formuláře, bloky na podstránkách)
+- Tokeny: `--glass-bg: rgba(255,255,255,.56)`, `--glass-line: rgba(255,255,255,.8)`, `--glass-blur: 12px`.
+- Karta: `background: var(--glass-bg); border: 1px solid var(--glass-line); border-radius: var(--radius-m); backdrop-filter: blur(var(--glass-blur)) saturate(1.25); -webkit-backdrop-filter: …; box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 14px 34px -18px rgba(70,45,20,.45);`
+- Platí pro **všechny** karty (modely, Technologie, formuláře Kontakt / Poslech / Zakázky, ostatní bloky v kartách). Pole formulářů uvnitř mají pozadí `rgba(255,255,255,.7)`.
+- Záloha bez podpory: `@supports not (backdrop-filter: blur(1px))` → `--glass-bg: rgba(255,255,255,.82)`.
+- Mobil (< 768 px): `--glass-blur: 8px` kvůli výkonu.
+- Tokeny pojmenovat tak, aby šla síla skla později změnit jednou hodnotou (`--glow`, `--glass-bg`, `--glass-blur`). Podobné stupně z náhledu: Bez skla (`--glow:0`, bg .7, blur 0), **Jemné (zvoleno)**, Znatelné (`--glow:.3`, bg .4, blur 18 px), Výrazné (`--glow:.5`, bg .28, blur 26 px).
+
+### 10.4 Kontrast (pozor)
+- Dubový text `#8A5C2E` na pásu 2 (#E7D8BE) má poměr zhruba **4,1 : 1**, tedy pod AA (4,5) pro malý text (štítky, odkazy „Víc o řešení“, „Detail modelu“).
+- Řešení: pro malý dubový text použít tmavší token **#6E4826** (≈ 5,7 : 1) všude, kde leží na pásu 2 nebo na kartě nad zářím; velké nadpisy a tlačítka (bílý text na #8A5C2E) beze změny.
+- Změřit axe WCAG 2.2 AA na úvodu, Reprosoustavách, Technologii, Kontaktu, Poslechu a Zakázkových projektech a opravit, co vyjde pod 4,5 : 1 (u velkého textu 3 : 1).
+- Muted text `#4F5651` na pásech musí zůstat ≥ 4,5 : 1.
+
+### Výstup dávky 10
+1. Screenshoty úvodu, Technologie a Kontaktu na 1280 a 375 px před a po.
+2. Výsledek axe a Lighthouse (úvod mobil: výkon ≥ 95, přístupnost 100). Pozadí s `backdrop-filter` nesmí zhoršit výkon o více než 3 body.
+3. Tabulka použitých barev a poměrů kontrastu dubových textů.
+4. Commit včetně `docs/UPRAVY.md` a `docs/idetone-rozhodnuti.md` (doplnit rozhodnutí: barvy Pískový dub, sklo Jemné, žádné dřevo na pozadí, tmavší dubový text na pásu 2). Dávku označit HOTOVO.

@@ -44,7 +44,7 @@ Poslechové studio: Filipínského 59, Brno
 
 4.2 Cena zakázkové výroby se stanoví podle odsouhlasené specifikace. Změny požadavků kupujícího během výroby mohou cenu změnit, prodávající na to kupujícího předem upozorní.
 
-4.3 Platba probíhá převodem na účet prodávajícího podle faktury, případně v hotovosti při osobním předání. [Doplnit, zda se vyžaduje záloha, např. „Před zahájením výroby se hradí záloha ve výši […] % ceny.“]
+4.3 Platba probíhá převodem na účet prodávajícího podle faktury, případně v hotovosti při osobním předání. U zakázkové výroby se může záloha dohodnout ve smlouvě.
 
 ## 5. Dodání a předání
 
@@ -70,7 +70,7 @@ Poslechové studio: Filipínského 59, Brno
 
 7.1 Prodávající odpovídá za to, že výrobek při převzetí nemá vady. **Spotřebitel může uplatnit právo z vady, která se projeví do 24 měsíců od převzetí.**
 
-7.2 [Volitelné – doplní klient] Prodávající nad rámec zákona poskytuje na výrobní vady záruku za jakost v délce [xx] měsíců od převzetí.
+7.2 Prodávající neposkytuje nad rámec zákona další záruku za jakost. Práva spotřebitele ze zákona tím nejsou dotčena.
 
 7.3 Reklamaci kupující uplatní e-mailem na pkocourek@idetone.cz s popisem vady. Prodávající potvrdí přijetí reklamace a vyřídí ji nejpozději do 30 dnů, pokud se s kupujícím nedohodne na delší lhůtě. Podle povahy vady ji odstraní opravou nebo výměnou dílu, případně poskytne slevu.
 

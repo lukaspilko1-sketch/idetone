@@ -160,6 +160,10 @@ Bez úprav kódu – jen proměnné, jeden soubor a DNS:
 
 Pro `links` a `lighthouse` s podsložkou: v Git Bashi `MSYS_NO_PATHCONV=1 BASE_PATH=/idetone npm run build` a stejně pro `npm run links` / `npm run lighthouse`.
 
+## Obchodní podmínky – doplnění údajů
+
+Ve `src/content/pages/obchodni-podminky.md` nahraďte všechna `<mark class="todo">[doplnit …]</mark>` skutečnými údaji (celé značky i se závorkami). Dokud některá zbývá, ukazuje je testovací web zvýrazněně a ostrý build (`PUBLIC_INDEXING=true`) selže. Seznam vypíše `npm run todo`.
+
 ## Obnovení původních textů (záloha před SEO texty, dávka 9.8)
 
 Stav všech textů před nasazením SEO textů (6. 11. 2026) je ve dvou podobách:
