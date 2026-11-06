@@ -101,12 +101,13 @@ const {
     color: var(--c-on-wood);
   }
 
+  /* Dávka 9.6: všechny velikosti odvozené z jednoho tokenu --section-space */
   .section--space-s {
-    padding-block: var(--space-7);
+    padding-block: max(var(--space-6), calc(var(--section-space) / 2));
   }
 
   .section--space-m {
-    padding-block: clamp(var(--space-7), 4vw + 1rem, var(--space-9));
+    padding-block: max(var(--space-7), calc(var(--section-space) * 0.75));
   }
 
   .section--space-l {

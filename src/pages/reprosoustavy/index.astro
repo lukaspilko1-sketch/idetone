@@ -8,6 +8,7 @@ import TextBlock from '../../components/TextBlock.astro';
 import Button from '../../components/Button.astro';
 import { getPage, getProducts } from '../../utils/content';
 import { typo } from '../../utils/format';
+import { pageTitle } from '../../utils/seo';
 
 const page = await getPage('reprosoustavy');
 const products = await getProducts();
@@ -16,7 +17,7 @@ const advice = data.sections.find((s) => s.id === 'ktery-model');
 ---
 
 <BaseLayout
-  title={`${data.seoTitle ?? data.title} | ideTone`}
+  title={pageTitle(data.seoTitle ?? data.title)}
   description={data.description}
   crumbs={[{ name: 'Reprosoustavy', href: '/reprosoustavy/' }]}
 >

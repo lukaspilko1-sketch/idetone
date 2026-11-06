@@ -70,54 +70,55 @@ test('podmenu @ 1440', async ({ page }) => {
   await page.screenshot({ path: 'screenshots/podmenu-1440.png' });
 });
 
-// Stavy formuláře (objednávka) ke schválení
+// Stavy formuláře (Kontakt) ke schválení
 test.describe('formular stavy', () => {
   const endpoint = 'https://formspree.io/f/testovaci';
   const shot = (page: Page, name: string) =>
-    page.locator('#objednavka').screenshot({ path: `screenshots/formular-${name}.png` });
+    page.locator('#formular').screenshot({ path: `screenshots/formular-${name}.png` });
 
   async function prepare(page: Page, fill = true) {
     await page.setViewportSize({ width: 1280, height: 1200 });
     await page.goto('/kontakt/?model=reva');
     await ready(page);
     await page
-      .locator('#objednavka form')
+      .locator('#formular form')
       .evaluate((f, url) => ((f as HTMLFormElement).dataset.endpoint = url), endpoint);
     if (!fill) return;
-    const form = page.locator('#objednavka');
+    const form = page.locator('#formular');
     await form.getByLabel('Jméno a příjmení').fill('Jan Novák');
     await form.getByLabel('E-mail').fill('jan@example.com');
     await form.getByLabel('Telefon').fill('+420 777 123 456');
+    await form.getByLabel('Zpráva').fill('Dobrý den, mám dotaz.');
     await form.getByRole('checkbox').check();
   }
 
   test('vychozi a chyby validace', async ({ page }) => {
     await prepare(page, false);
     await shot(page, 'vychozi');
-    await page.locator('#objednavka [data-submit]').click();
+    await page.locator('#formular [data-submit]').click();
     await shot(page, 'validace');
   });
 
   test('odesilam', async ({ page }) => {
     await page.route(endpoint, () => new Promise(() => {}));
     await prepare(page);
-    await page.locator('#objednavka [data-submit]').click();
+    await page.locator('#formular [data-submit]').click();
     await shot(page, 'odesilam');
   });
 
   test('uspech', async ({ page }) => {
     await page.route(endpoint, (r) => r.fulfill({ status: 200, json: { ok: true } }));
     await prepare(page);
-    await page.locator('#objednavka [data-submit]').click();
-    await page.locator('#objednavka [data-success]').waitFor();
+    await page.locator('#formular [data-submit]').click();
+    await page.locator('#formular [data-success]').waitFor();
     await shot(page, 'uspech');
   });
 
   test('chyba', async ({ page }) => {
     await page.route(endpoint, (r) => r.fulfill({ status: 500, json: {} }));
     await prepare(page);
-    await page.locator('#objednavka [data-submit]').click();
-    await page.locator('#objednavka [data-status]:not([hidden])').waitFor();
+    await page.locator('#formular [data-submit]').click();
+    await page.locator('#formular [data-status]:not([hidden])').waitFor();
     await shot(page, 'chyba');
   });
 });
@@ -171,6 +172,33 @@ for (const [width, height] of [
         });
         await page.waitForTimeout(900);
         await el.screenshot({ path: `screenshots/davka2-${name}-${width}.png` });
+      }
+    });
+  }
+}
+
+// Dávka 9 (docs/UPRAVY.md): úvod, O ideTone, Kontakt a patička na 375 / 1280
+for (const width of [375, 1280]) {
+  for (const [name, path] of [
+    ['uvod', '/'],
+    ['o-idetone', '/o-idetone/'],
+    ['kontakt', '/kontakt/'],
+  ]) {
+    test(`davka9 ${name} @ ${width}`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(path);
+      await ready(page);
+      await page.addStyleTag({ content: '*{transition:none!important;animation:none!important}' });
+      await page.evaluate(() =>
+        document
+          .querySelectorAll('[data-reveal],[data-reveal-img],[data-reveal-sign]')
+          .forEach((e) => e.classList.add('is-revealed')),
+      );
+      await page.screenshot({ path: `screenshots/davka9-${name}-${width}.png`, fullPage: true });
+      if (name === 'uvod') {
+        await page
+          .locator('.footer')
+          .screenshot({ path: `screenshots/davka9-paticka-${width}.png` });
       }
     });
   }

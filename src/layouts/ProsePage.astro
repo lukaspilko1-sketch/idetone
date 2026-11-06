@@ -1,5 +1,6 @@
 ---
 /** Jednoduchá textová stránka z kolekce pages (právní stránky). */
+import { pageTitle } from '../utils/seo';
 import { render } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
@@ -16,7 +17,7 @@ const { Content } = await render(page);
 ---
 
 <BaseLayout
-  title={`${data.seoTitle ?? data.title} | ideTone`}
+  title={pageTitle(data.seoTitle ?? data.title)}
   description={data.description}
   crumbs={[{ name: data.title, href: `/${Astro.props.id}/` }]}
 >

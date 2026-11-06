@@ -90,3 +90,11 @@ export function product(
     },
   };
 }
+
+/**
+ * Titulek stránky: přidá „ | ideTone“, jen když v něm značka ještě není (dávka 9.8).
+ * Cíl do ~65 znaků – delší titulky Google zkrátí.
+ */
+export function pageTitle(title: string): string {
+  return /idetone/i.test(title) ? title : `${title} | ideTone`;
+}

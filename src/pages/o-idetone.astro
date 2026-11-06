@@ -1,10 +1,12 @@
 ---
+import { pageTitle } from '../utils/seo';
 import { render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/Section.astro';
 import ImageSlot from '../components/ImageSlot.astro';
 import Button from '../components/Button.astro';
 import Photo from '../components/Photo.astro';
+import { Picture } from 'astro:assets';
 import { getPage } from '../utils/content';
 
 const page = await getPage('o-idetone');
@@ -13,7 +15,7 @@ const { Content } = await render(page);
 ---
 
 <BaseLayout
-  title={`${data.seoTitle ?? data.title} | ideTone`}
+  title={pageTitle(data.seoTitle ?? data.title)}
   description={data.description}
   crumbs={[{ name: 'O ideTone', href: '/o-idetone/' }]}
 >
@@ -28,6 +30,19 @@ const { Content } = await render(page);
         <p class="signature">
           {data.signature.greeting}
           <span class="signature__name">{data.signature.name}</span>
+          {data.signature.image && (
+            <span class="signature__img" data-reveal-sign>
+              <Picture
+                src={data.signature.image.src}
+                alt={data.signature.image.alt}
+                formats={['avif', 'webp']}
+                fallbackFormat="webp"
+                widths={[data.signature.image.src.width]}
+                sizes="180px"
+                class="signature__picture"
+              />
+            </span>
+          )}
         </p>
       )}
     </div>
@@ -74,7 +89,7 @@ const { Content } = await render(page);
   .about {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: var(--space-7) var(--grid-gap);
+    gap: var(--block-space) var(--grid-gap);
     padding-block: clamp(var(--space-7), 6vw, var(--space-9)) var(--section-space);
   }
 
@@ -110,6 +125,18 @@ const { Content } = await render(page);
     font-family: var(--font-heading);
     font-size: var(--fs-l);
     color: var(--c-grafit);
+  }
+
+  /* stejná velikost jako podpis v sekci Koncept na úvodu */
+  .signature__img {
+    display: block;
+    margin-top: var(--space-3);
+  }
+
+  .signature__img :global(.signature__picture) {
+    display: block;
+    width: 10rem;
+    height: auto;
   }
 
   .about__portrait {

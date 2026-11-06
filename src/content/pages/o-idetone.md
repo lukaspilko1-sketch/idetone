@@ -21,6 +21,10 @@ photos:
 signature:
   greeting: Přeji příjemný poslech,
   name: Petr Kocourek
+  # Ručně psaný podpis pod jménem (stejný jako v sekci Koncept na úvodu, dávka 9.4)
+  image:
+    src: ../../assets/uploads/kresby/podpis-petr-kocourek.png
+    alt: Podpis Petr Kocourek
 ---
 
 Moje cesta za hudbou a dobrým zvukem začala již před mnoha roky a velmi záhy se vyprofilovala v DIY značku PKAudio. Založení značky ideTone je vyústěním veškerého vývoje a zkušeností získaných během let.

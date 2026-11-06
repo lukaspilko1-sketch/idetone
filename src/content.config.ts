@@ -131,7 +131,9 @@ const pages = defineCollection({
       /** fotky stránky (ilustrační i skutečné), rozmístění řeší šablona stránky */
       photos: z.array(photo(image)).default([]),
       /** podpis pod textem (O ideTone) */
-      signature: z.object({ greeting: z.string(), name: z.string() }).optional(),
+      signature: z
+        .object({ greeting: z.string(), name: z.string(), image: photo(image).optional() })
+        .optional(),
     }),
 });
 

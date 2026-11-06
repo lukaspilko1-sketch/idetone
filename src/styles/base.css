@@ -302,6 +302,32 @@ hr {
   }
 }
 
+/* Podpis „napíše se“ zleva doprava při vjetí do obrazovky (dávka 9.4; Koncept na úvodu, O ideTone).
+   Stejná maska a délka jako podpis v hero. Bez JS je podpis vidět hned. */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal-sign] {
+    mask-image: linear-gradient(to right, #000 40%, transparent 60%);
+    mask-size: 250% 100%;
+    mask-repeat: no-repeat;
+    mask-position: 0 0;
+    transition: mask-position var(--dur-sign) var(--ease-draw) var(--delay-reveal-sign);
+  }
+
+  .js [data-reveal-sign]:not(.is-revealed) {
+    mask-position: 100% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal-sign] {
+    transition: opacity var(--dur-fade) ease;
+  }
+
+  .js [data-reveal-sign]:not(.is-revealed) {
+    opacity: 0;
+  }
+}
+
 /* View Transitions: klidné prolnutí stránek */
 ::view-transition-old(root),
 ::view-transition-new(root) {

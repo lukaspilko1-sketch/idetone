@@ -47,6 +47,13 @@ const pages = nav.flatMap((item) => [item, ...(item.children ?? [])]);
           <br />
           {settings.studio.city}
         </address>
+        {settings.studio.mapyCz && (
+          <p class="footer__map">
+            <a href={settings.studio.mapyCz} rel="noopener">
+              {cs.footer.map}
+            </a>
+          </p>
+        )}
       </div>
 
       <nav class="footer__col" id="navigace-paticka" aria-label={cs.footer.nav}>
@@ -100,30 +107,26 @@ const pages = nav.flatMap((item) => [item, ...(item.children ?? [])]);
     text-decoration-color: currentColor;
   }
 
+  /* Dávka 9.3: mobil 1 sloupec, tablet 2 × 2, desktop 4 stejné sloupce, obsah nahoře */
   .footer__grid {
     display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    gap: var(--space-7) var(--grid-gap);
-  }
-
-  .footer__brand {
-    grid-column: 1 / -1;
-  }
-
-  .footer__col {
-    grid-column: span 6;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6) var(--grid-gap);
+    align-items: start;
   }
 
   .footer__logo {
     display: inline-flex;
-    padding-block: var(--space-2);
+    /* výška řádku jako štítek nadpisu ostatních sloupců → logo na stejné lince */
+    min-height: calc(var(--fs-label) * 1.5);
+    align-items: center;
   }
 
   .footer__claim {
-    margin-top: var(--space-4);
+    margin-top: var(--space-3);
     font-family: var(--font-heading);
-    font-size: var(--fs-l);
-    line-height: 1.25;
+    font-size: var(--fs-m);
+    line-height: 1.3;
     max-width: 16ch;
   }
 
@@ -136,17 +139,30 @@ const pages = nav.flatMap((item) => [item, ...(item.children ?? [])]);
     font-style: normal;
   }
 
+  .footer__map {
+    margin-top: var(--space-2);
+  }
+
+  /* 8 odkazů ve dvou sloupcích po 4 (řazení po sloupcích), aby sloupec nebyl vyšší než ostatní */
   .footer__links {
     display: grid;
-    gap: var(--space-1);
+    grid-template-rows: repeat(4, auto);
+    grid-auto-flow: column;
+    justify-content: start;
+    gap: var(--space-1) var(--space-4);
+  }
+
+  .footer__links a {
+    white-space: nowrap;
   }
 
   .footer__bottom {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     justify-content: space-between;
     gap: var(--space-3) var(--space-6);
-    margin-top: var(--space-9);
+    margin-top: var(--space-7);
     padding-top: var(--space-5);
     border-top: 1px solid var(--c-line-dark);
     font-size: var(--fs-legal);
@@ -156,6 +172,7 @@ const pages = nav.flatMap((item) => [item, ...(item.children ?? [])]);
   .footer__meta {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     gap: var(--space-2) var(--space-5);
   }
 
@@ -163,23 +180,34 @@ const pages = nav.flatMap((item) => [item, ...(item.children ?? [])]);
     color: var(--c-on-dark-muted);
   }
 
-  @media (max-width: 30rem) {
-    .footer__col {
-      grid-column: 1 / -1;
+  @media (min-width: 40rem) {
+    .footer__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-7) var(--grid-gap);
     }
   }
 
-  @media (min-width: 60rem) {
-    .footer__brand {
-      grid-column: span 5;
+  @media (min-width: 64rem) {
+    .footer__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
-    .footer__col {
-      grid-column: span 2;
+    .footer__bottom {
+      margin-top: var(--space-9);
     }
+  }
 
-    .footer__col:last-child {
-      grid-column: span 3;
+  /* 4 sloupce na užším desktopu: dva sloupce odkazů by se nevešly, odkazy pod sebou */
+  @media (min-width: 64rem) and (max-width: 79.99rem) {
+    .footer__links {
+      grid-template-rows: none;
+      grid-auto-flow: row;
+    }
+  }
+
+  @media (max-width: 47.99rem) {
+    .footer {
+      padding-block: var(--space-8) var(--space-5);
     }
   }
 </style>
