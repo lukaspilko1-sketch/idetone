@@ -348,3 +348,90 @@ Na úvodu stačí zkrácené verze (1–2 věty), plné texty na stránce Techno
 - Hlavička na mobilu úměrně vyšší (5,25 rem, po scrollu 4 rem). Desktop beze změny.
 - Ověřeno na 320 / 375 / 430 px (logo vždy aspoň 8 px od „Menu“), testy (99) zelené.
 
+
+---
+
+## Dávka 9 – symetrie, patička, formulář Kontakt, podpis O ideTone, mezery na mobilu, SEO texty, obchodní podmínky
+
+**Stav:** HOTOVO 9.1–9.8 (záloha) a 9.10 (6. 11. 2026); 9.8 nasazení textů a 9.9 čekají – viz Výsledek. Původně: SCHVÁLENO vcelku (Lukáš, 6. 11. 2026). Body 9.1–9.7 a 9.10 provést hned; 9.8 nasadit jen položky se Schváleno = ANO v `docs/SEO-TEXTY.md` (dokud nejsou vyplněné, udělat jen zálohu); 9.9 až po doplnění údajů klientem.
+**Datum:** 6. 11. 2026
+**Podklady (Cowork):** `docs/SEO-TEXTY.md` (porovnání textů, sloupec Schváleno), `docs/OBCHODNI-PODMINKY-NAVRH.md` (návrh obchodních podmínek), zdroj `docs/Obchodní podmínky.txt`.
+
+### 9.1 Modely na úvodu – popisy a odkazy na stejné výšce (desktop)
+- Změřeno na 1280 px: popis Sary má 2 řádky, Revy 1 řádek → „Detail modelu Sara“ je na y 1656, „Detail modelu Reva“ na y 1627 (rozdíl 29 px).
+- Řešení rozvržením, ne zkracováním textu: oba bloky jako grid s řádky `štítek / název / popis / odkaz` přes **subgrid** (nebo `grid-template-rows` sdílené mezi sloupci), popis zabere stejnou výšku v obou sloupcích, odkaz zarovnaný na společnou linku.
+- Na mobilu (jeden sloupec) beze změny.
+
+### 9.2 Technologie na úvodu – „Víc o řešení“ na stejné výšce (desktop)
+- Změřeno: odkazy na y 3669 / 3612 / 3589 (rozdíl až 80 px).
+- Stejné řešení jako 9.1: tři sloupce se sdílenými řádky (nadpis / text / odkaz), odkaz `align-self: end`. Nadpisy na stejné základní lince, i když se některý zalomí na dva řádky.
+
+### 9.3 Patička – symetrie a rozvržení
+- Teď: značka 475 px, sloupce 171 / 171 / 272 px, různé výšky obsahu.
+- Nově na desktopu **4 stejně široké sloupce** (`repeat(4, 1fr)`, stejná mezera): 1) logo + claim, 2) Kontakt (Petr Kocourek, e-mail, telefon, až bude), 3) Poslechové studio (adresa + odkaz na mapu), 4) Stránky – odkazy **ve dvou sloupcích** (8 odkazů → 2 × 4), aby sloupec nebyl vyšší než ostatní.
+- Nadpisy sloupců na stejné lince a stejným stylem (štítek strojopisem), obsah zarovnaný nahoře.
+- Spodní řádek: vlevo `© 2026 ideTone`, vpravo Obchodní podmínky · Ochrana osobních údajů · Facebook, svisle na střed, linka nad ním přes celou šířku obsahu.
+- Tablet: 2 × 2 sloupce. Mobil: jeden sloupec, menší mezery (viz 9.7).
+
+### 9.4 O ideTone – podpis
+- Pod „Přeji příjemný poslech, Petr Kocourek“ přidat `podpis-petr-kocourek.png` stejně jako v sekci Koncept na úvodu (stejná velikost, stejná animace „napíše se“ při vjetí do obrazovky, alt „Podpis Petr Kocourek“). Jméno textem zůstává (kvůli čitelnosti a SEO).
+
+### 9.5 Kontakt – jednoduchý obecný formulář
+- Na stránce Kontakt nahradit objednávkový formulář **obecným formulářem na dotaz**, co nejjednodušším:
+  - Jméno a příjmení * · E-mail * · Telefon (nepovinné) · Zpráva * · souhlas se zpracováním osobních údajů * · tlačítko „Odeslat zprávu →“.
+  - Žádný výběr modelu, stojanů ani povrchu. Petr Kocourek vše doladí se zákazníkem individuálně.
+- Odkazy „Objednat“ z detailu Sary a Revy vedou na Kontakt s parametrem `?model=sara`. Formulář pak jen **předvyplní zprávu** („Mám zájem o reprosoustavy Sara.“), zákazník ji může upravit. Předmět e-mailu „ideTone – dotaz (Sara)“.
+- Formuláře na stránkách Poslech a Zakázkové projekty zjednodušit také (viz 9.10).
+- Nadpis a texty stránky podle `docs/SEO-TEXTY.md` (K1–K3).
+
+### 9.6 Symetrie na desktopu (všechny stránky)
+- Projít všechny stránky na 1280 a 1536 px a sjednotit:
+  - levý okraj nadpisů sekcí, štítků a obsahu na jednu linku (žádné „odskočené“ bloky),
+  - bloky vedle sebe vždy se stejnou výškou nebo zarovnané na společnou spodní linku (karty, kroky, sloupce s odkazy),
+  - mezery mezi sekcemi přes jeden token (`--section-space`), ne ručně.
+- Výstup: seznam nalezených míst před a po (screenshoty).
+
+### 9.7 Mobil – méně zbytečných mezer
+- Změřeno na 375 px (úvod): mezi koncem obsahu jedné sekce a začátkem další je **190–225 px** (spodní padding 64 px + prázdné místo ~40 px + odsazení prvního obsahu 65–122 px). Výška úvodu 7 618 px.
+- Cíl na ≤ 768 px: mezera mezi obsahem sekcí cca **80–96 px**, uvnitř sekce mezi nadpisem a obsahem 24–32 px, mezi bloky (modely, kroky) 40–48 px. Hero: zmenšit horní odsazení obsahu.
+- Cíl výšky úvodu na mobilu cca −20 % (≈ 6 000 px), bez zmenšování písma.
+- Platí pro všechny stránky (tokeny mezer pro mobil).
+
+### 9.8 SEO texty (až po schválení v `docs/SEO-TEXTY.md`)
+1. **Nejdřív záloha:** zkopírovat celý `src/content/` do `podklady/texty-puvodni/2026-11-06/` (mimo build) a vytvořit git tag `texty-puvodni-2026-11-06`. Do `docs/SPRAVA.md` doplnit, jak texty obnovit.
+2. Nasadit **jen položky se Schváleno = ANO** (nebo s vlastní úpravou Lukáše). Položky NE nechat.
+3. Titulky stránek: zkontrolovat, že se k `seoTitle` nepřidává „| ideTone“ dvakrát a že je výsledek do ~65 znaků.
+4. V3 (vlastní text Revy) nasadit jen pokud ho schválí Petr Kocourek, jinak ponechat TODO.
+
+### 9.9 Obchodní podmínky (až po schválení a doplnění údajů)
+- Text z `docs/OBCHODNI-PODMINKY-NAVRH.md` (část „Obchodní podmínky“, bez tabulky změn) vložit do `src/content/pages/obchodni-podminky.md`.
+- Dokud v textu zůstávají `[…]` (IČO, sídlo, datum, záruka), stránka ukazuje současnou hlášku „Obchodní podmínky připravujeme…“ a `npm run todo` je vypíše.
+- Formulář pro odstoupení od smlouvy jako samostatná příloha (stránka nebo PDF ke stažení), podle návrhu.
+
+### 9.10 Zjednodušit formuláře Poslech a Zakázkové projekty
+- Stejná komponenta a stejná pole jako na Kontaktu: Jméno a příjmení * · E-mail * · Telefon (nepovinné) · Zpráva * · souhlas *.
+- Lišit se smí jen nadpis, text tlačítka a předvyplněná zpráva / nápověda v poli Zpráva:
+  - Poslech: tlačítko „Domluvit poslech →“, nápověda „Napište, kdy by se vám poslech hodil a co rádi posloucháte.“, předmět „ideTone – poslech“.
+  - Zakázkové projekty: tlačítko „Odeslat poptávku →“, nápověda „Popište místnost, současnou sestavu a vaši představu.“, předmět „ideTone – zakázka“.
+- Zrušit pole pro termín, studio / doma, rozměry místnosti, sestavu a rozpočet. Petr vše doladí se zákazníkem individuálně.
+- Formspree může zůstat jeden formulář pro všechny tři stránky (rozlišení podle předmětu), nebo tři ID – podle toho, co je teď v `site.ts`.
+
+### Výstup dávky 9
+1. Screenshoty úvodu, O ideTone, Kontaktu a patičky na 375 / 1280 px.
+2. Výška úvodu na 375 px před a po.
+3. Lighthouse mobil a axe pro úvod a Kontakt.
+4. Na konci commitnout i `docs/UPRAVY.md`, `docs/SEO-TEXTY.md` a `docs/OBCHODNI-PODMINKY-NAVRH.md`.
+
+### Výsledek dávky 9 (Claude Code, 6. 11. 2026)
+- **9.1** Sloupce modelů na úvodu stejně vysoké (`.pf--column`: tělo jako flex sloupec, odkaz `margin-top: auto`). Na 1280 px: popisy Sara / Reva y 1683 / 1683, „Detail modelu“ 1740 / 1740 (dřív rozdíl 29 px). Místo subgridu flex, protože tělo bloku má animaci odkrytí (`display: contents` by ji zrušil). Mobil beze změny.
+- **9.2** Technologie: `.tech__col` jako subgrid (nadpis / text / odkaz) od 768 px. Na 1280 px nadpisy 3556 ×3, texty 3613 ×3, „Víc o řešení“ 3769 ×3 (dřív rozdíl až 80 px).
+- **9.3** Patička: desktop 4 stejné sloupce (272 px), nadpisy štítkem strojopisem na jedné lince (logo 1 px rozdíl), obsah nahoře; u studia odkaz „Mapa (Mapy.cz)“; Stránky ve dvou sloupcích po 4 (řazení po sloupcích). Spodní řádek svisle na střed, linka přes celou šířku. Tablet 2 × 2, mobil 1 sloupec s menšími mezerami. **Odchylka:** mezi 1024 a 1279 px se dva sloupce odkazů do 1/4 šířky nevejdou („Zakázkové projekty“ + „Technologie“) → tam jsou odkazy pod sebou.
+- **9.4** O ideTone: pod jménem podpis `podpis-petr-kocourek.png` (10 rem jako v Konceptu, alt „Podpis Petr Kocourek“, pole `signature.image` v `o-idetone.md`). Animace „napíše se“ při vjetí do obrazovky je nová společná `[data-reveal-sign]` (maska jako u podpisu v hero, `--dur-sign`, zpoždění `--delay-reveal-sign` 600 ms) – stejná i v Konceptu na úvodu, kde dřív animace nebyla. Při omezeném pohybu jen prolnutí, bez JS vidět hned.
+- **9.5** Kontakt: obecný formulář „Napište mi“ (NÁVRH nadpisu) – jméno*, e-mail*, telefon (nepovinné), zpráva*, souhlas*, „Odeslat zprávu →“. `?model=sara` předvyplní „Mám zájem o reprosoustavy Sara.“ a předmět „ideTone – dotaz (Sara)“. Kotva `#objednavka` → `#formular` (odkazy Objednat z detailů, přesměrování `/index.php/objednat/`, `orderLink`). Titulek a popis stránky podle K1–K2 (`docs/SEO-TEXTY.md`; nasazeno, protože 9.5 je výslovně odkazuje a starý text mluvil o objednávce), K3 beze změny.
+- **9.6** Audit 1280 a 1536 px (všechny stránky, dočasný test): levý okraj nadpisů a štítků všude na linii kontejneru (40 / 168 px), odskoky nenalezeny (jen skryté nadpisy pro čtečky). Bloky vedle sebe s různou výškou jen tam, kde je záměrně lepivý panel (detail modelu: galerie × informace; Zakázkové projekty: fotka u formuláře). Opraveno: modely a technologie na úvodu (9.1, 9.2), patička (9.3). Mezery sekcí `space="s"` a `space="m"` jsou nově odvozené z `--section-space` (½ a ¾), už ne ručně.
+- **9.7** Nové tokeny `--head-space` (nadpis → obsah: 48 px, mobil 28 px), `--block-space` (bloky: 48 / 40 px), `--block-space-l` (modely: 96 / 44 px); `--section-space` na mobilu 44 px. Mezera mezi obsahem sekcí na 375 px **89–93 px** (dřív 190–225 px s nedokončeným odkrytím, ve skutečnosti ~130 px). Hero na mobilu bez centrování na výšku obrazovky (horní odsazení 16 px). Na mobilu nižší fotky: kroky Procesu 16 : 9, fotka Technologií 3 : 2 (místo 4 : 5), scéna modelů 15 rem. **Výška úvodu na 375 px: 7 618 → 6 597 px (−13 %)**, písmo beze změny. Cíl −20 % (≈ 6 000) by vyžadoval zkrátit texty nebo vyřadit fotky – nechávám na rozhodnutí.
+- **9.8** Záloha hotová: `podklady/texty-puvodni/2026-11-06/content/` (stav před dávkou 9) a git tag `texty-puvodni-2026-11-06`, postup obnovy v `docs/SPRAVA.md`. Titulky: nová funkce `pageTitle()` přidá „| ideTone“ jen tam, kde značka v titulku chybí (opraveno i dřívější „O ideTone – Petr Kocourek | ideTone“). **Texty nenasazeny** – sloupec Schváleno v `docs/SEO-TEXTY.md` je prázdný (kromě K1–K2, viz 9.5).
+- **9.9** Čeká – v návrhu obchodních podmínek chybí údaje klienta (IČO, sídlo, datum, záruka). Stránka zatím ukazuje původní hlášku.
+- **9.10** Poslech a Zakázkové projekty: stejná komponenta a pole jako Kontakt; tlačítka „Domluvit poslech →“ / „Odeslat poptávku →“, nápověda u Zprávy (navázaná přes `aria-describedby`), předměty „ideTone – poslech“ / „ideTone – zakázka“. Zrušeny výběr modelu, studio / doma, termín, místnost, sestava, rozpočet. Formspree: klíče `contact` / `listening` / `custom` v `site.ts` (může být jedno ID u všech tří).
+- Ověření: Lighthouse mobil (`dist/`) úvod výkon 99 / přístupnost 100 / best practices 100, Kontakt 100 / 100 / 100 (SEO 66–69 jen kvůli `noindex` v testovacím provozu); axe WCAG 2.2 AA bez chyb (všechny stránky); testy 101 zelené (formuláře přepsané na nová pole); `npm run links` v pořádku. Screenshoty `screenshots/davka9-*` (úvod, O ideTone, Kontakt, patička na 375 / 1280).
+

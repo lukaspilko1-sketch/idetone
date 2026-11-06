@@ -62,7 +62,7 @@ Na stránkách (`src/content/pages/*.md`, `home.yaml`) vyměňte `imageSlot: { l
 V `src/content/home.yaml` přepínač `showPrices` (teď `false`). Cena je vždy na detailu modelu, v přehledu a ve srovnávací tabulce. Technické parametry jsou jen na detailu a ve srovnávací tabulce.
 
 ### Tlačítko v hlavičce
-`src/config/site.ts` → `headerCta` (`label`, `href`). Teď „Domluvit poslech“ → `/poslech/#formular`. Pro „Objednat“ nastavte `href: '/kontakt/#objednavka'`, `null` tlačítko skryje.
+`src/config/site.ts` → `headerCta` (`label`, `href`). Teď „Domluvit poslech“ → `/poslech/#formular`. Pro „Objednat“ nastavte `href: '/kontakt/#formular'`, `null` tlačítko skryje.
 
 ### Pozadí hero (papír, světlo, mřížka, kóty)
 `home.yaml` u hero → `decor` (`grain`, `light`, `grid`, `dimensions`: `true` / `false`). Kóty berou rozměry z `specs.dimensions` produktu v `dimensionsFrom` (teď `sara`).
@@ -96,10 +96,10 @@ Srovnávací tabulka, formuláře i sitemap se doplní samy.
 
 ## Formuláře (Formspree)
 
-1. Na formspree.io (free tarif stačí) založte 3 formuláře: Objednávka, Poslech, Zakázka. Jako příjemce nastavte pkocourek@idetone.cz.
+1. Na formspree.io (free tarif stačí) založte formulář (stačí jeden pro Kontakt, Poslech i Zakázku – rozliší se předmětem e-mailu „ideTone – dotaz / poslech / zakázka“, nebo tři samostatné). Jako příjemce nastavte pkocourek@idetone.cz.
 2. ID formuláře (část adresy za `/f/`, např. `xyzabcde`) vložte do `src/config/site.ts`:
    ```ts
-   export const formspree = { order: 'xyzabcde', listening: '…', custom: '…' };
+   export const formspree = { contact: 'xyzabcde', listening: 'xyzabcde', custom: 'xyzabcde' };
    ```
 3. Commit + push. Do té doby formulář po odeslání zobrazí, že odesílání není aktivní, a odkáže na e-mail.
 
@@ -159,6 +159,27 @@ Bez úprav kódu – jen proměnné, jeden soubor a DNS:
 | `npm run todo` | seznam `TODO(klient)`, `TODO(lukas)` a `NÁVRH` |
 
 Pro `links` a `lighthouse` s podsložkou: v Git Bashi `MSYS_NO_PATHCONV=1 BASE_PATH=/idetone npm run build` a stejně pro `npm run links` / `npm run lighthouse`.
+
+## Obnovení původních textů (záloha před SEO texty, dávka 9.8)
+
+Stav všech textů před nasazením SEO textů (6. 11. 2026) je ve dvou podobách:
+
+- složka `podklady/texty-puvodni/2026-11-06/content/` (kopie `src/content/`, do webu se negeneruje),
+- git tag `texty-puvodni-2026-11-06`.
+
+Obnovení jednoho souboru (např. Kontakt) z tagu:
+
+```bash
+git checkout texty-puvodni-2026-11-06 -- src/content/pages/kontakt.md
+```
+
+Obnovení všech textů najednou:
+
+```bash
+git checkout texty-puvodni-2026-11-06 -- src/content
+```
+
+Potom commit a push. Pozor: vrátí i ceny a fotky v `src/content/` do stavu z 6. 11. 2026 – zkontrolujte `git diff --staged` před commitem.
 
 ## Vrácení chybné změny
 
