@@ -14,7 +14,7 @@ const rows = (Object.keys(specLabels) as SpecKey[])
   .filter((row) => row.value !== undefined && row.value !== '');
 ---
 
-<table class="spec">
+<table class="spec glass-card">
   {caption && <caption class="visually-hidden">{caption}</caption>}
   <tbody>
     {rows.map((row) => (
@@ -29,9 +29,8 @@ const rows = (Object.keys(specLabels) as SpecKey[])
 <style>
   .spec {
     width: 100%;
-    border-collapse: collapse;
-    background: var(--c-papir);
-    border: var(--border);
+    border-collapse: separate;
+    border-spacing: 0;
     font-family: var(--font-mono);
     font-size: var(--fs-data);
     line-height: 1.55;

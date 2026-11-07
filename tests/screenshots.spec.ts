@@ -204,3 +204,29 @@ for (const width of [375, 1280]) {
     });
   }
 }
+
+// Dávka 10 (docs/UPRAVY.md): barvy pásů a sklo – úvod, Technologie, Kontakt na 1280 / 375.
+// FAZE=pred | po (před a po změně), výstup screenshots/davka10-<faze>-<stránka>-<šířka>.png
+for (const width of [1280, 375]) {
+  for (const [name, path] of [
+    ['uvod', '/'],
+    ['technologie', '/technologie/'],
+    ['kontakt', '/kontakt/'],
+  ]) {
+    test(`davka10 ${name} @ ${width}`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(path);
+      await ready(page);
+      await page.addStyleTag({ content: '*{transition:none!important;animation:none!important}' });
+      await page.evaluate(() =>
+        document
+          .querySelectorAll('[data-reveal],[data-reveal-img],[data-reveal-sign]')
+          .forEach((e) => e.classList.add('is-revealed')),
+      );
+      await page.screenshot({
+        path: `screenshots/davka10-${process.env.FAZE ?? 'po'}-${name}-${width}.png`,
+        fullPage: true,
+      });
+    });
+  }
+}

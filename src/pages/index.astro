@@ -407,7 +407,7 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
     font-size: min(0.56em, 5.8cqi);
     white-space: nowrap;
     letter-spacing: 0;
-    color: var(--c-dub-text);
+    color: var(--c-dub-ink);
   }
 
   /* část věty se nezalomí uvnitř, řádek se láme jen u oddělovače */
@@ -486,7 +486,7 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
     position: absolute;
     inset: 0;
     pointer-events: none;
-    color: var(--c-dub-text);
+    color: var(--c-dub-ink);
     font-family: var(--font-mono);
     font-size: var(--fs-label);
   }
@@ -885,8 +885,8 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
     background: var(--glass-card-wood);
     border: 1px solid var(--glass-edge-wood);
     border-radius: var(--radius-m);
-    backdrop-filter: blur(var(--glass-blur));
-    -webkit-backdrop-filter: blur(var(--glass-blur));
+    backdrop-filter: blur(var(--glass-blur-dark));
+    -webkit-backdrop-filter: blur(var(--glass-blur-dark));
   }
 
   .listen__side address {

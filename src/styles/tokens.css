@@ -5,12 +5,16 @@
  */
 :root {
   /* Barvy */
-  --c-len: #e9e6df; /* pozadí stránek */
-  --c-papir: #f5f3ee; /* karty, formuláře, tabulky */
+  /* Dávka 10: Pískový dub – pozadí stránky a dva střídavé pásy sekcí (jen barvy, žádná textura) */
+  --c-len: #eadfcb; /* pozadí stránek (podklad pod pásy) */
+  --band-1: #f3ebdd; /* pás 1 – světlejší */
+  --band-2: #e7d8be; /* pás 2 */
+  --c-papir: var(--band-1); /* tabulky, pole, pozadí menu */
   --c-uhel: #262422; /* teplý antracit – jediná těžká barva: hero, pruh Poslech, patička, primární tlačítko */
   --c-uhel-hover: #34312d;
   --c-dub: #a8743f; /* akcent – jen velký text a dekorace, ne plochy */
-  --c-dub-text: #8a5c2e; /* odkazy v textu (AA na lnu i papíru) */
+  --c-dub-text: #8a5c2e; /* plochy a velký text v dubu (tlačítka); malý text v dubu je --c-dub-ink */
+  --c-dub-ink: #6e4826; /* malý dubový text (štítky, odkazy): ≥ 5,7 : 1 na lnu i obou pásech, i nad září */
   --c-dub-light: #c99560; /* akcent na tmavé ploše */
   /* Dub výrazněji (dávka 4) – jen přes tyto tokeny, ať jde dub snadno ztlumit */
   --c-dub-deep: #6e4826; /* hover primárních tlačítek, text tlačítka na dubu */
@@ -23,12 +27,12 @@
   --btn-primary-bg: var(--c-dub-text); /* primární CTA v dubu (#8A5C2E, s #F5F0E8 cca 5 : 1) */
   --btn-primary-hover: var(--c-dub-deep);
   --btn-primary-text: var(--c-on-wood);
-  --c-eyebrow: var(--c-dub-text); /* štítky sekcí a typy modelů */
+  --c-eyebrow: var(--c-dub-ink); /* štítky sekcí a typy modelů */
   --c-link-underline: var(--c-dub); /* podtržení odkazů */
   --c-grafit: #1f2421; /* text */
   --c-salvej: #8e9b88; /* štítky, linky grafů */
   --c-line: #cfcac0; /* linky, rámečky */
-  --c-muted: #5c635e; /* sekundární text */
+  --c-muted: #4f5651; /* sekundární text (≥ 5,3 : 1 na pásech, 4,6 : 1 nad září) */
   --c-on-dark: #edeae3; /* text na tmavé ploše */
   --c-on-dark-muted: #c8c2b8; /* sekundární text na tmavé ploše */
   --c-line-dark: #45413c; /* linky na tmavé ploše */
@@ -38,7 +42,7 @@
   --paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.12 0 0 0 0 0.11 0 0 0 0 0.1 0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   --paper-grain-opacity: 0.2;
   --c-chart: #ffffff; /* podklad grafů měření (mají bílé pozadí) */
-  --c-field: #fdfcf9; /* pozadí polí formuláře na papíru */
+  --c-field: rgb(255 255 255 / 0.7); /* pozadí polí formuláře na skle (dávka 10.3) */
   --c-error: #9e3b2b; /* chyby ve formuláři (cihlová, AA na papíru) */
 
   /* Sklo (glass) – tmavé plochy jako matné sklo nad rozostřenou fotkou dřeva */
@@ -46,10 +50,17 @@
   --glass-glow-opacity: 0.55; /* síla barevného prosvítání fotky */
   --glass-card: rgb(255 255 255 / 0.06); /* skleněná karta na tmavé ploše */
   --glass-edge: rgb(255 255 255 / 0.12); /* hrana skla */
-  --glass-blur: 18px;
-  --glass-light: rgb(233 230 223 / 0.78); /* světlé sklo (lišta s cenou) */
-  --glass-header: rgb(233 230 223 / 0.94); /* hlavička po scrollu – obsah pod ní neprosvítá */
+  --glass-blur-dark: 18px; /* rozostření skla na tmavé / dubové ploše */
+  --glass-light: rgb(234 223 203 / 0.78); /* světlé sklo (lišta s cenou) */
+  --glass-header: rgb(234 223 203 / 0.94); /* hlavička po scrollu – obsah pod ní neprosvítá */
   --glass-header-blur: 20px;
+  /* Dávka 10.2–10.3: záře na pásech a světlé sklo karet. Sílu skla jde změnit těmito třemi hodnotami:
+     Bez skla: --glow 0 / bg .7 / blur 0 · Jemné (zvoleno): .14 / .56 / 12 px
+     Znatelné: .3 / .4 / 18 px · Výrazné: .5 / .28 / 26 px */
+  --glow: 0.14;
+  --glass-bg: rgb(255 255 255 / 0.56);
+  --glass-line: rgb(255 255 255 / 0.8);
+  --glass-blur: 12px;
   --glass-overlay: rgb(38 36 34 / 0.82); /* mobilní menu, lightbox – sklo přes stránku */
 
   /* Typová škála 13 / 16 / 20 / 26 / 35 / 50 (H1 max. 56) */
@@ -190,6 +201,7 @@
 /* Prohlížeče bez backdrop-filter: sklo nahradí plná barva (kvůli čitelnosti) */
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   :root {
+    --glass-bg: rgb(255 255 255 / 0.82);
     --glass-light: var(--c-len);
     --glass-header: var(--c-len);
     --glass-overlay: var(--c-uhel);
@@ -205,5 +217,6 @@
     --pf-stage-h: 12rem;
     --section-space: 2.5rem;
     --m-gap: var(--space-5); /* 9b.1: mezera uvnitř sloupců na mobilu */
+    --glass-blur: 8px; /* dávka 10.3: lehčí rozostření kvůli výkonu */
   }
 }

@@ -42,7 +42,7 @@ const messages = {
 };
 ---
 
-<section class="cf" id={id} aria-labelledby={`${id}-title`}>
+<section class="cf glass-card" id={id} aria-labelledby={`${id}-title`}>
   <h2 id={`${id}-title`} class="cf__title">
     {title}
   </h2>
@@ -323,9 +323,6 @@ const messages = {
 <style>
   .cf {
     padding: clamp(var(--space-5), 4vw, var(--space-7));
-    background: var(--c-papir);
-    border: var(--border);
-    border-radius: var(--radius-m);
   }
 
   .cf__title {
@@ -338,7 +335,7 @@ const messages = {
     border: 1px dashed var(--c-dub);
     border-radius: var(--radius-s);
     font-size: var(--fs-small);
-    color: var(--c-dub-text);
+    color: var(--c-dub-ink);
   }
 
   .cf__form {

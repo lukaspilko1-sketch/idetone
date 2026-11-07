@@ -63,7 +63,7 @@ const { studio } = settings;
           <h3>{typo(s.title)}</h3>
           {/* Sestava ve studiu ze settings.yaml (studio.system) jako tabulka strojopisem */}
           {s.id === 'sestava' && studio.system.length > 0 && (
-            <table class="system">
+            <table class="system glass-card">
               <caption class="visually-hidden">Sestava v poslechovém studiu</caption>
               <tbody>
                 {studio.system.map((row) => (
@@ -157,9 +157,8 @@ const { studio } = settings;
     width: 100%;
     max-width: 40rem;
     margin-bottom: var(--space-4);
-    border-collapse: collapse;
-    background: var(--c-papir);
-    border: var(--border);
+    border-collapse: separate;
+    border-spacing: 0;
     font-family: var(--font-mono);
     font-size: var(--fs-data);
   }

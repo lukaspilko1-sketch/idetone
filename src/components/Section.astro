@@ -65,12 +65,35 @@ const {
 </Tag>
 
 <style>
-  .section--len {
-    background: var(--c-len);
+  /* Dávka 10: pásy 1 / 2 se střídají (pořadí řeší base.css přes --band), záře dává sklu co rozostřit.
+     overflow: clip (ne hidden) – nerozbije lepivé panely (position: sticky) uvnitř sekce */
+  .section--len,
+  .section--papir {
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+    background: var(--band, var(--band-1));
   }
 
-  .section--papir {
-    background: var(--c-papir);
+  .section--len::before,
+  .section--papir::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(480px 340px at 10% 35%, rgb(168 116 63 / var(--glow)), transparent 70%),
+      radial-gradient(
+        560px 380px at 88% 75%,
+        rgb(255 255 255 / calc(var(--glow) * 2.4)),
+        transparent 70%
+      ),
+      radial-gradient(
+        300px 220px at 55% 10%,
+        rgb(138 92 46 / calc(var(--glow) * 0.7)),
+        transparent 70%
+      );
   }
 
   .section--uhel {
