@@ -512,7 +512,7 @@ Dřívější změřené „190–225 px“ (9.7) i „130 px“ byly zkreslené
 
 ## Dávka 10 – jemné barevné pásy sekcí a sklo na kartách
 
-Stav: **SCHVÁLENO** (Lukáš, 6. 11. 2026). Výběr v náhledu „ideTone – barvy sekcí“ (Cowork): varianta **Pískový dub**, sklo **Jemné**. Dřevěné fotografické pozadí se **nepoužije** (Lukáš zamítl). Jde jen o změnu barevných tokenů a pozadí pásů; texty, rozvržení ani obrázky se nemění. Dávka 9b má přednost, dělat až po ní.
+Stav: **HOTOVO** (7. 11. 2026). Původně SCHVÁLENO (Lukáš, 6. 11. 2026). Výběr v náhledu „ideTone – barvy sekcí“ (Cowork): varianta **Pískový dub**, sklo **Jemné**. Dřevěné fotografické pozadí se **nepoužije** (Lukáš zamítl). Jde jen o změnu barevných tokenů a pozadí pásů; texty, rozvržení ani obrázky se nemění. Dávka 9b má přednost, dělat až po ní.
 
 ### 10.1 Tokeny barev (light, `src/styles/tokens.css`)
 | Token | Dnes | Nově | Použití |
@@ -552,3 +552,27 @@ Token `--glow: .14` (Jemné).
 2. Výsledek axe a Lighthouse (úvod mobil: výkon ≥ 95, přístupnost 100). Pozadí s `backdrop-filter` nesmí zhoršit výkon o více než 3 body.
 3. Tabulka použitých barev a poměrů kontrastu dubových textů.
 4. Commit včetně `docs/UPRAVY.md` a `docs/idetone-rozhodnuti.md` (doplnit rozhodnutí: barvy Pískový dub, sklo Jemné, žádné dřevo na pozadí, tmavší dubový text na pásu 2). Dávku označit HOTOVO.
+
+### Výsledek dávky 10 (Claude Code, 7. 11. 2026)
+- **10.1 Barvy.** `--c-len` (pozadí `body`) #EADFCB, nové `--band-1` #F3EBDD a `--band-2` #E7D8BE, `--c-papir` je teď alias na `--band-1`. Pásy se střídají podle pořadí sekcí v `<main>` (`main > .section--len / --papir:nth-of-type`, na úvodu s obrácenou paritou, aby první pás po hero byl světlejší) – žádná změna v šablonách. Pruh Poslech zůstal ořechový, hero beze změny; přechod hero → první pás je plynulý (gradient z pozadí do pásu na 6 rem), bez ostré hrany. Žádný obrázek ani textura dřeva. Linky mezi sekcemi (`divider`) zůstaly, aby se nezměnilo rozvržení.
+- **10.2 Záře.** `.section--len` a `.section--papir` mají `::before` se třemi radiálními přechody podle zadání, `--glow: .14`. **Odchylka:** místo `overflow: hidden` je `overflow: clip` (stejné ořezání záře, ale nerozbije lepivé panely `position: sticky` na detailu modelu a u poptávky).
+- **10.3 Sklo.** Tokeny `--glass-bg` .56, `--glass-line` .8, `--glass-blur` 12 px (mobil < 768 px 8 px; bez `backdrop-filter` `--glass-bg` .82), třída `.glass-card` v `base.css` (blur + saturate 1,25, vnitřní světlo a stín podle zadání). Použito na kartách, které na webu existují: formuláře (Kontakt, Poslech, Zakázky), srovnávací tabulka, specifikace, tabulka sestavy studia, schéma zvukovodu. Pole formulářů `rgba(255,255,255,.7)`. Stupně síly skla jsou popsané v komentáři u tokenů (`--glow`, `--glass-bg`, `--glass-blur`). **Poznámka:** modely na úvodu a tři sloupce Technologií na úvodu nejsou karty (jen text a fotka na pásu), a protože se rozvržení nemělo měnit, karty jsem k nim nepřidával; sklo by tam šlo doplnit samostatně. Dosavadní tmavé sklo (hero panel, pruh Poslech, lišta s cenou) mělo token `--glass-blur`, přejmenoval jsem ho na `--glass-blur-dark`, vzhled beze změny.
+- **10.4 Kontrast.** Nový token `--c-dub-ink` #6E4826 pro malý dubový text: štítky sekcí (`--c-eyebrow`), odkazy v textu, druhý řádek hero, kóty, podnadpisy kroků, aktivní položka podmenu, hlášky formuláře. Tlačítka a plochy zůstávají v `--c-dub-text` #8A5C2E (bílý text na nich 5,07 : 1), velký dekorativní dub #A8743F beze změny. Zjistil jsem, že i #8A5C2E má na samotném podkladu #EADFCB jen 4,36 : 1, proto je tmavší text všude na světlých plochách, ne jen na pásu 2. `--c-muted` ztmaven z #5C635E na #4F5651 (na pásu 2 by měl jen 4,40 : 1).
+- **Změny mimo zadání, nutné kvůli barvám:** `--glass-header` a `--glass-light` přebarveny na #EADFCB (hlavička a lišta s cenou musí odpovídat novému pozadí).
+
+### Výstup dávky 10
+1. Screenshoty před / po (úvod, Technologie, Kontakt; 1280 a 375 px): `screenshots/davka10-pred-*.png` a `screenshots/davka10-po-*.png` (složka je mimo git).
+2. Axe WCAG 2.2 AA bez chyb na všech stránkách a šířkách (testy 101 zelených), Lighthouse mobil: úvod **výkon 100 / přístupnost 100 / best practices 100** (před dávkou 99 / 100 / 100, tedy bez zhoršení), ostatní stránky výkon 96–99, přístupnost 100 (SEO 66–69 jen kvůli `noindex`).
+3. Kontrast (poměr, WCAG; sklo nad září a záře s dubem jsou odhad nejhoršího místa):
+
+| Text | Podklad len #EADFCB | Pás 1 #F3EBDD | Pás 2 #E7D8BE | Sklo nad pásem 2 (~#F2E9D6) | Záře dub na pásu 2 (~#DCC7A4) |
+|---|---|---|---|---|---|
+| Dub tmavý #6E4826 (malý text) | 6,08 | 6,78 | 5,72 | 6,65 | 4,87 |
+| Dub #8A5C2E (jen plochy, velký text) | 4,36 | 4,86 | 4,10 | 4,77 | 3,49 |
+| Tlumený #4F5651 | 5,72 | 6,38 | 5,38 | 6,25 | 4,58 |
+| Tlumený #5C635E (dříve) | 4,68 | 5,21 | 4,40 | 5,12 | 3,75 |
+| Grafit #1F2421 | 11,94 | 13,31 | 11,23 | 13,06 | 9,57 |
+| Dub #A8743F (dekorace, ne text) | 3,04 | 3,39 | 2,86 | 3,32 | 2,44 |
+
+4. Commit včetně `docs/UPRAVY.md` a `idetone-rozhodnuti.md` (soubor je v kořeni projektu, ne v `docs/`), rozhodnutí doplněno.
+
