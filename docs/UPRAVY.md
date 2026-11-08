@@ -576,3 +576,135 @@ Token `--glow: .14` (Jemné).
 
 4. Commit včetně `docs/UPRAVY.md` a `idetone-rozhodnuti.md` (soubor je v kořeni projektu, ne v `docs/`), rozhodnutí doplněno.
 
+
+
+## Dávka 11 – světlejší paleta s grafitovým pruhem, vzdušnější rozvržení, jednotná tlačítka
+
+Stav: **HOTOVO** (8. 11. 2026). Původně SCHVÁLENO (Lukáš, 8. 11. 2026). Výběr v náhledu „ideTone – kontrast a tlačítka“ (Cowork): paleta **Světlá + grafit**, vzdušnost **Vzdušnější**. Důvod: po dávce 10 jsou pásy příliš tmavé a málo od sebe odlišné a tlačítka nemají systém. Dávka **nahrazuje barvy z 10.1**; sklo a záře z dávky 10 zůstávají (úpravy v 11.5). **Texty se nemění** (ani texty tlačítek). Soubor `NAVRHOVANE-ZMENY.md` z kořene repozitáře se **nepoužívá** (jen Lukášův nápad, vybrané položky jsou už v této dávce).
+
+### 11.1 Barvy a pásy (`src/styles/tokens.css`)
+| Token | Dnes (dávka 10) | Nově |
+|---|---|---|
+| pozadí stránky (`--c-len`) | #EADFCB | **#F7F3EA** |
+| pás 1 (`--band-1`) | #F3EBDD | **#FCFAF5** |
+| pás 2 (`--band-2`) | #E7D8BE | **#F0E6D2** |
+| tmavý pruh (`--band-dark`) | nové | **#262422** |
+- Pásy se střídají 1 / 2 / 1 / 2 podle pořadí; tmavý pruh a ořechový Poslech jsou výjimky. Dva stejné pásy vedle sebe nesmí být.
+- **Tmavý pruh = sekce Technologie na úvodu** (jako v náhledu). Na úvodu však po Technologii následuje ořechový Poslech, takže dvě sytá pásma sousedí. Zkontrolovat na screenshotu 1280 a 375 px. Pokud to působí těžce, **použít tmavý pruh na „Proces vývoje“** a Technologii nechat světlou (pás 2); varianta se musí v „Výsledku“ popsat. Nic jiného nevymýšlet.
+- Na podstránkách tmavý pruh **nepřidávat** (jen Poslech zůstává ořechový, patička zůstává světlá na `--band-2` s linkou nahoře).
+- Tmavý pruh: text #F1ECE2, tlumený text #CFC8BA, štítky #E5C9A2, nadpisy #FFFFFF, karty `rgba(255,255,255,.06)` s okrajem `rgba(255,255,255,.12)` bez stínu, záře `radial-gradient(520px 360px at 85% 20%, rgba(201,149,96,.22), transparent 70%)`.
+- Hlavička: sklo `rgba(247,243,234,.9)` (token `--glass-header`), `--glass-light` stejně.
+- Nic dalšího nepřebarvovat, hero zůstává (papír, kresba, zrno).
+
+### 11.2 Vzdušnost (jen od 768 px; mobil se nezvětšuje)
+- `--section-space` (svislé odsazení sekcí): **`clamp(56px, 9vw, 128px)`** od 768 px. **Pod 768 px zůstává 44 px** jako po dávce 9.7 (výška úvodu na mobilu nesmí vzrůst o víc než 3 %).
+- Mezery mezi kartami a sloupci: **28 px** (dnes 20 px). Odsazení v kartě **26 px**.
+- Mezera nadpis sekce → obsah (`--head-space`): **`calc(28px * 1.6)`** ≈ 45 px na desktopu.
+- Řádkování odstavců v sekcích **1,7** (dnes 1,6), max. šířka řádku **56ch**.
+- Nechat jemnou dubovou linku nad sekcemi (`linear-gradient(90deg, var(--c-dub), transparent 40%)`, průhlednost .5), kde už je `divider`.
+- Texty nezkracovat, rozvržení sekcí neměnit.
+
+### 11.3 Systém tlačítek (jednotně na všech stránkách)
+Tři druhy, každý s jedním úkolem. Všechny: výška **48 px**, padding **0 22px**, poloměr `--radius-s` (6 px), písmo Figtree 600 15 px, `border: 1.5px solid`, `white-space: nowrap`, `gap: 8px`, viditelný `:focus-visible`, `prefers-reduced-motion` bez přechodu.
+
+| Druh | Světlý podklad | Tmavý a ořechový podklad | Kdy |
+|---|---|---|---|
+| **Plné** (`.btn--primary`) | pozadí #8A5C2E, text #FFFFFF, hover #5E3D22 | pozadí #F5F0E8, text #5E3D22, hover #FFFFFF | Hlavní akce stránky, **max. jedna na obrazovku** |
+| **Obrys** (`.btn--secondary`) | průhledné, text #1F2421, okraj #1F2421, hover pozadí #1F2421 text #FFFFFF | text #FFFFFF, okraj `rgba(255,255,255,.75)`, hover pozadí #FFFFFF text #262422 | Druhá volba vedle plného nebo vedlejší akce |
+| **Textový** (`.link`, sjednotit `.arrow-link` a `.pf__link`) | text #6E4826, `border-bottom: 1px solid #8A5C2E`, `padding-bottom: 3px`, hover okraj průhledný | text #F1DFC6, okraj #E5C9A2 | Přechod na detail uvnitř obsahu |
+
+Přiřazení (podle současného stavu webu; texty tlačítek neměnit):
+- Hlavička „Domluvit poslech →“: plné.
+- Karty modelů „Detail modelu Sara / Reva →“: textový. „Porovnat modely →“: obrys.
+- Technologie „Víc o řešení →“, „O ideTone →“, „Proces vývoje podrobně“: textový. „Jak to funguje →“: obrys.
+- Pruh Poslech: „Zarezervujte si poslech…“ plné (světlé na ořechu), případná vedlejší akce obrys.
+- Odeslání formulářů (Kontakt, Poslech, Zakázky): plné.
+- Projít **všechny stránky** (úvod, Reprosoustavy, Sara, Reva, Technologie, Poslech, Zakázky, O ideTone, Kontakt, 404, Obchodní podmínky) a každé tlačítko a odkaz s šipkou přiřadit k jednomu ze tří druhů. Zrušit zbylé vlastní styly tlačítek. Výsledek zapsat jako tabulku (stránka · text · druh).
+- Na žádné obrazovce nesmí být dvě plná tlačítka vedle sebe.
+
+### 11.4 Kontrast
+- Znovu změřit axe WCAG 2.2 AA na všech stránkách a šířkách. Malý dubový text na světlém podkladu zůstává `--c-dub-ink` #6E4826.
+- Na tmavém pruhu změřit text #F1ECE2, #CFC8BA a #E5C9A2 (požadavek ≥ 4,5 : 1, velký text ≥ 3 : 1) a poměry zapsat do tabulky.
+- Plné tlačítko #8A5C2E s bílým textem musí zůstat ≥ 4,5 : 1.
+
+### 11.5 Sklo a záře (úpravy proti dávce 10)
+- Sklo zůstává stupně Jemné (`--glass-bg` .56 → na světlejším podkladu zvýšit na **.62**, okraj `rgba(255,255,255,.9)`, blur 12 px, na mobilu 8 px).
+- Záře `--glow` na světlých pásech **.12** (dnes .14).
+- Modely na úvodu a tři sloupce Technologie nejsou karty, proto tam sklo zatím není. **Nepřidávat** bez dalšího zadání.
+
+### Výstup dávky 11
+1. Screenshoty úvodu (celý), Technologie a Kontaktu na 1280 a 375 px před a po (`screenshots/davka11-*`, mimo git).
+2. Výška úvodu na 375 px před a po (nárůst max. 3 %).
+3. Axe a Lighthouse (úvod mobil: výkon ≥ 95, přístupnost 100; bez zhoršení o víc než 3 body).
+4. Tabulky kontrastu (světlé pásy, tmavý pruh, plné tlačítko) a tabulka přiřazení tlačítek (11.3).
+5. Popis, zda tmavý pruh zůstal na Technologii, nebo se přesunul na Proces vývoje.
+6. Commit včetně `docs/UPRAVY.md` a `idetone-rozhodnuti.md` (je v kořeni projektu, ne v `docs/`) (doplnit rozhodnutí: paleta Světlá + grafit, vzdušnější od 768 px, systém tlačítek). Dávku označit HOTOVO.
+
+### Výsledek dávky 11 (Claude Code, 8. 11. 2026)
+- **11.1 Barvy a pásy.** `--c-len` #F7F3EA, `--band-1` #FCFAF5, `--band-2` #F0E6D2, nový `--band-dark` #262422; `--glass-header` a `--glass-light` `rgba(247,243,234,.9)`. Nový tón `Section tone="dark"` (grafitový pruh bez fotky): text #F1ECE2, tlumený #CFC8BA, štítky #E5C9A2, nadpisy #FFF, karty `rgba(255,255,255,.06)` s okrajem `.12` bez stínu, záře podle zadání. Pásy se střídají 1 / 2 / 1 / 2 (dark a ořechový Poslech parity neovlivňují), dva stejné vedle sebe nejsou.
+- **Varianta tmavého pruhu: přesunut na „Proces vývoje“.** Nejdřív jsem ho dal na Technologii podle zadání. Na screenshotu 1280 px ale pod ním následoval ořechový Poslech a hned za ním tmavá patička, tedy tři těžké plochy po sobě. Podle dohodnuté záložní varianty je proto tmavý pruh na Procesu vývoje a Technologie je světlá (pás 2); pořadí je světlý pás 1 (Modely) → pás 2 (Koncept) → **grafit (Proces)** → pás 2 (Technologie) → ořech (Poslech) → patička. Na mobilu (375 px) stejné pořadí. Na podstránkách žádný tmavý pruh nepřibyl (Technologie už měla vlastní tmavý pruh s tlačítkem Domluvit poslech z dřívějška, beze změny).
+- **Rozpor v zadání: patička.** Zadání říká, že patička „zůstává světlá na `--band-2` s linkou nahoře“, ale patička na webu je tmavá (antracit se sklem, od dávky se sklem a dávky 9.3). Podle pravidla „nic dalšího nepřebarvovat“ jsem ji nechal tmavou. Pokud ji chcete světlou, je to samostatná změna.
+- **11.2 Vzdušnost (jen od 768 px).** `--section-space` `clamp(56px, 9vw, 128px)`, mezery mezi kartami a sloupci `--grid-gap` nejméně 28 px (`max(1.75rem, 2.5vw)`; na 1280 px je to 32 px, proto ne přesně 28 – dřívější hodnota nebyla 20 px, ale 32 px, a zmenšovat vzdušnost by bylo proti smyslu dávky), odsazení v kartě 26 px (`--card-pad`, formuláře a schéma zvukovodu; na mobilu beze změny), `--head-space` 2,8 rem (≈ 45 px, dřív 48 px; mobil 28 px beze změny), řádkování odstavců 1,7 (`main p, main li`, od 768 px) a `--measure` 56ch. Dělicí linka sekcí je nově jemná dubová `linear-gradient(90deg, var(--c-dub), transparent 40%)` s průhledností .5. Pod 768 px zůstává `--section-space` 40 px jako po dávce 9b (zadání uvádí 44 px, ale 9b ho snížila na 40 px, aby výška úvodu vyšla ≤ 6 100 px).
+- **11.3 Systém tlačítek.** Styly `.btn` přesunuty z `Button.astro` do `base.css` (jedno místo): výška 48 px, padding 0 22 px, `--radius-s`, Figtree 600 15 px, `border: 1.5px solid`, `nowrap`, mezera 8 px, `:focus-visible`, při `prefers-reduced-motion` bez přechodu i posunu šipky. Plné = #8A5C2E / bílý text / hover #5E3D22; na tmavém a ořechovém #F5F0E8 / #5E3D22 / hover #FFF. Obrys = grafit, hover plný grafit s bílým textem; na tmavém bílý s okrajem `rgba(255,255,255,.75)`, hover bílý s tmavým textem. Textový odkaz `.link` (globální, v `base.css`): #6E4826, spodní linka #8A5C2E (na tmavém #F1DFC6 / #E5C9A2), hover linka zmizí; sjednoceny `.arrow-link` a `.pf__link`, přidány odkazy Quote a „Otevřít v Mapy.cz / Google Maps“. Odeslání formulářů používá `.btn` místo vlastního stylu. Texty tlačítek beze změny. Tabulka přiřazení:
+
+| Stránka | Text | Druh |
+|---|---|---|
+| všechny (hlavička, desktop) | Domluvit poslech → | plné |
+| všechny (mobilní menu) | Domluvit poslech → | plné (na tmavém podkladu) |
+| Úvod | Detail modelu Sara →, Detail modelu Reva → | textový |
+| Úvod | Porovnat modely → | obrys |
+| Úvod | O ideTone → (Koncept) | textový |
+| Úvod | Proces vývoje podrobně → (grafitový pruh) | textový (na tmavém) |
+| Úvod | Víc o řešení → (3×) | textový |
+| Úvod | Jak to funguje → | obrys |
+| Úvod | Zarezervujte si poslech… (pruh Poslech) | plné (na ořechu) |
+| Reprosoustavy | Zakázkové projekty → | obrys |
+| Sara, Reva | Objednat → (také lišta s cenou na mobilu) | plné |
+| Sara, Reva | Domluvit poslech → | obrys |
+| Sara, Reva | Porovnat modely →, název druhého modelu → (odkazové karty „další“) | beze změny, viz poznámka |
+| Technologie | Domluvit poslech → (tmavý pruh) | plné (na tmavém) |
+| Zakázkové projekty | Odeslat poptávku → | plné |
+| Poslech | Domluvit poslech → (formulář) | plné |
+| Poslech | Otevřít v Mapy.cz →, Otevřít v Google Maps → (pruh na ořechu) | textový (na tmavém) |
+| O ideTone | Prohlédnout modely → | plné |
+| O ideTone | Technologie → | obrys |
+| Kontakt | Odeslat zprávu → | plné |
+| Děkujeme | Prohlédnout modely → / Úvodní stránka → | plné / obrys |
+| 404 | odkazové karty (Sara, Reva, Reprosoustavy, Kontakt) | beze změny, viz poznámka |
+| Obchodní podmínky | – | bez tlačítek |
+- Poznámka: odkazové karty (404 a „další modely“ pod detailem) jsou bloky se štítkem a velkým názvem se šipkou, nikoli tlačítka ani odkazy v textu, proto zůstaly beze změny. Na desktopu je na detailu modelu vidět plné „Domluvit poslech“ v hlavičce i plné „Objednat“ v obsahu, ale nejsou vedle sebe (hlavička vs. obsah).
+- **11.4 Kontrast.** Axe WCAG 2.2 AA na všech stránkách a šířkách bez chyb (101 testů zelených). Tabulky níže.
+- **11.5 Sklo a záře.** `--glass-bg` .62, `--glass-line` `rgba(255,255,255,.9)`, blur 12 px (mobil 8 px) beze změny, `--glow` .12. Modely a sloupce Technologie bez skla (nepřidáno).
+
+### Výstup dávky 11
+1. Screenshoty před / po (úvod celý, Technologie, Kontakt; 1280 a 375 px): `screenshots/davka11-pred-*.png` a `screenshots/davka11-po-*.png` (složka je mimo git).
+2. Výška úvodu na 375 px (výška snímku celé stránky): **6 116 → 6 150 px (+0,6 %, limit +3 %)**; na 1280 px 4 792 → 5 082 px (+6,1 %, záměrná vzdušnost od 768 px).
+3. Axe bez chyb na všech stránkách a šířkách; Lighthouse mobil: úvod **výkon 100 / přístupnost 100 / best practices 100** (před dávkou 100 / 100 / 100), ostatní stránky výkon 96–100, přístupnost 100 (SEO 66–69 jen kvůli `noindex`).
+4. Kontrast (WCAG, poměr):
+
+| Text | len #F7F3EA | pás 1 #FCFAF5 | pás 2 #F0E6D2 |
+|---|---|---|---|
+| dub tmavý #6E4826 (malý text) | 7,24 | 7,69 | 6,48 |
+| dub #8A5C2E (plochy, velký text) | 5,19 | 5,51 | 4,64 |
+| tlumený #4F5651 | 6,82 | 7,24 | 6,09 |
+| grafit #1F2421 | 14,23 | 15,11 | 12,72 |
+
+| Na tmavém pruhu #262422 | poměr |
+|---|---|
+| text #F1ECE2 | 13,14 |
+| tlumený #CFC8BA | 9,30 |
+| štítky #E5C9A2 | 9,73 |
+| nadpisy #FFFFFF | 15,47 |
+| textový odkaz #F1DFC6 | 11,86 |
+
+| Tlačítka | poměr |
+|---|---|
+| plné: bílá na #8A5C2E | 5,75 |
+| plné hover: bílá na #5E3D22 | 9,69 |
+| plné na tmavém: #5E3D22 na #F5F0E8 | 8,54 |
+| obrys hover: bílá na #1F2421 | 15,76 |
+| obrys na tmavém hover: #262422 na #FFF | 15,47 |
+5. Tabulka přiřazení tlačítek je výše (11.3).
+6. Tmavý pruh **nezůstal na Technologii, přesunul se na Proces vývoje** (důvod výše).
+7. Commit včetně `docs/UPRAVY.md` a `idetone-rozhodnuti.md`; rozhodnutí doplněno. `NAVRHOVANE-ZMENY.md` jsem nepoužil ani nečetl.
+

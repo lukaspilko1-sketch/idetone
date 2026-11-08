@@ -26,7 +26,10 @@ Web českého výrobce high-end reprosoustav ideTone (Petr Kocourek, Brno). Spra
 - `robots.txt` generuje `src/pages/robots.txt.ts` podle `PUBLIC_INDEXING`
 - Nasazení na Pages se zapne proměnnou repozitáře `PAGES_DEPLOY=true`; workflow: build + `check` + `links` a testy, deploy jen z `main` po úspěchu obou
 
-## Design tokeny (verze 0.8, mění se jen v `src/styles/tokens.css`)
+## Design tokeny (verze 0.9, mění se jen v `src/styles/tokens.css`)
+- Světlá + grafit (dávka 11, přepisuje barvy z dávky 10): Len `#F7F3EA`, `--band-1` `#FCFAF5`, `--band-2` `#F0E6D2`, `--band-dark` `#262422` (`Section tone="dark"`, na úvodu sekce Proces vývoje; na podstránkách žádný), ořechový Poslech beze změny; vzdušnější rozvržení od 768 px (`--section-space`, `--grid-gap` ≥ 28 px, `--card-pad` 26 px, `--lh-text` 1,7, `--measure` 56ch)
+- Tlačítka (dávka 11.3, `base.css`): `.btn--primary` (plné, max. jedno na obrazovku), `.btn--secondary` (obrys), textový odkaz `.link` (+ `.link` v `.section--dub/uhel/dark` světlý); komponenta `Button` jen vypisuje značky, výška `--btn-h` 48 px; nové vlastní styly tlačítek nepřidávat
+- (Starší popis barev z dávky 10, platí jen pro tokeny, ne pro hodnoty:)
 - Pískový dub (dávka 10): Len `#EADFCB` (pozadí `body`), střídavé pásy sekcí `--band-1` `#F3EBDD` / `--band-2` `#E7D8BE` (podle pořadí v `main`, pravidla v `base.css`; záře `--glow` v `Section.astro`), `--c-papir` = `--band-1`; jemné sklo karet `.glass-card` (`--glass-bg`, `--glass-line`, `--glass-blur`, v `base.css`); malý dubový text `--c-dub-ink` `#6E4826` (`--c-dub-text` jen plochy a velký text); tlumený text `#4F5651`; tmavé sklo má `--glass-blur-dark`
 - Papír `#F5F3EE` (starý popis, dnes `--band-1`; karty) · Uhel `#262422` (teplý antracit; těžké plochy, CTA, patička; token `--c-uhel`, `Section tone="uhel"`)
 - Dub `#A8743F` (akcent, „Tone“ v logu; text v odkazech `#8A5C2E`). Výraznější dub (dávka 4): primární tlačítka `--btn-primary-*` (#8A5C2E, hover #6E4826, text #F5F0E8), štítky `--c-eyebrow`, dubový pruh `Section tone="dub"` (`--wood-gradient`, max. jedna dubová plocha na stránku, malý text jen `--c-on-wood`), tlačítko na dubu `Button tone="wood"` · Grafit `#1F2421` (text) · Šalvěj `#8E9B88`
