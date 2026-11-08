@@ -5,10 +5,11 @@
  */
 :root {
   /* Barvy */
-  /* Dávka 10: Pískový dub – pozadí stránky a dva střídavé pásy sekcí (jen barvy, žádná textura) */
-  --c-len: #eadfcb; /* pozadí stránek (podklad pod pásy) */
-  --band-1: #f3ebdd; /* pás 1 – světlejší */
-  --band-2: #e7d8be; /* pás 2 */
+  /* Dávka 11: Světlá + grafit – pozadí, dva střídavé světlé pásy a grafitový pruh (jen barvy, žádná textura) */
+  --c-len: #f7f3ea; /* pozadí stránek (podklad pod pásy) */
+  --band-1: #fcfaf5; /* pás 1 – světlejší */
+  --band-2: #f0e6d2; /* pás 2 */
+  --band-dark: #262422; /* grafitový pruh – sekce Technologie na úvodu (dávka 11) */
   --c-papir: var(--band-1); /* tabulky, pole, pozadí menu */
   --c-uhel: #262422; /* teplý antracit – jediná těžká barva: hero, pruh Poslech, patička, primární tlačítko */
   --c-uhel-hover: #34312d;
@@ -25,8 +26,11 @@
   --glass-card-wood: rgb(255 255 255 / 0.07); /* skleněná karta na dubu */
   --glass-edge-wood: rgb(255 255 255 / 0.18);
   --btn-primary-bg: var(--c-dub-text); /* primární CTA v dubu (#8A5C2E, s #F5F0E8 cca 5 : 1) */
-  --btn-primary-hover: var(--c-dub-deep);
-  --btn-primary-text: var(--c-on-wood);
+  --btn-primary-hover: #5e3d22;
+  --btn-primary-text: #ffffff;
+  --btn-inv-bg: #f5f0e8; /* plné tlačítko na tmavém a ořechovém podkladu */
+  --btn-inv-text: #5e3d22;
+  --btn-h: 3rem; /* výška všech tlačítek 48 px */
   --c-eyebrow: var(--c-dub-ink); /* štítky sekcí a typy modelů */
   --c-link-underline: var(--c-dub); /* podtržení odkazů */
   --c-grafit: #1f2421; /* text */
@@ -51,15 +55,15 @@
   --glass-card: rgb(255 255 255 / 0.06); /* skleněná karta na tmavé ploše */
   --glass-edge: rgb(255 255 255 / 0.12); /* hrana skla */
   --glass-blur-dark: 18px; /* rozostření skla na tmavé / dubové ploše */
-  --glass-light: rgb(234 223 203 / 0.78); /* světlé sklo (lišta s cenou) */
-  --glass-header: rgb(234 223 203 / 0.94); /* hlavička po scrollu – obsah pod ní neprosvítá */
+  --glass-light: rgb(247 243 234 / 0.9); /* světlé sklo (lišta s cenou) */
+  --glass-header: rgb(247 243 234 / 0.9); /* hlavička po scrollu – obsah pod ní neprosvítá */
   --glass-header-blur: 20px;
   /* Dávka 10.2–10.3: záře na pásech a světlé sklo karet. Sílu skla jde změnit těmito třemi hodnotami:
-     Bez skla: --glow 0 / bg .7 / blur 0 · Jemné (zvoleno): .14 / .56 / 12 px
+     Bez skla: --glow 0 / bg .7 / blur 0 · Jemné (zvoleno, dávka 11): .12 / .62 / 12 px
      Znatelné: .3 / .4 / 18 px · Výrazné: .5 / .28 / 26 px */
-  --glow: 0.14;
-  --glass-bg: rgb(255 255 255 / 0.56);
-  --glass-line: rgb(255 255 255 / 0.8);
+  --glow: 0.12;
+  --glass-bg: rgb(255 255 255 / 0.62);
+  --glass-line: rgb(255 255 255 / 0.9);
   --glass-blur: 12px;
   --glass-overlay: rgb(38 36 34 / 0.82); /* mobilní menu, lightbox – sklo přes stránku */
 
@@ -89,11 +93,11 @@
   --fs-quote: clamp(1.875rem, 1.45rem + 1.9vw, 2.75rem); /* citát – mezi H2 a H1, 30 → 44 */
   --fs-model: clamp(3rem, 1.75rem + 5.4vw, 6rem); /* název modelu jako značka, 48 → 96 */
 
-  --lh-text: 1.6;
+  --lh-text: 1.6; /* od 768 px 1,7 (dávka 11.2) */
   --lh-heading: 1.12;
   --tracking-eyebrow: 0.06em;
   --tracking-logo: 0; /* značka ideTone vcelku, bez prostrkání */
-  --measure: 65ch;
+  --measure: 56ch;
 
   /* Mezery (4px rytmus) */
   --space-1: 0.25rem;
@@ -112,7 +116,7 @@
     6vw + 1rem,
     var(--space-10)
   ); /* sekce: 2 × = mezera mezi obsahem */
-  --head-space: var(--space-7); /* nadpis sekce → obsah */
+  --head-space: 2.8rem; /* nadpis sekce → obsah: 28 px × 1,6 ≈ 45 px */
   --block-space: var(--space-7); /* bloky v sekci (sloupce, kroky, karty) */
   --block-space-l: var(--space-9); /* velké bloky (modely na úvodu) */
 
@@ -218,5 +222,15 @@
     --section-space: 2.5rem;
     --m-gap: var(--space-5); /* 9b.1: mezera uvnitř sloupců na mobilu */
     --glass-blur: 8px; /* dávka 10.3: lehčí rozostření kvůli výkonu */
+  }
+}
+
+/* Dávka 11.2: vzdušnější rozvržení jen od 768 px (mobil beze změny) */
+@media (min-width: 48rem) {
+  :root {
+    --section-space: clamp(56px, 9vw, 128px);
+    --grid-gap: max(1.75rem, 2.5vw); /* mezery mezi kartami a sloupci aspoň 28 px */
+    --card-pad: 1.625rem; /* odsazení v kartě 26 px */
+    --lh-text: 1.7;
   }
 }

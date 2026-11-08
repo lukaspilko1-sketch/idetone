@@ -18,7 +18,7 @@ const { text, author, link } = Astro.props;
   <figcaption>
     <span class="quote__author">{author}</span>
     {link && (
-      <a class="quote__link" href={url(link.href)}>
+      <a class="link quote__link" href={url(link.href)}>
         {link.label} <span aria-hidden="true">→</span>
       </a>
     )}
@@ -72,18 +72,5 @@ const { text, author, link } = Astro.props;
     margin-right: var(--space-3);
     vertical-align: middle;
     border-top: 1px solid var(--c-grafit);
-  }
-
-  .quote__link {
-    text-decoration: none;
-  }
-
-  .quote__link span {
-    display: inline-block;
-    transition: transform var(--dur-fast) var(--ease);
-  }
-
-  .quote__link:hover span {
-    transform: translateX(4px);
   }
 </style>

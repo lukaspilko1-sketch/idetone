@@ -334,7 +334,7 @@ const isSection = (href: string) => current.startsWith(url(href)) && href !== '/
 
     .header :global(.header__cta) {
       position: absolute;
-      top: calc(var(--header-pad) + (var(--logo-top-h) - 2.875rem) / 2);
+      top: calc(var(--header-pad) + (var(--logo-top-h) - var(--btn-h)) / 2);
       right: var(--gutter);
       display: inline-flex;
       width: var(--cta-w);

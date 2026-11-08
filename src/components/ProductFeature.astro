@@ -92,7 +92,7 @@ const href = url(`/reprosoustavy/${product.id}/`);
         </p>
       )}
 
-      <a class="pf__link" href={href}>
+      <a class="link pf__link" href={href}>
         Detail modelu {data.name}
         <span aria-hidden="true">→</span>
       </a>
@@ -206,20 +206,9 @@ const href = url(`/reprosoustavy/${product.id}/`);
     font-size: var(--fs-l);
   }
 
+  /* textový odkaz = globální .link (base.css); tady jen odsazení */
   .pf__link {
-    display: inline-flex;
-    gap: var(--space-2);
     margin-top: var(--space-4);
-    font-weight: 500;
-    text-decoration: none;
-  }
-
-  .pf__link span {
-    transition: transform var(--dur-fast) var(--ease);
-  }
-
-  .pf__link:hover span {
-    transform: translateX(4px);
   }
 
   /* Sloupec na úvodu: stejně vysoká scéna pro fotku, fotka i silueta stojí na stejné „podlaze“ */

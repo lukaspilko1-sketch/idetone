@@ -160,9 +160,9 @@ const messages = {
 
     <div class="cf__status" role="alert" aria-live="assertive" data-status hidden></div>
 
-    <button type="submit" class="cf__submit" data-submit>
+    <button type="submit" class="btn btn--primary btn--on-light cf__submit" data-submit>
       <span data-submit-label>{t.submit[type]}</span>
-      <span class="cf__arrow" aria-hidden="true">
+      <span class="btn__arrow" aria-hidden="true">
         →
       </span>
     </button>
@@ -322,7 +322,7 @@ const messages = {
 
 <style>
   .cf {
-    padding: clamp(var(--space-5), 4vw, var(--space-7));
+    padding: var(--card-pad, var(--space-5));
   }
 
   .cf__title {
@@ -465,31 +465,6 @@ const messages = {
 
   .cf__submit {
     justify-self: start;
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-3);
-    min-height: 2.875rem;
-    padding: var(--space-3) var(--space-6);
-    background: var(--btn-primary-bg);
-    border: 0;
-    border-radius: var(--radius-m);
-    color: var(--btn-primary-text);
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color var(--dur-cta) var(--ease-calm);
-  }
-
-  .cf__submit:hover {
-    background: var(--btn-primary-hover);
-  }
-
-  .cf__submit:hover .cf__arrow {
-    transform: translateX(4px);
-  }
-
-  .cf__arrow {
-    font-family: var(--font-mono);
-    transition: transform var(--dur-cta) var(--ease-calm);
   }
 
   .cf__submit:disabled {

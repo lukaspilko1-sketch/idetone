@@ -1,7 +1,7 @@
 ---
 /**
  * Tlačítko / odkaz ve tvaru tlačítka.
- * primary = plná Uhel (tmavá), secondary = obrys grafitem. tone="dark" pro použití na tmavé ploše.
+ * Dávka 11.3: dva druhy (plné / obrys), styly `.btn` v base.css. tone dark a wood = tmavý a ořechový podklad.
  */
 import type { HTMLAttributes } from 'astro/types';
 import { url } from '../utils/url';
@@ -54,90 +54,3 @@ const classes = ['btn', `btn--${variant}`, `btn--on-${tone}`, className];
     )}
   </button>
 )}
-
-<style>
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-3);
-    min-height: 2.875rem;
-    padding: var(--space-3) var(--space-5);
-    border: 1px solid transparent;
-    border-radius: var(--radius-m);
-    font-family: var(--font-text);
-    font-size: var(--fs-s);
-    font-weight: 500;
-    line-height: 1.2;
-    text-decoration: none;
-    cursor: pointer;
-    transition:
-      background-color var(--dur-cta) var(--ease-calm),
-      color var(--dur-cta) var(--ease-calm),
-      border-color var(--dur-cta) var(--ease-calm);
-  }
-
-  .btn__arrow {
-    font-family: var(--font-mono);
-    transition: transform var(--dur-cta) var(--ease-calm);
-  }
-
-  .btn:hover .btn__arrow,
-  .btn:focus-visible .btn__arrow {
-    transform: translateX(4px);
-  }
-
-  /* Na světlé ploše */
-  /* Primární CTA v dubu (dávka 4.1) */
-  .btn--primary.btn--on-light {
-    background: var(--btn-primary-bg);
-    color: var(--btn-primary-text);
-  }
-
-  .btn--primary.btn--on-light:hover {
-    background: var(--btn-primary-hover);
-    color: var(--btn-primary-text);
-  }
-
-  /* Na dubovém pruhu světlé tlačítko s tmavým dubovým textem */
-  .btn--primary.btn--on-wood {
-    background: var(--c-on-wood);
-    color: var(--c-dub-deep);
-  }
-
-  .btn--primary.btn--on-wood:hover {
-    background: var(--c-papir);
-    color: var(--c-dub-deep);
-  }
-
-  .btn--secondary.btn--on-light {
-    border-color: var(--c-grafit);
-    color: var(--c-grafit);
-  }
-
-  .btn--secondary.btn--on-light:hover {
-    background: var(--c-papir);
-    color: var(--c-grafit);
-  }
-
-  /* Na tmavé ploše */
-  .btn--primary.btn--on-dark {
-    background: var(--c-on-dark);
-    color: var(--c-uhel);
-  }
-
-  .btn--primary.btn--on-dark:hover {
-    background: var(--c-papir);
-    color: var(--c-uhel);
-  }
-
-  .btn--secondary.btn--on-dark {
-    border-color: var(--c-on-dark);
-    color: var(--c-on-dark);
-  }
-
-  .btn--secondary.btn--on-dark:hover {
-    background: var(--c-uhel-hover);
-    color: var(--c-on-dark);
-  }
-</style>

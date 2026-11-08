@@ -40,12 +40,12 @@ const { studio } = settings;
       <!-- Mapa bez iframe (GDPR, výkon): jen odkazy -->
       <ul role="list" class="studio__maps">
         <li>
-          <a href={studio.mapyCz} rel="noopener">
+          <a class="link" href={studio.mapyCz} rel="noopener">
             Otevřít v Mapy.cz <span aria-hidden="true">→</span>
           </a>
         </li>
         <li>
-          <a href={studio.googleMaps} rel="noopener">
+          <a class="link" href={studio.googleMaps} rel="noopener">
             Otevřít v Google Maps <span aria-hidden="true">→</span>
           </a>
         </li>
@@ -132,10 +132,6 @@ const { studio } = settings;
     font-size: var(--fs-label);
     text-transform: uppercase;
     letter-spacing: var(--tracking-eyebrow);
-  }
-
-  .studio__maps a {
-    text-decoration: none;
   }
 
   @media (min-width: 48rem) {

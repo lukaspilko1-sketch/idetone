@@ -230,3 +230,29 @@ for (const width of [1280, 375]) {
     });
   }
 }
+
+// Dávka 11 (docs/UPRAVY.md): světlá paleta s grafitovým pruhem – úvod, Technologie, Kontakt na 1280 / 375.
+// FAZE=pred | po, výstup screenshots/davka11-<faze>-<stránka>-<šířka>.png
+for (const width of [1280, 375]) {
+  for (const [name, path] of [
+    ['uvod', '/'],
+    ['technologie', '/technologie/'],
+    ['kontakt', '/kontakt/'],
+  ]) {
+    test(`davka11 ${name} @ ${width}`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(path);
+      await ready(page);
+      await page.addStyleTag({ content: '*{transition:none!important;animation:none!important}' });
+      await page.evaluate(() =>
+        document
+          .querySelectorAll('[data-reveal],[data-reveal-img],[data-reveal-sign]')
+          .forEach((e) => e.classList.add('is-revealed')),
+      );
+      await page.screenshot({
+        path: `screenshots/davka11-${process.env.FAZE ?? 'po'}-${name}-${width}.png`,
+        fullPage: true,
+      });
+    });
+  }
+}

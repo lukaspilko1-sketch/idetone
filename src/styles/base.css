@@ -154,6 +154,149 @@ main > .hero + :is(.section--len, .section--papir) {
     0 14px 34px -18px rgb(70 45 20 / 0.45);
 }
 
+/* Systém tlačítek (dávka 11.3): plné, obrys a textový odkaz. Jednotně všude, text tlačítek se nemění. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: var(--btn-h);
+  padding: 0 22px;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-s);
+  font-family: var(--font-text);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color var(--dur-cta) var(--ease-calm),
+    color var(--dur-cta) var(--ease-calm),
+    border-color var(--dur-cta) var(--ease-calm);
+}
+
+.btn:focus-visible {
+  outline: var(--focus);
+  outline-offset: 2px;
+}
+
+.btn__arrow {
+  font-family: var(--font-mono);
+  transition: transform var(--dur-cta) var(--ease-calm);
+}
+
+.btn:hover .btn__arrow,
+.btn:focus-visible .btn__arrow {
+  transform: translateX(4px);
+}
+
+/* Plné – hlavní akce stránky (max. jedna na obrazovku) */
+.btn--primary.btn--on-light {
+  background: var(--btn-primary-bg);
+  border-color: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+}
+
+.btn--primary.btn--on-light:hover {
+  background: var(--btn-primary-hover);
+  border-color: var(--btn-primary-hover);
+  color: var(--btn-primary-text);
+}
+
+.btn--primary:is(.btn--on-dark, .btn--on-wood) {
+  background: var(--btn-inv-bg);
+  border-color: var(--btn-inv-bg);
+  color: var(--btn-inv-text);
+}
+
+.btn--primary:is(.btn--on-dark, .btn--on-wood):hover {
+  background: #fff;
+  border-color: #fff;
+  color: var(--btn-inv-text);
+}
+
+/* Obrys – druhá volba vedle plného nebo vedlejší akce */
+.btn--secondary.btn--on-light {
+  border-color: var(--c-grafit);
+  color: var(--c-grafit);
+}
+
+.btn--secondary.btn--on-light:hover {
+  background: var(--c-grafit);
+  color: #fff;
+}
+
+.btn--secondary:is(.btn--on-dark, .btn--on-wood) {
+  border-color: rgb(255 255 255 / 0.75);
+  color: #fff;
+}
+
+.btn--secondary:is(.btn--on-dark, .btn--on-wood):hover {
+  background: #fff;
+  border-color: #fff;
+  color: var(--c-uhel);
+}
+
+/* Textový odkaz – přechod na detail uvnitř obsahu */
+.link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid var(--c-dub-text);
+  color: var(--c-dub-ink);
+  font-weight: 500;
+  text-decoration: none;
+  transition: border-color var(--dur-cta) var(--ease-calm);
+}
+
+.link:hover {
+  border-bottom-color: transparent;
+}
+
+.link > [aria-hidden='true'] {
+  display: inline-block;
+  transition: transform var(--dur-cta) var(--ease-calm);
+}
+
+.link:hover > [aria-hidden='true'] {
+  transform: translateX(4px);
+}
+
+:is(.section--dub, .section--uhel, .section--dark) .link {
+  border-bottom-color: #e5c9a2;
+  color: #f1dfc6;
+}
+
+:is(.section--dub, .section--uhel, .section--dark) .link:hover {
+  border-bottom-color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .btn__arrow,
+  .link,
+  .link > [aria-hidden='true'] {
+    transition: none;
+  }
+
+  .btn:hover .btn__arrow,
+  .btn:focus-visible .btn__arrow,
+  .link:hover > [aria-hidden='true'] {
+    transform: none;
+  }
+}
+
+/* Vzdušnější řádkování od 768 px (dávka 11.2); max. šířka řádku 56ch je v --measure */
+@media (min-width: 48rem) {
+  main p,
+  main li {
+    line-height: var(--lh-text);
+  }
+}
+
 /* Odkazy v textu */
 a {
   color: var(--c-dub-ink);

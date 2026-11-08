@@ -10,8 +10,9 @@ import GlassBackdrop from './GlassBackdrop.astro';
 interface Props {
   as?: 'section' | 'div' | 'aside' | 'article';
   id?: string;
-  /** dub = pruh z ořechového dřeva (dávka 4.2), max. jedna dubová plocha na stránce */
-  tone?: 'len' | 'papir' | 'uhel' | 'dub';
+  /** dub = pruh z ořechového dřeva (dávka 4.2), max. jedna dubová plocha na stránce;
+   *  dark = grafitový pruh bez fotky (dávka 11.1, sekce Technologie na úvodu) */
+  tone?: 'len' | 'papir' | 'uhel' | 'dub' | 'dark';
   divider?: boolean;
   space?: 'none' | 's' | 'm' | 'l';
   /** šířka obsahu: container = 1200 px, narrow = šířka odstavce, full = bez kontejneru */
@@ -108,8 +109,53 @@ const {
     color: var(--c-on-dark-muted);
   }
 
-  .section--uhel :global(a:not(.btn)) {
+  .section--uhel :global(a:not(.btn):not(.link)) {
     color: var(--c-on-dark);
+  }
+
+  /* Grafitový pruh (dávka 11.1): plná barva, záře vpravo nahoře, bez fotky */
+  .section--dark {
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+    background: var(--band-dark);
+    color: #f1ece2;
+  }
+
+  .section--dark::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(520px 360px at 85% 20%, rgb(201 149 96 / 0.22), transparent 70%);
+  }
+
+  .section--dark :global(.eyebrow) {
+    color: #e5c9a2;
+  }
+
+  .section--dark :global(.muted),
+  .section--dark :global(.small) {
+    color: #cfc8ba;
+  }
+
+  .section--dark :global(h1),
+  .section--dark :global(h2),
+  .section--dark :global(h3) {
+    color: #fff;
+  }
+
+  .section--dark :global(a:not(.btn):not(.link)) {
+    color: #f1ece2;
+  }
+
+  .section--dark :global(.glass-card) {
+    background: rgb(255 255 255 / 0.06);
+    border-color: rgb(255 255 255 / 0.12);
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 
   /* Ořechové dřevo: text v plné světlé barvě (malý text v --c-on-wood-muted by nesplnil AA) */
@@ -120,7 +166,7 @@ const {
 
   .section--dub :global(.eyebrow),
   .section--dub :global(.muted),
-  .section--dub :global(a:not(.btn)) {
+  .section--dub :global(a:not(.btn):not(.link)) {
     color: var(--c-on-wood);
   }
 
@@ -156,12 +202,10 @@ const {
   .section--divider > .container::before {
     content: '';
     display: block;
+    height: 1px;
     margin-bottom: var(--section-space);
-    border-top: var(--border);
-  }
-
-  .section--uhel.section--divider > .container::before {
-    border-top-color: var(--c-line-dark);
+    background: linear-gradient(90deg, var(--c-dub), transparent 40%);
+    opacity: 0.5;
   }
 
   .section__narrow > :global(*) {

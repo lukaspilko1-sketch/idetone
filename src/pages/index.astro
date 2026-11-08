@@ -207,7 +207,7 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
                 )}
               </p>
               {s.link && (
-                <a class="arrow-link" href={url(s.link.href)}>
+                <a class="link arrow-link" href={url(s.link.href)}>
                   {s.link.label} <span aria-hidden="true">→</span>
                 </a>
               )}
@@ -220,7 +220,7 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
     // Proces vývoje: skutečný postup, tři kroky s fotkou (dávka 2.5b)
     if (s.type === 'process') {
       return (
-        <Section divider labelledby="proces-title" reveal={false}>
+        <Section tone="dark" divider labelledby="proces-title" reveal={false}>
           <header class="process__head" data-reveal>
             {s.eyebrow && <span class="eyebrow">{s.eyebrow}</span>}
             <h2 id="proces-title">{typo(s.title)}</h2>
@@ -228,7 +228,7 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
           <ProcessSteps steps={s.steps} />
           {s.link && (
             <p class="process__more" data-reveal>
-              <a class="arrow-link" href={url(s.link.href)}>
+              <a class="link arrow-link" href={url(s.link.href)}>
                 {s.link.label} <span aria-hidden="true">→</span>
               </a>
             </p>
@@ -272,7 +272,7 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
                     <h3>{typo(t.title)}</h3>
                     <p>{typo(t.text)}</p>
                     {t.href && (
-                      <a class="arrow-link" href={url(t.href)}>
+                      <a class="link arrow-link" href={url(t.href)}>
                         Víc o řešení <span aria-hidden="true">→</span>
                         <span class="visually-hidden">: {t.title}</span>
                       </a>
@@ -716,20 +716,9 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
   }
 
   /* Odkaz se šipkou */
+  /* textový odkaz = globální .link (base.css); tady jen odsazení */
   .arrow-link {
-    display: inline-flex;
-    gap: var(--space-2);
     margin-top: var(--space-4);
-    font-weight: 500;
-    text-decoration: none;
-  }
-
-  .arrow-link span[aria-hidden] {
-    transition: transform var(--dur-fast) var(--ease);
-  }
-
-  .arrow-link:hover span[aria-hidden] {
-    transform: translateX(4px);
   }
 
   /* Koncept */
