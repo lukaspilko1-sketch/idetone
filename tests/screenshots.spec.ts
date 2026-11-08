@@ -256,3 +256,20 @@ for (const width of [1280, 375]) {
     });
   }
 }
+
+// Dávka 12 (docs/UPRAVY.md): pozadí hero „Kruhy a dub“ – hero + přechod do prvního pásu na 1280 / 1024 / 375.
+// FAZE=pred | po, výstup screenshots/davka12-<faze>-hero-<šířka>.png
+for (const width of [1280, 1024, 375]) {
+  test(`davka12 hero @ ${width}`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/');
+    await ready(page);
+    await page.addStyleTag({ content: '*{transition:none!important;animation:none!important}' });
+    const hero = await page.locator('.hero').boundingBox();
+    await page.screenshot({
+      path: `screenshots/davka12-${process.env.FAZE ?? 'po'}-hero-${width}.png`,
+      fullPage: true,
+      clip: { x: 0, y: 0, width, height: Math.round((hero?.y ?? 0) + (hero?.height ?? 800) + 140) },
+    });
+  });
+}

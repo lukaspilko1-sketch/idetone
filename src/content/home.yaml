@@ -20,11 +20,12 @@ home:
       signature:
         src: ../assets/uploads/kresby/podpis-petr-kocourek.png
         alt: Podpis Petr Kocourek
-      # Pozadí hero: papír (zrnitost), světlo za kresbou, mřížka a kóty Sary (rozměry z sara.md)
+      # Pozadí hero „Kruhy a dub“ (dávka 12): grain = zrnitost papíru, light = dubový kruh a soustředné kruhy za kresbou,
+      # grid = zrušená mřížka (bez efektu), dimensions = kóty Sary (rozměry z sara.md)
       decor:
         grain: true
         light: true
-        grid: true
+        grid: false
         dimensions: false
       dimensionsFrom: sara
 

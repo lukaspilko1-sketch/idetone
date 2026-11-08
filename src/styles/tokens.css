@@ -40,11 +40,17 @@
   --c-on-dark: #edeae3; /* text na tmavé ploše */
   --c-on-dark-muted: #c8c2b8; /* sekundární text na tmavé ploše */
   --c-line-dark: #45413c; /* linky na tmavé ploše */
-  --c-light-warm: rgb(255 251 243); /* teplé světlo za kresbou v hero */
-  --grid-line: rgb(31 36 33 / 0.06); /* mřížka technického výkresu (6 % grafit) */
   /* zrnitost papíru v hero (SVG šum) */
   --paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.12 0 0 0 0 0.11 0 0 0 0 0.1 0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  --paper-grain-opacity: 0.2;
+  --paper-grain-opacity: 0.16; /* jen hero; dávka 12 */
+  /* Hero „Kruhy a dub“ (dávka 12): teplejší základ, dubový kruh za kresbou, soustředné kruhy */
+  --hero-bg: #f7f1e4;
+  --hero-circle-color: #e5cda0;
+  --hero-ring-color: rgb(138 92 46 / 0.16);
+  --hero-circle: min(clamp(320px, 38vw, 500px), 120cqi); /* cqi = šířka sloupce s kresbou */
+  --dur-hero-circle: 1.2s;
+  --dur-hero-rings: 0.8s;
+  --delay-hero-rings: 0.4s;
   --c-chart: #ffffff; /* podklad grafů měření (mají bílé pozadí) */
   --c-field: rgb(255 255 255 / 0.7); /* pozadí polí formuláře na skle (dávka 10.3) */
   --c-error: #9e3b2b; /* chyby ve formuláři (cihlová, AA na papíru) */

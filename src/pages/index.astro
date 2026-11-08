@@ -334,10 +334,11 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
   .hero {
     position: relative;
     isolation: isolate;
-    overflow-x: clip; /* světlo a mřížka za kresbou nesmí přetéct do strany */
+    overflow-x: clip; /* soustředné kruhy za kresbou nesmí přetéct do strany */
     display: grid;
     align-items: center;
-    min-height: min(calc(100svh - var(--header-top-h)), 52rem);
+    background: var(--hero-bg);
+    min-height: min(calc(100svh - var(--header-top-h)), 48.75rem);
     padding-block: var(--space-6) var(--space-7);
   }
 
@@ -379,6 +380,9 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
     mix-blend-mode: multiply;
     opacity: var(--paper-grain-opacity);
     pointer-events: none;
+    /* zrno dole mizí, aby přechod do prvního pásu nebyl ostrá hrana (dávka 12) */
+    -webkit-mask-image: linear-gradient(to bottom, #000 70%, transparent);
+    mask-image: linear-gradient(to bottom, #000 70%, transparent);
   }
 
   .hero__grid {
@@ -450,29 +454,43 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
     container-type: inline-size;
   }
 
-  /* Teplé světlo za kresbou */
-  .hero--light .hero__art::before {
+  /* Dávka 12: dubový kruh a soustředné kruhy za kresbou, vystředěné na obalu kresby
+     (.hero__drawing-wrap). Teplé světlo a mřížka z dávky 3.4 jsou zrušené. */
+  .hero--light .hero__drawing-wrap::before,
+  .hero--light .hero__drawing-wrap::after {
     content: '';
     position: absolute;
-    inset: -12% -18%;
-    z-index: -2;
-    background: radial-gradient(closest-side, var(--c-light-warm), transparent);
+    inset: 50% auto auto 50%;
+    aspect-ratio: 1;
+    border-radius: 50%;
     pointer-events: none;
   }
 
-  /* Jemná mřížka (technický výkres) v oválu za kresbou */
-  .hero--grid .hero__art::after {
-    content: '';
-    position: absolute;
-    inset: -6% -14%;
-    z-index: -1;
-    background-image:
-      linear-gradient(var(--grid-line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-    background-size: 32px 32px;
-    background-position: center;
-    mask-image: radial-gradient(closest-side, #000 35%, transparent 100%);
-    pointer-events: none;
+  .hero--light .hero__drawing-wrap::before {
+    z-index: -2;
+    width: var(--hero-circle);
+    background: var(--hero-circle-color);
+    transform: translate(-50%, -50%);
+  }
+
+  .hero--light .hero__drawing-wrap::after {
+    z-index: -3;
+    width: calc(var(--hero-circle) * 2);
+    background: repeating-radial-gradient(
+      circle,
+      transparent 0 38px,
+      var(--hero-ring-color) 38px 39px
+    );
+    -webkit-mask: radial-gradient(circle, #000 0 28%, transparent 72%);
+    mask: radial-gradient(circle, #000 0 28%, transparent 72%);
+    transform: translate(-50%, -50%);
+  }
+
+  /* do 820 px: menší kruh, jemné kruhy zůstávají */
+  @media (max-width: 51.25rem) {
+    .hero {
+      --hero-circle: min(78vw, 360px);
+    }
   }
 
   .hero__drawing-wrap {
@@ -572,7 +590,7 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
   /* Desktop: hero přes celou výšku pod hlavičkou, větší nadpis i kresba, menší mezery */
   @media (min-width: 64rem) {
     .hero {
-      min-height: calc(100svh - var(--header-top-h));
+      min-height: min(calc(100svh - var(--header-top-h)), 48.75rem); /* hero nejvýš 780 px */
       padding-block: var(--space-5);
     }
 
@@ -643,6 +661,29 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
       mask-size: 250% 100%;
       mask-repeat: no-repeat;
       animation: write-right var(--dur-sign) var(--ease-draw) var(--delay-sign) both;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero--light .hero__drawing-wrap::before {
+      animation: hero-circle-in var(--dur-hero-circle) var(--ease-calm) both;
+    }
+
+    .hero--light .hero__drawing-wrap::after {
+      animation: hero-rings-in var(--dur-hero-rings) ease var(--delay-hero-rings) both;
+    }
+  }
+
+  @keyframes hero-circle-in {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.96);
+    }
+  }
+
+  @keyframes hero-rings-in {
+    from {
+      opacity: 0;
     }
   }
 

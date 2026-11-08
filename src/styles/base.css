@@ -139,7 +139,7 @@ main > .hero ~ :is(.section--len, .section--papir):nth-of-type(even) {
 
 /* Přechod hero → první pás bez ostré hrany */
 main > .hero + :is(.section--len, .section--papir) {
-  background: linear-gradient(to bottom, var(--c-len), var(--band, var(--band-1)) 6rem);
+  background: linear-gradient(to bottom, var(--hero-bg), var(--band, var(--band-1)) 6rem);
 }
 
 /* Skleněná karta (dávka 10.3): formuláře, tabulky, schémata */
