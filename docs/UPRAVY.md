@@ -712,7 +712,7 @@ Přiřazení (podle současného stavu webu; texty tlačítek neměnit):
 
 ## Dávka 12 – nové pozadí hero „Kruhy a dub“
 
-Stav: **HOTOVO** (8. 11. 2026). Původně SCHVÁLENO (Lukáš, 8. 11. 2026). Výběr v náhledu „ideTone – pozadí hero“ (druhé kolo, varianta **Kruhy a dub**). Důvod: dosavadní hero je šedavé a monotónní, další sekce jsou kontrastní. Mění se **jen pozadí hero**. Texty, perokresba, podpis, jejich animace a ostatní sekce zůstávají. Hero **nemá tlačítka** (jako dosud).
+Stav: **HOTOVO, nahrazeno dávkou 13** (8. 11. 2026). Původně SCHVÁLENO (Lukáš, 8. 11. 2026). Výběr v náhledu „ideTone – pozadí hero“ (druhé kolo, varianta **Kruhy a dub**). Důvod: dosavadní hero je šedavé a monotónní, další sekce jsou kontrastní. Mění se **jen pozadí hero**. Texty, perokresba, podpis, jejich animace a ostatní sekce zůstávají. Hero **nemá tlačítka** (jako dosud).
 
 ### 12.1 Pozadí a motiv
 - Základ hero: **#F7F1E4** (teplejší než dnešní šedobéžová, `--c-len` ani pásy se nemění).
@@ -760,4 +760,62 @@ Stav: **HOTOVO** (8. 11. 2026). Původně SCHVÁLENO (Lukáš, 8. 11. 2026). Vý
 Všechny hodnoty ≥ 4,5 : 1. Barvy textů v hero jsem neměnil (štítek a perex mají jiné odstíny než ve zadání, ale poměry vyhovují).
 4. **Potvrzeno:** texty hero, kresba, podpis a jejich animace i všechny sekce pod hero jsou beze změny. V `home.yaml` se změnil jen komentář a `decor.grid: false`; v kódu jen pozadí hero (`index.astro`, `tokens.css`, jeden přechodový řádek v `base.css`).
 5. Commit včetně `docs/UPRAVY.md` a `idetone-rozhodnuti.md`; rozhodnutí doplněno.
+
+
+
+## Dávka 13 – hero „Velký výrok“ (nahrazuje pozadí z dávky 12)
+
+Stav: **HOTOVO** (8. 11. 2026). Původně SCHVÁLENO (Lukáš, 8. 11. 2026). Výběr v náhledu „ideTone – pozadí hero“ (třetí kolo, varianta **Velký výrok**). Důvod: hero po dávce 12 je pořád málo kontrastní a bez výrazné kompozice. **Nahrazuje kruh za kresbou z dávky 12.** Texty se nemění (jen se jedno slovo v nadpisu zvýrazní barvou), kresba a podpis zůstávají, hero **nemá tlačítka**.
+
+### 13.1 Pozadí a oblouk
+- Základ hero: **#F7F1E4** (jako dávka 12), jemné papírové zrno (`opacity .16`, `mix-blend-mode: multiply`).
+- **Zrušit** kruh a soustředné kruhy středěné na kresbě (z dávky 12) i mřížku.
+- **Dubový oblouk v pravém dolním rohu hero** (kotvený k hero, ne ke kresbě): `radial-gradient(circle 430px at 86% 108%, #DDBB82 0 99%, transparent 100%)`. Do hero je zasunutý jako velký kruh, který přesahuje dolní okraj a je oříznutý (`overflow: clip`).
+- **Soustředné kruhy** kolem oblouku: `repeating-radial-gradient(circle at 86% 108%, transparent 0 44px, rgba(138,92,46,.18) 44px 45px)` s maskou `radial-gradient(circle at 86% 108%, #000 0 40%, transparent 80%)` (+ `-webkit-mask`). `pointer-events: none`, `z-index` pod obsahem.
+- Kresba (`.hero__art`) stojí nad obloukem, její spodek (podstavy) leží zhruba na horním okraji oblouku. Doladit pozici podle screenshotu 1280 px.
+
+### 13.2 Typografie hero (hlavní změna)
+- **Nadpis „Reprosoustavy s citem pro hudbu.“** výrazně větší: `font-size: clamp(44px, 8.4vw, 116px)`, `line-height: .96`, `letter-spacing: -.035em`, `max-width: 9ch` (zalamuje se zhruba na „Reprosoustavy / s citem pro / hudbu.“). Familjen Grotesk 500 jako dosud.
+- Slovo **„citem“** v dubu `#8A5C2E` (velký text, kontrast ≥ 3 : 1 splněn). Realizace: nové pole v `home.yaml` hero, např. `titleAccent: citem`, komponenta slovo obalí `<em>` (`font-style: normal; color: var(--c-dub-text)`). Nepoužívat značkování v textu nadpisu (kvůli pozdějšímu CMS). Pokud pole chybí, nadpis se vykreslí bez zvýraznění.
+- **Druhý řádek „Emoce | Klid | Poslech bez únavy“**: nově jako štítek v IBM Plex Mono 500, 14 px, verzálky, prostrkání `.1em`, barva `#6E4826` (ne velký dubový řádek jako dosud). Texty a oddělovače „|“ zůstávají.
+- Štítek nad nadpisem „Ručně laděné reprosoustavy“ beze změny barvy `#5E3D22`.
+- Perex beze změny (18 px, `#2F3531`, max. 46ch).
+
+### 13.3 Rozvržení a responzivita
+- Desktop: dvousloupcově `grid-template-columns: 1.4fr .6fr`, text vlevo, kresba vpravo menší: kresba `min(100%, 300px)`, podpis 170 px.
+- Do 820 px: jeden sloupec, kresba pod textem vystředěná, oblouk menší (`circle 260px at 100% 106%`, kruhy 36 px), výška hero nejvýš 780 px na desktopu.
+- Na 375 a 320 px nesmí slovo „Reprosoustavy“ přetékat ani se rozdělit; pokud ano, snížit minimum z 44 px (např. na 40 px).
+- Animace: stávající odkrytí kresby a psaní podpisu beze změny. Oblouk se při načtení pozvolna objeví (opacity 0 → 1, `scale(.96 → 1)`, 1,2 s, `transform-origin` ke středu oblouku), soustředné kruhy o 0,4 s později. `prefers-reduced-motion`: bez animace.
+
+### 13.4 Kontrast a kontrola
+- Axe WCAG 2.2 AA na úvodu (1440, 1280, 1024, 375, 320 px). Změřit poměry: nadpis #1F2421, „citem“ #8A5C2E, štítek #6E4826, perex #2F3531 na #F7F1E4; text nesmí ležet na dubovém oblouku.
+- Lighthouse úvod mobil: výkon ≥ 95, přístupnost 100.
+
+### Výstup dávky 13
+1. Screenshoty hero před a po na 1440, 1280, 1024, 375 a 320 px.
+2. Axe a Lighthouse, tabulka kontrastu.
+3. Potvrdit, že se nezměnily texty (jen styl slova „citem“ a druhého řádku), kresba, podpis ani sekce pod hero.
+4. Commit včetně `docs/UPRAVY.md` a `idetone-rozhodnuti.md` (kořen projektu): hero „Velký výrok“, základ #F7F1E4, oblouk #DDBB82, `titleAccent`. V UPRAVY dávku 12 označit „nahrazeno dávkou 13“ a dávku 13 HOTOVO.
+
+### Výsledek dávky 13 (Claude Code, 8. 11. 2026)
+- **13.1 Pozadí a oblouk.** Základ #F7F1E4 a zrno (.16, `multiply`) beze změny. Kruh a soustředné kruhy z dávky 12 i mřížka jsou pryč. Dubový oblouk `--hero-arc-color` #DDBB82 je kotvený k hero: nový dekorativní prvek `.hero__arc` (`aria-hidden`, `inset: 0`, `z-index: -2`) s `radial-gradient(circle 430px at 86% 108%, #DDBB82 0 99%, transparent 100%)`, přesahující dolní okraj a oříznutý přes `overflow-x: clip` na hero. Soustředné kruhy `.hero__rings`: `repeating-radial-gradient(circle at 86% 108%, transparent 0 44px, rgba(138,92,46,.18) 44px 45px)` s maskou `radial-gradient(circle at 86% 108%, #000 0 40%, transparent 80%)` (+ `-webkit-mask`), `pointer-events: none`. Hodnoty jsou tokeny (`--hero-arc-r/x/y`, `--hero-ring-step`, `--hero-ring-color`). **Kresba:** sloupec s kresbou je `align-self: start` (kresba stojí co nejvýš), podstavy reprosoustav leží na horním okraji oblouku a o zhruba 100 px do něj zasahují. Přesně „na okraji“ nejde, protože při výšce hero ≤ 780 px a kresbě 300 px široké (≈ 445 px vysoké) horní okraj oblouku (y ≈ 380 px od vršku hero) leží níž než spodek kresby, která začíná u horního okraje.
+- **13.2 Typografie.** `--fs-hero` `clamp(44px, 8.4vw, 116px)`, `line-height: .96`, `letter-spacing: -.035em`, první řádek `max-width: 9ch` (zalamuje se „Reprosoustavy / s citem pro / hudbu.“ na všech šířkách), Familjen Grotesk 500. Slovo „citem“ je v `<em class="hero__accent">` (`font-style: normal`, `--c-dub-text` #8A5C2E); nové pole `titleAccent: citem` v `home.yaml` (schéma `content.config.ts`, nepovinné; bez pole se nadpis vykreslí bez zvýraznění, nadpis v textu zůstává bez značkování). Druhý řádek je štítek: IBM Plex Mono 500, 14 px, verzálky, `letter-spacing .1em`, `#6E4826`; texty i oddělovače „|“ beze změny. Štítek nad nadpisem a perex beze změny.
+- **13.3 Rozvržení a responzivita.** Od 1024 px dva sloupce `1.4fr .6fr`, kresba `min(100%, 300px)`, podpis 170 px. Do 820 px jeden sloupec, kresba pod textem vystředěná, oblouk `circle 260px at 100% 106%` a kruhy po 36 px (`--hero-arc-*` přepsané na hero). Slovo „Reprosoustavy“ nepřetéká ani na 320 px (min. 44 px stačí; test to hlídá). **Doplněk:** druhý řádek (štítek) se na 320 px nevešel na jeden řádek, proto je do 360 px 12 px s prostrkáním .06em (jinak by byl useknutý). Výška hero nejvýš 780 px (hlídá test). Animace: oblouk se zobrazí opacity 0 → 1 a `scale(.96 → 1)` za 1,2 s (`transform-origin` ve středu oblouku), kruhy o 0,4 s později za 0,8 s; kresba a podpis beze změny; při `prefers-reduced-motion: reduce` bez animace.
+- **13.4 Kontrola.** Axe WCAG 2.2 AA na úvodu na 1440, 1280, 1024, 375, 320 px (a 390 px) bez chyb; testy 105 zelených (4 nové pro úvod/hero). Žádný text neleží na dubovém oblouku; na oblouku je jen kresba a podpis (grafit, 8,63 : 1).
+
+### Výstup dávky 13
+1. Screenshoty hero před a po (1440, 1280, 1024, 375, 320 px): `screenshots/davka13-pred-hero-*.png` a `screenshots/davka13-po-hero-*.png` (složka je mimo git).
+2. Axe bez chyb (výše), Lighthouse mobil: úvod **výkon 99 / přístupnost 100 / best practices 100** (před dávkou 100 / 100 / 100, tedy −1 bod), CLS 0,006.
+3. Kontrast (základ #F7F1E4; „se zrnem“ = odhad nejtmavšího místa po vynásobení zrnem ~#EBE5D8):
+
+| Text | základ #F7F1E4 | se zrnem |
+|---|---|---|
+| nadpis #1F2421 | 14,00 | 12,56 |
+| „citem“ #8A5C2E (velký text, limit 3 : 1) | 5,11 | 4,58 |
+| štítek druhého řádku #6E4826 (skutečná barva; zadání #5E3D22 = 8,61 / 7,72) | 7,13 | 6,39 |
+| perex #1F2421 (skutečná barva; zadání #2F3531 = 11,14 / 9,99) | 14,00 | 12,56 |
+| kresba a podpis (grafit) na oblouku #DDBB82 | 8,63 | – |
+Barvy štítku a perexu se liší od zadání (viz dávka 12), poměry vyhovují; barvy jsem neměnil.
+4. **Potvrzeno:** texty (jen styl slova „citem“ a druhého řádku), kresba, podpis ani sekce pod hero se nezměnily. V `home.yaml` přibylo jen `titleAccent: citem`.
+5. Commit včetně `docs/UPRAVY.md` a `idetone-rozhodnuti.md`; dávka 12 označena „nahrazeno dávkou 13“.
 
