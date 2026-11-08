@@ -64,6 +64,12 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
           ]}
           aria-labelledby="hero-title"
         >
+          {s.decor.light && (
+            <>
+              <span class="hero__arc" aria-hidden="true" />
+              <span class="hero__rings" aria-hidden="true" />
+            </>
+          )}
           <div class="container hero__grid">
             <div class="hero__text">
               <span class="eyebrow hero__in" style="--i: 0">
@@ -87,7 +93,17 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
                               </span>{' '}
                             </>
                           )}
-                          <span class="hero__part">{part}</span>
+                          <span class="hero__part">
+                            {s.titleAccent && part.includes(s.titleAccent) ? (
+                              <>
+                                {part.slice(0, part.indexOf(s.titleAccent))}
+                                <em class="hero__accent">{s.titleAccent}</em>
+                                {part.slice(part.indexOf(s.titleAccent) + s.titleAccent.length)}
+                              </>
+                            ) : (
+                              part
+                            )}
+                          </span>
                         </>
                       ))}
                   </span>
@@ -391,8 +407,12 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
     align-items: center;
   }
 
+  /* Dávka 13: velký výrok – nadpis výrazně větší, hutný, zalomený zhruba na tři řádky */
   .hero h1 {
     margin-top: var(--space-4);
+    font-size: var(--fs-hero);
+    line-height: 0.96;
+    letter-spacing: -0.035em;
   }
 
   .hero__text {
@@ -403,15 +423,34 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
     display: block;
   }
 
-  /* Další řádky nadpisu („Emoce i klid. Na celý život.“) o něco menší než hlavní věta */
-  /* Druhý řádek („Emoce | Klid | Hodiny poslechu bez únavy“): menší, v dubu, s větší mezerou */
+  .hero__line:first-child {
+    max-width: 9ch;
+  }
+
+  .hero__accent {
+    font-style: normal;
+    color: var(--c-dub-text);
+  }
+
+  /* Druhý řádek („Emoce | Klid | Poslech bez únavy“) jako štítek strojopisem */
   .hero__line + .hero__line {
-    margin-top: var(--space-4);
-    /* i na mobilu na jeden řádek: písmo max. 0,56 nadpisu, ale nepřesáhne šířku sloupce */
-    font-size: min(0.56em, 5.8cqi);
-    white-space: nowrap;
-    letter-spacing: 0;
+    margin-top: var(--space-5);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
     color: var(--c-dub-ink);
+  }
+
+  /* na nejužších displejích (320 px) menší štítek, aby se vešel na jeden řádek;
+     jinak se láme jen u oddělovače */
+  @media (max-width: 22.5rem) {
+    .hero__line + .hero__line {
+      font-size: 12px;
+      letter-spacing: 0.06em;
+    }
   }
 
   /* část věty se nezalomí uvnitř, řádek se láme jen u oddělovače */
@@ -454,42 +493,50 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
     container-type: inline-size;
   }
 
-  /* Dávka 12: dubový kruh a soustředné kruhy za kresbou, vystředěné na obalu kresby
-     (.hero__drawing-wrap). Teplé světlo a mřížka z dávky 3.4 jsou zrušené. */
-  .hero--light .hero__drawing-wrap::before,
-  .hero--light .hero__drawing-wrap::after {
-    content: '';
+  /* Dávka 13: dubový oblouk v pravém dolním rohu hero (kruh přesahující dolní okraj, oříznutý přes
+     overflow: clip na .hero) a soustředné kruhy kolem něj. Oba prvky jsou kotvené k hero, ne ke kresbě. */
+  .hero__arc,
+  .hero__rings {
     position: absolute;
-    inset: 50% auto auto 50%;
-    aspect-ratio: 1;
-    border-radius: 50%;
+    inset: 0;
+    z-index: -2;
     pointer-events: none;
   }
 
-  .hero--light .hero__drawing-wrap::before {
-    z-index: -2;
-    width: var(--hero-circle);
-    background: var(--hero-circle-color);
-    transform: translate(-50%, -50%);
-  }
-
-  .hero--light .hero__drawing-wrap::after {
-    z-index: -3;
-    width: calc(var(--hero-circle) * 2);
-    background: repeating-radial-gradient(
-      circle,
-      transparent 0 38px,
-      var(--hero-ring-color) 38px 39px
+  .hero__arc {
+    background: radial-gradient(
+      circle var(--hero-arc-r) at var(--hero-arc-x) var(--hero-arc-y),
+      var(--hero-arc-color) 0 99%,
+      transparent 100%
     );
-    -webkit-mask: radial-gradient(circle, #000 0 28%, transparent 72%);
-    mask: radial-gradient(circle, #000 0 28%, transparent 72%);
-    transform: translate(-50%, -50%);
+    transform-origin: var(--hero-arc-x) var(--hero-arc-y);
   }
 
-  /* do 820 px: menší kruh, jemné kruhy zůstávají */
+  .hero__rings {
+    background: repeating-radial-gradient(
+      circle at var(--hero-arc-x) var(--hero-arc-y),
+      transparent 0 var(--hero-ring-step),
+      var(--hero-ring-color) var(--hero-ring-step) calc(var(--hero-ring-step) + 1px)
+    );
+    -webkit-mask: radial-gradient(
+      circle at var(--hero-arc-x) var(--hero-arc-y),
+      #000 0 40%,
+      transparent 80%
+    );
+    mask: radial-gradient(
+      circle at var(--hero-arc-x) var(--hero-arc-y),
+      #000 0 40%,
+      transparent 80%
+    );
+  }
+
+  /* do 820 px: menší oblouk i rozestup kruhů */
   @media (max-width: 51.25rem) {
     .hero {
-      --hero-circle: min(78vw, 360px);
+      --hero-arc-r: 260px;
+      --hero-arc-x: 100%;
+      --hero-arc-y: 106%;
+      --hero-ring-step: 36px;
     }
   }
 
@@ -594,9 +641,9 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
       padding-block: var(--space-5);
     }
 
-    /* Levá část (nadpis) širší, kresba užší */
+    /* Dávka 13: text vlevo (1,4 fr), menší kresba vpravo (0,6 fr) */
     .hero__grid {
-      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.6fr);
       column-gap: var(--space-7);
     }
 
@@ -606,36 +653,24 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
       container-type: inline-size;
     }
 
-    /* Nadpis co největší (max. --fs-hero), ale věta se nezalomí:
-       nejdelší řádek má cca 14 em, proto max. 7 % šířky sloupce na písmeno */
-    .hero h1 {
-      margin-top: var(--space-3);
-      font-size: min(var(--fs-hero), 7cqi);
-      line-height: 1.1;
-    }
-
-    .hero__line {
-      white-space: nowrap;
-    }
-
     .hero__lead {
       max-width: 36ch;
     }
 
-    /* Kresba vyplní užší pravý sloupec, výšku hlídá --hero-art-h */
+    /* kresba stojí co nejvýš nad obloukem, aby podstavy ležely u jeho horního okraje (dávka 13.1) */
     .hero__art {
+      align-self: start;
       justify-items: center;
     }
 
-    /* výška podle obrazovky, ale nepřeteče šířku sloupce (kresba 378 × 561 → 1,48 × šířka) */
     .hero__art :global(.hero__drawing) {
-      width: auto;
-      height: min(var(--hero-art-h), 140cqi);
+      width: min(100%, 300px);
+      height: auto;
       max-width: none;
     }
 
     .hero__art :global(.hero__signature) {
-      width: clamp(12rem, 16vw, 17rem);
+      width: 170px;
       margin-top: 0;
       margin-right: 0;
     }
@@ -665,19 +700,19 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    .hero--light .hero__drawing-wrap::before {
-      animation: hero-circle-in var(--dur-hero-circle) var(--ease-calm) both;
+    .hero__arc {
+      animation: hero-arc-in var(--dur-hero-arc) var(--ease-calm) both;
     }
 
-    .hero--light .hero__drawing-wrap::after {
+    .hero__rings {
       animation: hero-rings-in var(--dur-hero-rings) ease var(--delay-hero-rings) both;
     }
   }
 
-  @keyframes hero-circle-in {
+  @keyframes hero-arc-in {
     from {
       opacity: 0;
-      transform: translate(-50%, -50%) scale(0.96);
+      transform: scale(0.96);
     }
   }
 

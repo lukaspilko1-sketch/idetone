@@ -147,6 +147,8 @@ const homeSection = (image: SchemaContext['image']) =>
       type: z.literal('hero'),
       eyebrow: z.string(),
       title: z.string(),
+      /** slovo z nadpisu zvýrazněné dubem (dávka 13); bez pole se nadpis vykreslí bez zvýraznění */
+      titleAccent: z.string().optional(),
       text: z.string(),
       /** kresba vpravo (dávka 2.2), při načtení se „nakreslí“ */
       drawing: photo(image),
@@ -158,8 +160,8 @@ const homeSection = (image: SchemaContext['image']) =>
       decor: z
         .object({
           grain: z.boolean().default(true), // zrnitost papíru (jen v hero)
-          light: z.boolean().default(true), // teplé světlo za kresbou
-          grid: z.boolean().default(true), // jemná mřížka v oválu za kresbou
+          light: z.boolean().default(true), // dubový oblouk vpravo dole se soustřednými kruhy (dávka 13)
+          grid: z.boolean().default(false), // zrušená mřížka (bez efektu)
           dimensions: z.boolean().default(true), // kóty (rozměry z produktu)
         })
         .prefault({}),

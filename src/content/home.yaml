@@ -12,6 +12,8 @@ home:
       title: |-
         Reprosoustavy s citem pro hudbu.
         Emoce | Klid | Poslech bez únavy
+      # Slovo z nadpisu zvýrazněné dubem (dávka 13)
+      titleAccent: citem
       text: Navrhuji, ručně ladím a v Brně vyrábím hi-fi reprosoustavy, které nechají vyniknout hudbě i s jejím emočním nábojem.
       # TODO(klient): originál kresby a podpisu ve vysokém rozlišení / vektor (teď výřez ze starého webu)
       drawing:
@@ -20,7 +22,7 @@ home:
       signature:
         src: ../assets/uploads/kresby/podpis-petr-kocourek.png
         alt: Podpis Petr Kocourek
-      # Pozadí hero „Kruhy a dub“ (dávka 12): grain = zrnitost papíru, light = dubový kruh a soustředné kruhy za kresbou,
+      # Pozadí hero „Velký výrok“ (dávka 13): grain = zrnitost papíru, light = dubový oblouk vpravo dole se soustřednými kruhy,
       # grid = zrušená mřížka (bez efektu), dimensions = kóty Sary (rozměry z sara.md)
       decor:
         grain: true

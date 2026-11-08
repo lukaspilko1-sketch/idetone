@@ -73,3 +73,44 @@ test('navigace: všechny odkazy v menu a patičce vedou na existující stránky
     expect(res.status(), href).toBe(200);
   }
 });
+
+// Dávka 13: hero „Velký výrok“ – úvod navíc na dalších šířkách; slovo „Reprosoustavy“ nesmí přetékat
+for (const width of [1280, 1024, 375, 320]) {
+  test(`axe úvod (hero) @ ${width}`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/');
+    await page.waitForLoadState('networkidle');
+    await page.evaluate(() => document.fonts.ready);
+    await page.addStyleTag({
+      content:
+        '*, *::before, *::after { transition: none !important; animation: none !important; }',
+    });
+    await page.evaluate(() =>
+      document
+        .querySelectorAll('[data-reveal], [data-reveal-img]')
+        .forEach((el) => el.classList.add('is-revealed')),
+    );
+    const results = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'])
+      .analyze();
+    const summary = results.violations.map(
+      (v) => `${v.id} (${v.impact}): ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`,
+    );
+    expect(summary, summary.join('\n')).toEqual([]);
+
+    // nadpis nepřetéká sloupec a nic nepřetéká do strany
+    const overflow = await page.evaluate(() => {
+      const h1 = document.querySelector('.hero h1') as HTMLElement;
+      const text = document.querySelector('.hero__text') as HTMLElement;
+      const first = h1.querySelector('.hero__line') as HTMLElement;
+      const range = document.createRange();
+      range.selectNodeContents(first);
+      return {
+        word: range.getBoundingClientRect().right <= text.getBoundingClientRect().right + 1,
+        page: document.documentElement.scrollWidth <= window.innerWidth,
+        hero: document.querySelector('.hero')!.getBoundingClientRect().height <= 780,
+      };
+    });
+    expect(overflow).toEqual({ word: true, page: true, hero: true });
+  });
+}
