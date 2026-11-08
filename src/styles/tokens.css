@@ -47,7 +47,11 @@
   --hero-bg: #f7f1e4;
   --hero-arc-color: #ddbb82;
   --hero-ring-color: rgb(138 92 46 / 0.18);
-  --hero-arc-r: 430px; /* poloměr oblouku */
+  --hero-arc-r: clamp(
+    300px,
+    calc((100svh - var(--header-top-h)) * 0.57),
+    430px
+  ); /* poloměr oblouku úměrný výšce hero (dávka 13b) */
   --hero-arc-x: 86%;
   --hero-arc-y: 108%;
   --hero-ring-step: 44px; /* rozestup soustředných kruhů */
@@ -77,7 +81,7 @@
   --glass-overlay: rgb(38 36 34 / 0.82); /* mobilní menu, lightbox – sklo přes stránku */
 
   /* Typová škála 13 / 16 / 20 / 26 / 35 / 50 (H1 max. 56) */
-  --fs-hero: clamp(44px, 8.4vw, 116px); /* nadpis hero (dávka 13) */
+  --fs-hero: clamp(40px, 6.6vw, 96px); /* nadpis hero (dávky 13 a 13b) */
   --fs-xs: 0.8125rem;
   --fs-s: 1rem;
   --fs-m: clamp(1.125rem, 1.05rem + 0.35vw, 1.25rem);

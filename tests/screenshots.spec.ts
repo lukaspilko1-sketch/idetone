@@ -290,3 +290,24 @@ for (const width of [1440, 1280, 1024, 375, 320]) {
     });
   });
 }
+
+// Dávka 13b (docs/UPRAVY.md): hero nad ohybem – screenshot jen výška okna (viewport), ne celá stránka.
+// Okno = obrazovka bez lišt prohlížeče. FAZE=pred | po, výstup screenshots/davka13b-<faze>-<obrazovka>.png
+const okna: [string, number, number][] = [
+  ['1920x1080', 1920, 950],
+  ['1440x900', 1440, 780],
+  ['1366x768', 1366, 650],
+  ['1024x768', 1024, 650],
+  ['375', 375, 812],
+  ['320', 320, 700],
+];
+for (const [name, width, height] of okna) {
+  test(`davka13b hero @ ${name}`, async ({ page }) => {
+    await page.setViewportSize({ width, height });
+    await page.goto('/');
+    await ready(page);
+    await page.addStyleTag({ content: '*{transition:none!important;animation:none!important}' });
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.screenshot({ path: `screenshots/davka13b-${process.env.FAZE ?? 'po'}-${name}.png` });
+  });
+}

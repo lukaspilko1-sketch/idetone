@@ -105,3 +105,37 @@ for (const motion of ['no-preference', 'reduce'] as const) {
     }
   });
 }
+
+// Dávka 13b: nadpis hero od 1024 px na dva řádky, hero nad ohybem
+test.describe('hero: nadpis a ohyb', () => {
+  const sizes: [number, number][] = [
+    [1920, 950],
+    [1440, 780],
+    [1366, 650],
+    [1024, 650],
+  ];
+  for (const [width, height] of sizes) {
+    test(`dva řádky nadpisu, perex v okně @ ${width}×${height}`, async ({ page }) => {
+      await page.setViewportSize({ width, height });
+      await page.goto('/');
+      await page.evaluate(() => document.fonts.ready);
+      await page.addStyleTag({ content: '*{transition:none!important;animation:none!important}' });
+      const r = await page.evaluate(() => {
+        const range = document.createRange();
+        range.selectNodeContents(document.querySelector('.hero__line')!);
+        const lines = new Set([...range.getClientRects()].map((x) => Math.round(x.top))).size;
+        return {
+          lines,
+          lead: document.querySelector('.hero__lead')!.getBoundingClientRect().bottom,
+          signature: document.querySelector('.hero__signature')!.getBoundingClientRect().bottom,
+          hero: document.querySelector('.hero')!.getBoundingClientRect().height,
+        };
+      });
+      expect(r.lines).toBe(2);
+      expect(r.lead).toBeLessThanOrEqual(height);
+      expect(r.hero).toBeLessThanOrEqual(780);
+      // podpis na 1920 × 1080 (okno 950 px) celý v okně, na menších okně smí přečnívat
+      if (width === 1920) expect(r.signature).toBeLessThanOrEqual(height);
+    });
+  }
+});

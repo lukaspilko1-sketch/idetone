@@ -355,7 +355,7 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
     align-items: center;
     background: var(--hero-bg);
     min-height: min(calc(100svh - var(--header-top-h)), 48.75rem);
-    padding-block: var(--space-6) var(--space-7);
+    padding-block: clamp(32px, 5vw, 72px);
   }
 
   /* Dávka 9.7: mobil – obsah hero hned pod hlavičkou, bez centrování na výšku obrazovky */
@@ -407,12 +407,14 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
     align-items: center;
   }
 
-  /* Dávka 13: velký výrok – nadpis výrazně větší, hutný, zalomený zhruba na tři řádky */
+  /* Dávka 13 / 13b: velký výrok – nadpis hutný, od 1024 px na dva řádky
+     („Reprosoustavy“ / „s citem pro hudbu.“): text-wrap: balance vybere nejvyváženější dvouřádkové
+     zalomení, „s citem“ drží pohromadě nezlomitelná mezera z typo() */
   .hero h1 {
-    margin-top: var(--space-4);
+    margin-top: 14px;
     font-size: var(--fs-hero);
-    line-height: 0.96;
-    letter-spacing: -0.035em;
+    line-height: 0.98;
+    letter-spacing: -0.03em;
   }
 
   .hero__text {
@@ -424,7 +426,8 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
   }
 
   .hero__line:first-child {
-    max-width: 9ch;
+    max-width: 19ch;
+    text-wrap: balance;
   }
 
   .hero__accent {
@@ -434,7 +437,7 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
 
   /* Druhý řádek („Emoce | Klid | Poslech bez únavy“) jako štítek strojopisem */
   .hero__line + .hero__line {
-    margin-top: var(--space-5);
+    margin-top: 14px;
     font-family: var(--font-mono);
     font-size: 14px;
     font-weight: 500;
@@ -465,7 +468,7 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
   }
 
   .hero__lead {
-    margin-top: var(--space-5);
+    margin-top: 14px;
     max-width: 40ch;
   }
 
@@ -638,7 +641,7 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
   @media (min-width: 64rem) {
     .hero {
       min-height: min(calc(100svh - var(--header-top-h)), 48.75rem); /* hero nejvýš 780 px */
-      padding-block: var(--space-5);
+      padding-block: clamp(32px, 5vw, 72px);
     }
 
     /* Dávka 13: text vlevo (1,4 fr), menší kresba vpravo (0,6 fr) */
@@ -663,14 +666,16 @@ if (heroSection?.type === 'hero' && heroSection.decor.dimensions && heroSection.
       justify-items: center;
     }
 
+    /* Dávka 13b: kresba nejvýš clamp(320px, 52vh, 520px) vysoká, šířka podle poměru stran
+       (378 : 561 = 0,674), nejvýš 300 px; podpis úměrně menší (170 px při kresbě 300 px) */
     .hero__art :global(.hero__drawing) {
-      width: min(100%, 300px);
+      width: min(100cqi, 300px, calc(clamp(320px, 52vh, 520px) * 0.674));
       height: auto;
       max-width: none;
     }
 
     .hero__art :global(.hero__signature) {
-      width: 170px;
+      width: calc(min(100cqi, 300px, calc(clamp(320px, 52vh, 520px) * 0.674)) * 0.567);
       margin-top: 0;
       margin-right: 0;
     }
