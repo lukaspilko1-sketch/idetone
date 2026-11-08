@@ -819,3 +819,61 @@ Barvy štítku a perexu se liší od zadání (viz dávka 12), poměry vyhovují
 4. **Potvrzeno:** texty (jen styl slova „citem“ a druhého řádku), kresba, podpis ani sekce pod hero se nezměnily. V `home.yaml` přibylo jen `titleAccent: citem`.
 5. Commit včetně `docs/UPRAVY.md` a `idetone-rozhodnuti.md`; dávka 12 označena „nahrazeno dávkou 13“.
 
+
+
+## Dávka 13b – hero: menší nadpis na dva řádky, celé hero nad ohybem
+
+Stav: **HOTOVO** (8. 11. 2026). Původně SCHVÁLENO (Lukáš, 8. 11. 2026). Doladění dávky 13. Po nasazení je hero výrazné, ale nadpis se na širokém okně zalomí na tři řádky („hudbu.“ samo), takže perex a podpis zůstanou pod ohybem. Mění se **jen velikost a zalomení nadpisu a svislé rozměry hero**. Texty, barvy, oblouk, kresba, podpis ani animace se nemění.
+
+### 13b.1 Nadpis
+- `font-size: clamp(40px, 6.6vw, 96px)` (dnes až 116 px, minimum 44 px).
+- Zalomení: od **1024 px** přesně **dva řádky**: „Reprosoustavy“ / „s citem pro hudbu.“ Řešení zvolit robustní (například `text-wrap: balance` s `max-width` kolem 19ch, případně druhá část v `white-space: nowrap` od 1024 px). Slovo „citem“ zůstává v dubu přes `titleAccent`.
+- 821–1023 px: dva až tři řádky, přijatelné. Do 820 px: tři řádky („Reprosoustavy“ / „s citem pro“ / „hudbu.“) jsou v pořádku, ale nesmí přetéct ani se rozdělit slovo na **375 a 320 px** (pokud ano, snížit minimum 40 px).
+- `line-height` .98, `letter-spacing` -.03em.
+
+### 13b.2 Celé hero nad ohybem
+- Cíl: na **1920 × 1080** (okno asi 950 px) je vidět celé hero včetně perexu a podpisu; na **1440 × 900** (okno asi 780 px) je celý perex vidět a podpis smí být částečně pod ohybem. Hlavička se na desktopu před scrollem nemění.
+- Svislé odsazení hero `clamp(32px, 5vw, 72px)`, mezery mezi štítkem, nadpisem, druhým štítkem a perexem 14 px.
+- Kresba: `max-height: clamp(320px, 52vh, 520px)`, šířka podle poměru stran, podpis úměrně menší. Oblouk zůstává zakotvený v pravém dolním rohu hero (poloměr úměrně k výšce).
+- Výška hero nejvýš 780 px (pravidlo z dávky 13).
+
+### 13b.3 Kontrola
+- Screenshoty hero před a po na 1920 × 1080, 1440 × 900, 1366 × 768, 1024 × 768, 375 a 320 px (celá výška okna, ne celá stránka).
+- Axe a Lighthouse beze zhoršení (výkon ≥ 95, přístupnost 100). Změřit, že v 1920 × 1080 i 1440 × 900 jsou splněné cíle z 13b.2.
+
+### Výstup dávky 13b
+1. Screenshoty podle 13b.3.
+2. Počet řádků nadpisu na každé šířce (tabulka šířka · počet řádků).
+3. Potvrdit, že se nezměnily texty, barvy a pozadí hero.
+4. Commit včetně `docs/UPRAVY.md`; dávku 13b označit HOTOVO.
+
+### Výsledek dávky 13b (Claude Code, 8. 11. 2026)
+- **13b.1 Nadpis.** `--fs-hero` `clamp(40px, 6.6vw, 96px)`, `line-height: .98`, `letter-spacing: -.03em`. Zalomení řeší `text-wrap: balance` s `max-width: 19ch` na prvním řádku nadpisu: „s citem“ drží pohromadě nezlomitelná mezera z `typo()`, takže nejvyváženější dvouřádkové zalomení je „Reprosoustavy“ / „s citem pro hudbu.“ (ověřeno screenshoty). Slovo „citem“ zůstává v dubu přes `titleAccent`. Dřívější `max-width: 9ch` je pryč.
+- **13b.2 Hero nad ohybem.** Svislé odsazení hero `clamp(32px, 5vw, 72px)` (od 1024 px a na tabletu; mobil beze změny), mezery štítek → nadpis → druhý štítek → perex 14 px. Kresba má šířku `min(100cqi, 300px, clamp(320px, 52vh, 520px) × 0,674)` (poměr stran 378 : 561), tedy výšku nejvýš `clamp(320px, 52vh, 520px)`; podpis je úměrně menší (`0,567 ×` šířka kresby, tj. 170 px při 300 px). Poloměr oblouku `--hero-arc-r` `clamp(300px, (100svh − výška hlavičky) × .57, 430px)` je úměrný výšce hero (oblouk zůstal v pravém dolním rohu). Výška hero nejvýš 780 px.
+- **Změřeno (okno = obrazovka bez lišt prohlížeče):** 1920 × 1080 (okno 950 px): perex končí na 723 px, podpis na 788 px, hero 780 px vysoké → celé hero včetně perexu a podpisu je v okně. 1440 × 900 (okno 780 px): perex 646 px, podpis 690 px → oboje v okně (cíl splněn i pro podpis). 1366 × 768 (okno 650 px): perex 581 px, podpis 593 px; 1024 × 768 (okno 650 px): perex 547 px, podpis 581 px. Před úpravou (dávka 13) byl na 1440 × 780 perex na 731 px, tedy pod ohybem. Hlavička se před scrollem nezměnila.
+- Hlídá to nový test (`layout.spec.ts`): od 1024 px dva řádky nadpisu, perex v okně na 1920 × 950, 1440 × 780, 1366 × 650 a 1024 × 650, hero ≤ 780 px, podpis na 1920 × 950 v okně.
+
+### Výstup dávky 13b
+1. Screenshoty (výška okna, ne celá stránka) před a po: `screenshots/davka13b-pred-*.png` a `screenshots/davka13b-po-*.png` pro 1920 × 1080 (okno 950), 1440 × 900 (okno 780), 1366 × 768 (okno 650), 1024 × 768 (okno 650), 375 (okno 812) a 320 px (okno 700). Složka je mimo git.
+2. Počet řádků nadpisu (změřeno prohlížečem, výchozí text):
+
+| Šířka | řádků | písmo |
+|---|---|---|
+| 1920 | 2 | 96 px |
+| 1600 | 2 | 96 px |
+| 1440 | 2 | 95 px |
+| 1366 | 2 | 90 px |
+| 1280 | 2 | 84 px |
+| 1100 | 2 | 73 px |
+| 1024 | 2 | 68 px |
+| 900 | 2 | 59 px |
+| 821 | 2 | 54 px |
+| 768 | 2 | 51 px |
+| 414 | 2 | 40 px |
+| 375 | 2 | 40 px |
+| 320 | 3 („Reprosoustavy“ / „s citem pro“ / „hudbu.“) | 40 px |
+Na 375 a 320 px slovo „Reprosoustavy“ nepřetéká ani se nedělí (minimum 40 px stačí), na 320 px zbývá do okraje 46 px.
+3. Axe a Lighthouse: testy 109 zelených včetně axe WCAG 2.2 AA na úvodu na 1440, 1280, 1024, 390, 375 a 320 px; Lighthouse mobil úvod **výkon 100 / přístupnost 100 / best practices 100**, CLS 0,011.
+4. **Potvrzeno:** texty, barvy a pozadí hero (základ, zrno, barva a tvar oblouku, kruhy) se nezměnily; změnila se jen velikost a zalomení nadpisu, svislé odsazení, mezery, velikost kresby a podpisu a poloměr oblouku úměrně výšce (podle zadání).
+5. Commit včetně `docs/UPRAVY.md` a `idetone-rozhodnuti.md`; dávka 13b označena HOTOVO.
+
