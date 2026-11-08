@@ -708,3 +708,56 @@ Přiřazení (podle současného stavu webu; texty tlačítek neměnit):
 6. Tmavý pruh **nezůstal na Technologii, přesunul se na Proces vývoje** (důvod výše).
 7. Commit včetně `docs/UPRAVY.md` a `idetone-rozhodnuti.md`; rozhodnutí doplněno. `NAVRHOVANE-ZMENY.md` jsem nepoužil ani nečetl.
 
+
+
+## Dávka 12 – nové pozadí hero „Kruhy a dub“
+
+Stav: **HOTOVO** (8. 11. 2026). Původně SCHVÁLENO (Lukáš, 8. 11. 2026). Výběr v náhledu „ideTone – pozadí hero“ (druhé kolo, varianta **Kruhy a dub**). Důvod: dosavadní hero je šedavé a monotónní, další sekce jsou kontrastní. Mění se **jen pozadí hero**. Texty, perokresba, podpis, jejich animace a ostatní sekce zůstávají. Hero **nemá tlačítka** (jako dosud).
+
+### 12.1 Pozadí a motiv
+- Základ hero: **#F7F1E4** (teplejší než dnešní šedobéžová, `--c-len` ani pásy se nemění).
+- **Dubový kruh** za kresbou: plný kruh **#E5CDA0**, střed ve středu kresby (ne v procentech hero, ale na obalu kresby `position: relative`, pseudoelement `::before`, vystředěný `inset: 50% auto auto 50%` + `translate(-50%,-50%)`). Průměr **`clamp(320px, 38vw, 500px)`**, nejvýš 120 % šířky sloupce s kresbou, aby kruh nezasahoval pod text.
+- **Soustředné kruhy** kolem kruhu: `repeating-radial-gradient(circle, transparent 0 38px, rgba(138,92,46,.16) 38px 39px)`, vystředěné stejně, s maskou, která je k okrajům vytrácí: `mask: radial-gradient(circle, #000 0 28%, transparent 72%)` (+ `-webkit-mask`). Pseudoelement `::after` obalu, `pointer-events: none`, `z-index` pod kresbou.
+- Zachovat jemné **papírové zrno** (opacity .16, `mix-blend-mode: multiply`, jako v náhledu).
+- **Zrušit**: 32px mřížku a dosavadní teplou záři za kresbou (nahrazuje je kruh).
+- Kresba i podpis zůstávají v grafitu (průhledné PNG), nijak se neupravují. Nic neinvertovat.
+- Přechod hero → první pás (Modely #FCFAF5) nechat plynulý, bez ostré hrany.
+
+### 12.2 Animace (jemná, pomalá)
+- Kruh se při načtení **zobrazí pozvolna** (opacity 0 → 1 a `scale(.96 → 1)`, 1,2 s), soustředné kruhy za ním o 0,4 s později (opacity 0 → 1, 0,8 s). Pak běží stávající odkrytí kresby a psaní podpisu beze změny času.
+- `prefers-reduced-motion: reduce`: bez animace, jen konečný stav.
+
+### 12.3 Responzivita a kontrast
+- Do 820 px: kresba nad textem nebo dosavadní uspořádání; kruh se zmenší na `min(78vw, 360px)`, soustředné kruhy zůstávají jemné. Výška hero nejvýš 780 px (pravidlo z dřívějška).
+- Text v hero (nadpis grafit #1F2421, štítek #5E3D22, druhý řádek #6E4826, perex #2F3531) musí mít na #F7F1E4 kontrast ≥ 4,5 : 1 (velký text ≥ 3 : 1). Změřit axe a poměry zapsat.
+- Soustředné kruhy nesmí sahat pod text tak, aby zhoršily čitelnost (kruhy jsou prakticky neviditelné pod 28 % poloměru; zkontrolovat na 1024 a 1280 px).
+
+### Výstup dávky 12
+1. Screenshoty hero před a po na 1280, 1024 a 375 px.
+2. Axe a Lighthouse (úvod mobil: výkon ≥ 95, přístupnost 100, bez zhoršení o víc než 3 body).
+3. Tabulka kontrastu textů v hero.
+4. Potvrdit, že se nezměnily texty, kresba, podpis ani sekce pod hero.
+5. Commit včetně `docs/UPRAVY.md` a `idetone-rozhodnuti.md` (je v kořeni projektu): rozhodnutí „hero: Kruhy a dub, základ #F7F1E4, kruh #E5CDA0, bez mřížky“. Dávku označit HOTOVO.
+
+### Výsledek dávky 12 (Claude Code, 8. 11. 2026)
+- **12.1 Pozadí a motiv.** Základ hero `--hero-bg` #F7F1E4 (`--c-len` a pásy beze změny). Dubový kruh `--hero-circle-color` #E5CDA0 je `::before` obalu kresby `.hero__drawing-wrap` (`inset: 50% auto auto 50%` + `translate(-50%,-50%)`), průměr `--hero-circle` = `min(clamp(320px, 38vw, 500px), 120cqi)` (`cqi` = šířka sloupce s kresbou, proto kruh nepřesáhne 120 % sloupce). Soustředné kruhy jsou `::after` stejného obalu: `repeating-radial-gradient(circle, transparent 0 38px, rgba(138,92,46,.16) 38px 39px)` s maskou `radial-gradient(circle, #000 0 28%, transparent 72%)` (+ `-webkit-mask`), `pointer-events: none`, pod kresbou i kruhem. Prvek kruhů je 2× větší než kruh, aby se vlny vytrácely kolem něj. Zrno papíru zůstalo, `--paper-grain-opacity` .16 s `multiply`. **Zrušeno:** mřížka (`grid: false` v `home.yaml`, CSS odstraněno), teplé světlo za kresbou (CSS odstraněno), nepoužité tokeny `--c-light-warm` a `--grid-line`. Kresba a podpis se nijak neupravují, nic se neinvertuje.
+- **Přechod do prvního pásu.** Přechod hero → Modely nově začíná barvou hero (`--hero-bg`). Aby po zrnu (které hero opticky ztmavuje) nevznikla ostrá hrana, zrno dole mizí (maska `#000 70% → transparent`) – drobná úprava nad rámec zadání, jen pozadí hero.
+- **12.2 Animace.** Kruh: opacity 0 → 1 a `scale(.96 → 1)`, 1,2 s (`--dur-hero-circle`), soustředné kruhy opacity 0 → 1, 0,8 s s odstupem 0,4 s (`--dur-hero-rings`, `--delay-hero-rings`). Odkrytí kresby a psaní podpisu beze změny času. Při `prefers-reduced-motion: reduce` bez animace (jen konečný stav).
+- **12.3 Responzivita.** Do 820 px kruh `min(78vw, 360px)`, uspořádání hero beze změny (kresba pod textem). Výška hero nejvýš 780 px (`min-height` omezeno na 48,75 rem i na desktopu, dřív tam strop nebyl); změřeno na obrazovce 900 px: 1280 px ≈ 751 px, 1024 px ≈ 760 px, 375 px ≈ 690 px. Soustředné kruhy zasahují do textového sloupce jen jako velmi slabé čáry (16 % dubu, k okraji mizí); na 1024 i 1280 px je čitelnost textu beze změny (viz screenshoty a poměry níže).
+
+### Výstup dávky 12
+1. Screenshoty hero před / po (1280, 1024, 375 px): `screenshots/davka12-pred-hero-*.png` a `screenshots/davka12-po-hero-*.png` (složka je mimo git).
+2. Axe WCAG 2.2 AA bez chyb na všech stránkách a šířkách (101 testů zelených). Lighthouse mobil: úvod **výkon 100 / přístupnost 100 / best practices 100** (před dávkou 100 / 100 / 100), CLS úvodu 0,010 (dřív 0,030).
+3. Kontrast textů v hero (základ #F7F1E4; „se zrnem“ = odhad nejtmavšího místa po vynásobení zrnem, ~#EBE5D8):
+
+| Text | základ #F7F1E4 | se zrnem |
+|---|---|---|
+| nadpis grafit #1F2421 | 14,00 | 12,56 |
+| perex (dědí grafit #1F2421) | 14,00 | 12,56 |
+| štítek #6E4826 (skutečná barva `--c-eyebrow`; zadání uvádí #5E3D22 = 8,61 / 7,72) | 7,13 | 6,39 |
+| druhý řádek #6E4826 | 7,13 | 6,39 |
+| kresba grafit na kruhu #E5CDA0 | 10,18 | – |
+Všechny hodnoty ≥ 4,5 : 1. Barvy textů v hero jsem neměnil (štítek a perex mají jiné odstíny než ve zadání, ale poměry vyhovují).
+4. **Potvrzeno:** texty hero, kresba, podpis a jejich animace i všechny sekce pod hero jsou beze změny. V `home.yaml` se změnil jen komentář a `decor.grid: false`; v kódu jen pozadí hero (`index.astro`, `tokens.css`, jeden přechodový řádek v `base.css`).
+5. Commit včetně `docs/UPRAVY.md` a `idetone-rozhodnuti.md`; rozhodnutí doplněno.
+
