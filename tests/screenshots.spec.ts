@@ -311,3 +311,50 @@ for (const [name, width, height] of okna) {
     await page.screenshot({ path: `screenshots/davka13b-${process.env.FAZE ?? 'po'}-${name}.png` });
   });
 }
+
+// Dávka 14 (docs/UPRAVY.md): jednotná tlačítka – úvod (celý), mobilní menu a lišta s cenou na detailu modelu.
+// FAZE=pred | po, výstup screenshots/davka14-<faze>-<název>.png
+for (const width of [1280, 375]) {
+  test(`davka14 uvod @ ${width}`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/');
+    await ready(page);
+    await page.addStyleTag({ content: '*{transition:none!important;animation:none!important}' });
+    await page.evaluate(() =>
+      document
+        .querySelectorAll('[data-reveal],[data-reveal-img],[data-reveal-sign]')
+        .forEach((e) => e.classList.add('is-revealed')),
+    );
+    await page.screenshot({
+      path: `screenshots/davka14-${process.env.FAZE ?? 'po'}-uvod-${width}.png`,
+      fullPage: true,
+    });
+  });
+}
+
+test('davka14 mobilní menu @ 375', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto('/');
+  await ready(page);
+  await page.addStyleTag({ content: '*{transition:none!important;animation:none!important}' });
+  await page.getByRole('button', { name: 'Menu' }).first().click();
+  await page.screenshot({ path: `screenshots/davka14-${process.env.FAZE ?? 'po'}-menu-375.png` });
+});
+
+test('davka14 detail modelu, lišta s cenou @ 375', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto('/reprosoustavy/sara/');
+  await ready(page);
+  await page.addStyleTag({ content: '*{transition:none!important;animation:none!important}' });
+  await page.screenshot({ path: `screenshots/davka14-${process.env.FAZE ?? 'po'}-detail-375.png` });
+});
+
+test('davka14 detail modelu @ 1280', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto('/reprosoustavy/sara/');
+  await ready(page);
+  await page.addStyleTag({ content: '*{transition:none!important;animation:none!important}' });
+  await page.screenshot({
+    path: `screenshots/davka14-${process.env.FAZE ?? 'po'}-detail-1280.png`,
+  });
+});

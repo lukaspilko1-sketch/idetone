@@ -25,11 +25,21 @@
   --wood-gradient: linear-gradient(135deg, #8a5c2e 0%, #74492a 55%, #5e3d22 100%);
   --glass-card-wood: rgb(255 255 255 / 0.07); /* skleněná karta na dubu */
   --glass-edge-wood: rgb(255 255 255 / 0.18);
-  --btn-primary-bg: var(--c-dub-text); /* primární CTA v dubu (#8A5C2E, s #F5F0E8 cca 5 : 1) */
-  --btn-primary-hover: #5e3d22;
+  /* Tlačítka (dávka 14): hodnoty pro světlý podklad; v tmavých kontextech se přepisují níže */
+  --radius-btn: 999px; /* pilulka */
+  --btn-primary-bg: #8a5c2e;
   --btn-primary-text: #ffffff;
-  --btn-inv-bg: #f5f0e8; /* plné tlačítko na tmavém a ořechovém podkladu */
-  --btn-inv-text: #5e3d22;
+  --btn-primary-border: #8a5c2e;
+  --btn-primary-hover-bg: #5e3d22;
+  --btn-primary-hover-text: #ffffff;
+  --btn-primary-hover-border: #5e3d22;
+  --btn-outline-text: #8a5c2e;
+  --btn-outline-border: #8a5c2e;
+  --btn-outline-hover-bg: #8a5c2e;
+  --btn-outline-hover-text: #ffffff;
+  --btn-link-text: #6e4826;
+  --btn-link-line: #8a5c2e;
+  --btn-focus: #6e4826;
   --btn-h: 3rem; /* výška všech tlačítek 48 px */
   --c-eyebrow: var(--c-dub-ink); /* štítky sekcí a typy modelů */
   --c-link-underline: var(--c-dub); /* podtržení odkazů */
@@ -246,4 +256,22 @@
     --card-pad: 1.625rem; /* odsazení v kartě 26 px */
     --lh-text: 1.7;
   }
+}
+
+/* Dávka 14: tmavý a ořechový podklad – všechna tlačítka a textové odkazy světle.
+   Komponenta tlačítka čte jen tokeny, proto stačí přepsat hodnoty v kontextu. */
+:is(.section--dark, .section--dub, .section--uhel, .footer) {
+  --btn-primary-bg: #f5f0e8;
+  --btn-primary-text: #4a2f1a;
+  --btn-primary-border: #f5f0e8;
+  --btn-primary-hover-bg: #ffffff;
+  --btn-primary-hover-text: #4a2f1a;
+  --btn-primary-hover-border: #ffffff;
+  --btn-outline-text: #f5f0e8;
+  --btn-outline-border: #f5f0e8;
+  --btn-outline-hover-bg: #f5f0e8;
+  --btn-outline-hover-text: #4a2f1a;
+  --btn-link-text: #f5f0e8;
+  --btn-link-line: #f5f0e8;
+  --btn-focus: #f5f0e8;
 }

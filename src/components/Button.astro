@@ -1,7 +1,8 @@
 ---
 /**
  * Tlačítko / odkaz ve tvaru tlačítka.
- * Dávka 11.3: dva druhy (plné / obrys), styly `.btn` v base.css. tone dark a wood = tmavý a ořechový podklad.
+ * Dávka 11.3 / 14: dva druhy (plné / obrys), styly `.btn` v base.css čtou jen tokeny `--btn-*`.
+ * Barvu určuje podklad (tmavé kontexty přepisují tokeny v tokens.css); `tone` zůstává jen kvůli zpětné kompatibilitě.
  */
 import type { HTMLAttributes } from 'astro/types';
 import { url } from '../utils/url';

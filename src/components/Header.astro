@@ -419,6 +419,14 @@ const isSection = (href: string) => current.startsWith(url(href)) && href !== '/
     }
 
     .header.is-open .nav {
+      /* tlačítko a odkazy v tmavém překryvu světle (dávka 14) */
+      --btn-primary-bg: #f5f0e8;
+      --btn-primary-text: #4a2f1a;
+      --btn-primary-border: #f5f0e8;
+      --btn-primary-hover-bg: #ffffff;
+      --btn-primary-hover-text: #4a2f1a;
+      --btn-primary-hover-border: #ffffff;
+      --btn-focus: #f5f0e8;
       position: fixed;
       inset: 0;
       z-index: 1;

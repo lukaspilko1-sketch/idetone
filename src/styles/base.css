@@ -154,16 +154,17 @@ main > .hero + :is(.section--len, .section--papir) {
     0 14px 34px -18px rgb(70 45 20 / 0.45);
 }
 
-/* Systém tlačítek (dávka 11.3): plné, obrys a textový odkaz. Jednotně všude, text tlačítek se nemění. */
+/* Systém tlačítek (dávka 11.3, tvar a barvy dávka 14): plné, obrys a textový odkaz.
+   Barvy čte jen z tokenů --btn-* (tmavé kontexty je přepisují v tokens.css), text tlačítek se nemění. */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   min-height: var(--btn-h);
-  padding: 0 22px;
+  padding: 0 26px;
   border: 1.5px solid transparent;
-  border-radius: var(--radius-s);
+  border-radius: var(--radius-btn);
   font-family: var(--font-text);
   font-size: 15px;
   font-weight: 600;
@@ -177,9 +178,21 @@ main > .hero + :is(.section--len, .section--papir) {
     border-color var(--dur-cta) var(--ease-calm);
 }
 
-.btn:focus-visible {
-  outline: var(--focus);
-  outline-offset: 2px;
+/* 320–420 px: dlouhý text se smí zalomit, je vystředěný a poloměr 28 px (žádná deformovaná pilulka) */
+@media (max-width: 26.25rem) {
+  .btn {
+    padding: 12px 26px;
+    border-radius: 28px;
+    line-height: 1.25;
+    text-align: center;
+    white-space: normal;
+  }
+}
+
+.btn:focus-visible,
+.link:focus-visible {
+  outline: 2px solid var(--btn-focus);
+  outline-offset: 3px;
 }
 
 .btn__arrow {
@@ -193,60 +206,39 @@ main > .hero + :is(.section--len, .section--papir) {
 }
 
 /* Plné – hlavní akce stránky (max. jedna na obrazovku) */
-.btn--primary.btn--on-light {
+.btn--primary {
   background: var(--btn-primary-bg);
-  border-color: var(--btn-primary-bg);
+  border-color: var(--btn-primary-border);
   color: var(--btn-primary-text);
 }
 
-.btn--primary.btn--on-light:hover {
-  background: var(--btn-primary-hover);
-  border-color: var(--btn-primary-hover);
-  color: var(--btn-primary-text);
-}
-
-.btn--primary:is(.btn--on-dark, .btn--on-wood) {
-  background: var(--btn-inv-bg);
-  border-color: var(--btn-inv-bg);
-  color: var(--btn-inv-text);
-}
-
-.btn--primary:is(.btn--on-dark, .btn--on-wood):hover {
-  background: #fff;
-  border-color: #fff;
-  color: var(--btn-inv-text);
+.btn--primary:hover {
+  background: var(--btn-primary-hover-bg);
+  border-color: var(--btn-primary-hover-border);
+  color: var(--btn-primary-hover-text);
 }
 
 /* Obrys – druhá volba vedle plného nebo vedlejší akce */
-.btn--secondary.btn--on-light {
-  border-color: var(--c-grafit);
-  color: var(--c-grafit);
+.btn--secondary {
+  background: transparent;
+  border-color: var(--btn-outline-border);
+  color: var(--btn-outline-text);
 }
 
-.btn--secondary.btn--on-light:hover {
-  background: var(--c-grafit);
-  color: #fff;
+.btn--secondary:hover {
+  background: var(--btn-outline-hover-bg);
+  border-color: var(--btn-outline-hover-bg);
+  color: var(--btn-outline-hover-text);
 }
 
-.btn--secondary:is(.btn--on-dark, .btn--on-wood) {
-  border-color: rgb(255 255 255 / 0.75);
-  color: #fff;
-}
-
-.btn--secondary:is(.btn--on-dark, .btn--on-wood):hover {
-  background: #fff;
-  border-color: #fff;
-  color: var(--c-uhel);
-}
-
-/* Textový odkaz – přechod na detail uvnitř obsahu */
+/* Textový odkaz – přechod na detail uvnitř obsahu (bez rámečku, poloměr se ho netýká) */
 .link {
   display: inline-flex;
   align-items: baseline;
   gap: 8px;
   padding-bottom: 3px;
-  border-bottom: 1px solid var(--c-dub-text);
-  color: var(--c-dub-ink);
+  border-bottom: 1px solid var(--btn-link-line);
+  color: var(--btn-link-text);
   font-weight: 500;
   text-decoration: none;
   transition: border-color var(--dur-cta) var(--ease-calm);
@@ -263,15 +255,6 @@ main > .hero + :is(.section--len, .section--papir) {
 
 .link:hover > [aria-hidden='true'] {
   transform: translateX(4px);
-}
-
-:is(.section--dub, .section--uhel, .section--dark) .link {
-  border-bottom-color: #e5c9a2;
-  color: #f1dfc6;
-}
-
-:is(.section--dub, .section--uhel, .section--dark) .link:hover {
-  border-bottom-color: transparent;
 }
 
 @media (prefers-reduced-motion: reduce) {
