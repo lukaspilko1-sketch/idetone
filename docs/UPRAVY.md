@@ -877,3 +877,98 @@ Na 375 a 320 px slovo „Reprosoustavy“ nepřetéká ani se nedělí (minimum 
 4. **Potvrzeno:** texty, barvy a pozadí hero (základ, zrno, barva a tvar oblouku, kruhy) se nezměnily; změnila se jen velikost a zalomení nadpisu, svislé odsazení, mezery, velikost kresby a podpisu a poloměr oblouku úměrně výšce (podle zadání).
 5. Commit včetně `docs/UPRAVY.md` a `idetone-rozhodnuti.md`; dávka 13b označena HOTOVO.
 
+
+
+## Dávka 14 – jednotná tlačítka: pilulka, hnědá na světlém, světlá na tmavém
+
+Stav: **HOTOVO** (10. 11. 2026). Původně SCHVÁLENO (Lukáš, 10. 11. 2026). Výběr v náhledu „ideTone – tlačítka“ (Cowork): zaoblení **pilulka**, barevné pravidlo **světlý podklad = vše hnědě, tmavý podklad = vše světle**, platí i pro textové odkazy. Doplňuje a upravuje systém tlačítek z dávky 11.3 (tvar, barvy obrysu a odkazů). **Texty a popisky tlačítek se nemění.** Karty, pole formulářů a ostatní prvky zůstávají s dosavadním zaoblením.
+
+### 14.1 Tvar
+- Nový token `--radius-btn: 999px` (pilulka) v `tokens.css`; používá **každé** tlačítko (`.btn`): hlavička, mobilní menu, hero (pokud je tlačítko), karty, pruhy, formuláře (odeslat), lišta s cenou na detailu modelu, stránky Děkujeme.
+- `padding: 0 26px` (dnes 22 px), výška 48 px beze změny, `white-space: nowrap`.
+- Na šířkách 320–420 px: pokud některý text tlačítka přetéká (např. „Zarezervujte si poslech…“), povolit zalomení, vystředit text a použít poloměr 28 px (aby nevznikla deformovaná pilulka). Texty nezkracovat.
+- Textový odkaz `.link` je bez rámečku, poloměr se ho netýká.
+
+### 14.2 Barvy podle podkladu
+Tokeny `--btn-*` nastavit na `:root` pro světlý podklad a **přepsat** v tmavých kontextech (`.section--dark`, ořechový pruh Poslech / `.section--dub`, tmavý pruh na Technologii, patička, mobilní menu). Komponenta tlačítka čte jen tokeny, nikoli vlastnosti per instance.
+
+| Druh | Světlý podklad (len, pás 1, pás 2, hero, karty) | Tmavý a ořechový podklad |
+|---|---|---|
+| **Plné** `.btn--primary` | pozadí #8A5C2E, text #FFFFFF, okraj #8A5C2E; hover pozadí a okraj #5E3D22 | pozadí #F5F0E8, text #4A2F1A, okraj #F5F0E8; hover pozadí a okraj #FFFFFF |
+| **Obrys** `.btn--secondary` | průhledné, text a okraj **#8A5C2E**; hover pozadí #8A5C2E, text #FFFFFF | průhledné, text a okraj #F5F0E8; hover pozadí #F5F0E8, text #4A2F1A |
+| **Textový** `.link` | text #6E4826, podtržení `1px solid #8A5C2E`; hover podtržení zmizí | text #F5F0E8, podtržení `1px solid #F5F0E8`; hover podtržení zmizí |
+
+- **Obrys už není grafitový** (dnes #1F2421), je hnědý. **Textové odkazy a odkazy se šipkou** (`.arrow-link`, `.pf__link`, odkazy v obsahu typu „Detail modelu“, „Víc o řešení →“, „O ideTone →“, „Proces vývoje podrobně“, „Otevřít v Mapy.cz →“) jsou všude hnědé na světlém a světlé na tmavém. Žádný odkaz v grafitu.
+- Pokud axe naměří u obrysu #8A5C2E (malý text 15 px) kontrast pod 4,5 : 1 na některém podkladu (například na zářích nebo v kartách), použít pro **text** obrysu #6E4826, okraj nechat #8A5C2E, a toto místo uvést ve výsledku.
+- `:focus-visible` viditelný na všech podkladech (na tmavém světlý obrys), `prefers-reduced-motion` bez přechodu.
+- Dosud použité barvy tlačítek v tmavých kontextech (#F1DFC6, #E5C9A2 u odkazů) nahradit #F5F0E8.
+
+### 14.3 Projít všechna místa
+- Znovu projít všechny stránky podle tabulky přiřazení z dávky 11 (úvod, Reprosoustavy, Sara, Reva, Technologie, Poslech, Zakázkové projekty, O ideTone, Kontakt, Děkujeme, 404, Obchodní podmínky) a ověřit, že každé tlačítko a odkaz se šipkou odpovídá druhu a podkladu. Zbylé vlastní styly zrušit.
+- **Odkazové karty** (404, „další modely“ pod detailem) nejsou tlačítka a zůstávají beze změny.
+
+### 14.4 Kontrola
+- Axe WCAG 2.2 AA na všech stránkách a šířkách; změřit poměry textu a okraje tlačítek na všech podkladech (světlý len, pás 1, pás 2, sklo, grafit, ořech) a zapsat do tabulky.
+- Lighthouse beze zhoršení.
+
+### Výstup dávky 14
+1. Screenshoty tlačítek na úvodu na 1280 a 375 px (světlý pás, grafitový pruh, ořechový Poslech, patička, mobilní menu) a na detailu modelu (lišta s cenou).
+2. Tabulka kontrastu (druh · podklad · text · okraj · poměr).
+3. Tabulka přiřazení (stránka · text · druh · podklad).
+4. Potvrdit, že se nezměnily texty, rozvržení ani karty a pole formulářů.
+5. Commit včetně `docs/UPRAVY.md` a `idetone-rozhodnuti.md` (kořen projektu): rozhodnutí „tlačítka: pilulka, hnědé na světlém, světlé na tmavém“. Dávku 14 označit HOTOVO.
+
+### Výsledek dávky 14 (Claude Code, 10. 11. 2026)
+- **14.1 Tvar.** Token `--radius-btn: 999px` v `tokens.css`, `.btn` ho používá (hlavička, mobilní menu, karty, pruhy, odeslání formulářů, lišta s cenou, Děkujeme), `padding: 0 26px`, výška 48 px a `nowrap` beze změny. Do 420 px se text tlačítka smí zalomit (`white-space: normal`, vystředěný, `padding: 12px 26px`, poloměr 28 px, výška aspoň 48 px); texty se nezkracovaly. Textový odkaz `.link` zůstal bez rámečku. Karty, pole formulářů a ostatní prvky mají dosavadní zaoblení.
+- **14.2 Barvy podle podkladu.** Tokeny `--btn-*` (plné, obrys, textový odkaz, `--btn-focus`) jsou na `:root` pro světlý podklad a přepisují se v `.section--dark`, `.section--dub`, `.section--uhel`, `.footer` (konec `tokens.css`) a v překryvu mobilního menu (`Header.astro`). Komponenta čte jen tokeny: `.btn--on-light/dark/wood` už barvy neřeší (prop `tone` zůstal jen kvůli zpětné kompatibilitě, v dokumentaci komponenty uvedeno). Hodnoty přesně podle tabulky ze zadání (světlý: plné #8A5C2E / bílá, hover #5E3D22, obrys #8A5C2E, hover plná #8A5C2E s bílým textem, odkaz #6E4826 s podtržením #8A5C2E; tmavý: plné #F5F0E8 / #4A2F1A, hover #FFF, obrys a odkaz #F5F0E8, hover obrysu #F5F0E8 / #4A2F1A). Obrys už není grafitový. Dřívější barvy #F1DFC6 a #E5C9A2 jsou nahrazené #F5F0E8. `:focus-visible` je viditelný na všech podkladech (hnědý na světlém, #F5F0E8 na tmavém, odsazení 3 px); při `prefers-reduced-motion` bez přechodu i posunu šipky. **Záložní tmavší text obrysu (#6E4826) nebyl potřeba:** i nejhorší místo (pás 2, kontrast textu #8A5C2E 4,64 : 1; hero se zrnem 4,58 : 1) vyhovuje 4,5 : 1, axe nic nehlásí.
+- **14.3 Místa.** Prošel jsem všechna místa z tabulky dávky 11 (viz tabulka přiřazení níže). Žádný odkaz v grafitu: odkazy „Detail modelu“, „Víc o řešení →“, „O ideTone →“, „Proces vývoje podrobně →“, „Otevřít v Mapy.cz / Google Maps →“ jsou `.link` (hnědé na světlém, #F5F0E8 na tmavém). Odkazové karty (404, „další modely“) beze změny.
+- **14.4 Kontrola.** Axe WCAG 2.2 AA bez chyb (109 testů zelených), Lighthouse mobil: úvod **výkon 99 / přístupnost 100 / best practices 100** (před dávkou 100 / 100 / 100, −1 bod), Kontakt 97 / 100 / 100.
+
+### Výstup dávky 14
+1. Screenshoty před a po: `screenshots/davka14-pred-*.png` a `screenshots/davka14-po-*.png` – úvod celý na 1280 a 375 px (světlý pás, grafitový pruh Proces vývoje, ořechový Poslech, patička), mobilní menu 375 px, detail modelu 375 px (lišta s cenou) a 1280 px. Složka je mimo git.
+2. Kontrast (WCAG poměr; okraj tlačítka má stejnou barvu jako jeho text, limit pro okraj je 3 : 1):
+
+| Druh | Podklad | Text | Okraj | Poměr |
+|---|---|---|---|---|
+| plné | libovolný světlý | #FFF na #8A5C2E | #8A5C2E | 5,75 (hover #FFF na #5E3D22: 9,69) |
+| obrys | len #F7F3EA | #8A5C2E | #8A5C2E | 5,19 |
+| obrys | pás 1 #FCFAF5 | #8A5C2E | #8A5C2E | 5,51 |
+| obrys | pás 2 #F0E6D2 | #8A5C2E | #8A5C2E | 4,64 |
+| obrys | hero #F7F1E4 (se zrnem ~#EBE5D8) | #8A5C2E | #8A5C2E | 5,11 (4,58) |
+| obrys | sklo nad pásem 2 (~#F6EFE0) | #8A5C2E | #8A5C2E | 5,02 |
+| obrys hover | – | #FFF na #8A5C2E | – | 5,75 |
+| odkaz | len / pás 1 / pás 2 / hero | #6E4826 | podtržení #8A5C2E | 7,24 / 7,69 / 6,48 / 7,13 |
+| plné | grafit #262422, patička ~#2A2623 | #4A2F1A na #F5F0E8 (10,81; hover na #FFF 12,26) | #F5F0E8 | 13,63 / 13,22 (okraj vs. podklad) |
+| obrys, odkaz | grafit #262422 | #F5F0E8 | #F5F0E8 | 13,63 |
+| obrys, odkaz, plné (okraj) | ořech světlý konec #8A5C2E | #F5F0E8 | #F5F0E8 | 5,07 |
+| obrys, odkaz, plné (okraj) | ořech střed #74492A / tmavý #5E3D22 | #F5F0E8 | #F5F0E8 | 6,78 / 8,54 |
+| obrys hover | tmavý | #4A2F1A na #F5F0E8 | – | 10,81 |
+3. Tabulka přiřazení (stránka · text · druh · podklad):
+
+| Stránka | Text | Druh | Podklad |
+|---|---|---|---|
+| všechny, desktop (hlavička) | Domluvit poslech → | plné | světlý (hlavička) |
+| všechny, mobil (menu) | Domluvit poslech → | plné | tmavý překryv |
+| Úvod | Detail modelu Sara →, Detail modelu Reva → | textový | pás 1 |
+| Úvod | Porovnat modely → | obrys | pás 1 |
+| Úvod | O ideTone → | textový | pás 2 |
+| Úvod | Proces vývoje podrobně → | textový | grafit |
+| Úvod | Víc o řešení → (3×) | textový | pás 2 |
+| Úvod | Jak to funguje → | obrys | pás 2 |
+| Úvod | Zarezervujte si poslech… | plné | ořech |
+| Reprosoustavy | Zakázkové projekty → | obrys | světlý pás |
+| Sara, Reva | Objednat → (i lišta s cenou na mobilu) | plné | světlý / sklo |
+| Sara, Reva | Domluvit poslech → | obrys | světlý |
+| Technologie | Domluvit poslech → | plné | grafit (`uhel`) |
+| Zakázkové projekty | Odeslat poptávku → | plné | karta (sklo) |
+| Poslech | Domluvit poslech → (formulář) | plné | karta (sklo) |
+| Poslech | Otevřít v Mapy.cz →, Otevřít v Google Maps → | textový | ořech |
+| O ideTone | Prohlédnout modely → | plné | světlý |
+| O ideTone | Technologie → | obrys | světlý |
+| Kontakt | Odeslat zprávu → | plné | karta (sklo) |
+| Děkujeme | Prohlédnout modely → / Úvodní stránka → | plné / obrys | světlý |
+| 404, další modely pod detailem | odkazové karty | beze změny | – |
+| Obchodní podmínky | – | bez tlačítek | – |
+4. **Potvrzeno:** texty a popisky tlačítek, rozvržení, karty a pole formulářů se nezměnily (změnil se jen tvar a barva tlačítek a barva textových odkazů).
+5. Commit včetně `docs/UPRAVY.md` a `idetone-rozhodnuti.md`; dávka 14 označena HOTOVO.
+
